@@ -1,0 +1,93 @@
+<html>
+<head>
+
+<script language="JavaScript" src="DiscoverySDK.js" type="text/javascript"></script>
+<script language="JavaScript" src="LogoSDK.js" type="text/javascript"></script>
+<script language="JavaScript" src="Base64Utils.js" type="text/javascript"></script>
+<script language="JavaScript" src="OpenIdConnectSDK.js" type="text/javascript"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script language="JavaScript">
+
+    helperRedirectOpenIdAuthorize();
+    
+    var code=null;
+    var state=null;
+    var error=null;
+    
+    function atStartup() {
+        var responsedata=parseResponseData();
+        console.log("responsedata "+JSON.stringify(responsedata));
+        code=responsedata['code'];
+        state=responsedata['state'];
+        error=responsedata['error'];
+        
+        discoveryDetails=getCacheDiscoveryItem();
+        tokenEndpoint=discoveryDetails.getResponse().getApiFunction('operatorid', 'token');
+        apiClientID=discoveryDetails.getResponse().getClient_id();
+        apiClientSecret=discoveryDetails.getResponse().getClient_secret();
+        
+        console.log('code='+code+' length='+code.trim().length);
+        
+        if (code && code!=null && (code.trim().length)>0) {
+            $('#status').val('Authorized');
+            $('#code').val(code);
+            
+            tokenFromAuthorizationCode(tokenEndpoint, code, apiClientID, apiClientSecret,
+                                       'http://localhost/xosdk/test/authorised.html', tokenReceived);
+            
+        } else {
+            $('#status').val('Error');
+        }
+    }
+
+    function tokenReceived(token) {
+        console.log("token response="+JSON.stringify(token));
+        if (!!token.refresh_token) $('#refresh_token').val(token.refresh_token);
+        if (!!token.expires_in) $('#expires_in').val(token.expires_in);
+        if (!!token.token_type) $('#token_type').val(token.token_type);
+        if (!!token.access_token) {
+            $('#access_token').val(token.access_token);
+            discoveryDetails=getCacheDiscoveryItem();
+            userinfoEndpoint=discoveryDetails.getResponse().getApiFunction('operatorid', 'userinfo');
+            $('#status').val('Authorized + access token retrieved');
+            if (userinfoEndpoint && userinfoEndpoint.trim().length>0) {
+                userinfo(userinfoEndpoint, token.access_token, userinfoCallbackFunction);
+            }
+        }
+    }
+
+    function userinfoCallbackFunction(userinfo) {
+        console.log("userinfo response="+JSON.stringify(userinfo));
+        if (!!userinfo.email) $('#email').val(userinfo.email);
+        if (userinfo && userinfo.email_verified!==null) $('#email_verified').val(userinfo.email_verified?'true':'false');
+    }
+
+</script>
+</head>
+<body onLoad='javascript:atStartup();'>
+<h1>Result of authorization</h1>
+<div><label>Status</label><input id='status' name='status' value='unknown' readonly='readonly'
+            style='width:300px'/></div>
+<div><label>Auth code</label><input id='code' name='code' value='unknown' readonly='readonly'
+            style='width:300px'/></div>
+<div><label>Access token</label><input id='access_token' name='access_token'
+            value='unknown' readonly='readonly' style='width:300px'/></div>
+<div><label>Refresh token</label><input id='refresh_token' name='refresh_token'
+    value='unknown' readonly='readonly'  style='width:300px'/></div>
+<div><label>Token type</label><input id='token_type' name='token_type'
+    value='unknown' readonly='readonly'/></div>
+<div><label>Expires in</label><input id='expires_in' name='expires_in'
+    value='unknown' readonly='readonly'/></div>
+
+<div><strong>Userinfo ...</strong></div>
+<div><label>Email</label><input id='email' name='email'
+    value='unknown' readonly='readonly'  style='width:300px'/></div>
+<div><label>Email verified</label><input id='email_verified' name='email_verified'
+    value='unknown' readonly='readonly'/></div>
+
+<br/>
+
+<div><a href='demo.html'>Start again</a></div>
+</body>
+</html>
