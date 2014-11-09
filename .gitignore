@@ -1,0 +1,7 @@
+test-apps/android/scripts/atel
+test-apps/android/scripts/etel
+*.swp
+test-apps/android/bin
+test-apps/android/test/discovery.txt
+test-apps/android/gen
+

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/solaiemes/!svn/ver/20133/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery
+END
+HttpUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/solaiemes/!svn/ver/20224/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery/HttpUtils.java
+END
+JsonUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/solaiemes/!svn/ver/20133/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery/JsonUtils.java
+END
+CookieManagement.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/solaiemes/!svn/ver/20133/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery/CookieManagement.java
+END
+PhoneState.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/solaiemes/!svn/ver/20133/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery/PhoneState.java
+END
+PhoneUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/solaiemes/!svn/ver/20133/SDKforGSMA/AndroidDiscovery/com.gsma.android.oneapi.discovery/src/com/gsma/android/oneapi/utilsDiscovery/PhoneUtils.java
+END

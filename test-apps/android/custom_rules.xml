@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="custom_rules">
+	
+	    <target name="cleanjavadoc">
+	        <delete failonerror="false">
+	            <fileset dir="javadoc" includes="**/*.html"/>
+	        </delete>
+	    </target> 
+	
+        <!--<target name="-post-compile">
+			<jar destfile="bin/gsma-sdk-complete.jar" basedir="bin/classes">
+	        		<exclude name="com/gsma/android/mobileconnectsdktest"/>
+	        		<exclude name="com/gsma/android/mobileconnectsdktest/**/*"/>
+	        		<exclude name="com/gsma/android/xoperatorapidemo"/>
+	        		<exclude name="com/gsma/android/xoperatorapidemo/**/*"/>
+			</jar>
+		    <javadoc sourcepath="src"
+	             packagenames="com.gsma.android.*"
+	             destdir="javadoc"
+	             access="protected"
+	             old="false"
+	             verbose="false"
+	             version="true"
+	             use="true"
+	             author="false"
+	             splitindex="false"
+	             nodeprecated="false"
+	             nodeprecatedlist="false"
+	             noqualifier="java.lang,java.util"
+				 excludepackagenames="com.gsma.android.xoperatorapidemo,com.gsma.android.mobileconnectsdktest"
+	             notree="false"
+	             noindex="false"
+	             nohelp="false"
+	             nonavbar="false"
+	             serialwarn="false"
+		    	 overview="src/overview.html"
+	             charset="ISO-8859-1"
+	             linksource="false"
+	             breakiterator="false">
+				<classpath>
+					<pathelement location="${sdk.dir}/platforms/${target}/android.jar"/>
+					<pathelement location="${sdk.dir}/tools/support/annotations.jar"/>
+				    <pathelement location="libs/android-support-v4.jar" />
+				    <pathelement location="libs/google-api-client-android-1.17.0-rc.jar" />
+				    <pathelement location="libs/jackson-all-1.9.11.jar" />
+					<pathelement location="gen" />
+				</classpath>
+			</javadoc>
+
+		        <jar destfile="bin/gsma-sdk-javadoc.jar" basedir="javadoc">
+                        </jar>
+
+        </target>-->
+</project>
+

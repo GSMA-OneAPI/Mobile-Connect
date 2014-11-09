@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SDK Test - Mobile Connect</string>
+    <string name="menu_settings">Settings</string>
+    <string name="start_text">Operator Services</string>
+    
+    <string name="labelOperatorID">Mobile Connect</string>
+   	
+    <string name="startOperatorId">Connect via operator</string>
+    
+    <string name="informationIntro">Phone status</string>
+    <string name="settingsButton">Settings</string>
+    <string name="discoveryButton">Discover</string>
+    
+    <string name="start">Start</string>
+    <string name="restart">Restart</string>
+    <string name="requesting">Discovering</string>
+    
+    <string name="promptDiscoveryStatus">Discovery</string>
+    <string name="promptStatus">Network</string>
+    <string name="promptMCC">Active MCC</string>
+    <string name="promptMNC">Active MNC</string>
+    <string name="valueDiscoveryStatus">discovery</string>
+    <string name="valueMCC">mcc</string>
+    <string name="valueMNC">mnc</string>
+    <string name="valueStatus">unknown</string>
+    <string name="valueUnknown">unknown</string>
+    <string name="notConnectedToInternet">Sorry, you don\'t seem to be connected to the Internet now.</string>
+    <string name="unknownOperator">Sorry, the details for authenticating via your operator are not known</string>
+    <string name="promptTestMode">Test Mode</string>
+    
+    <string name="discoveryStatusUnknown">Unknown</string>
+    <string name="discoveryStatusPending">Not started</string>
+    <string name="discoveryStatusCached">Cached</string>
+    <string name="discoveryStatusStarted">Started</string>
+    <string name="discoveryStatusCompleted">Completed</string>
+    <string name="discoveryStatusFailer">Failed</string>
+        
+    <string name="demoTitle">Demo Services</string>
+    <string name="demoPrompt">Standalone demos not involving the OneAPI Exchange:</string>
+    <string name="demoDTIdentity">DT OpenID Connect Demo</string>
+    
+    <string name="settingsTitle">Settings</string>
+    <string name="promptMCCMNC">Send MCC/MNC in discovery</string>
+    <string name="promptCookies">Send cookies if using webview</string>
+	<string name="developerOperatorPrompt">Developer Operator</string>
+    <string name="servingOperatorPrompt">Serving Operator</string>
+    <string name="startupOptionPrompt">Discovery Startup Option</string>
+    <string name="clearCache">Clear Discovery/Logo Cache</string>
+    
+    <string name="makingRequest">making HTTP request to </string>
+            
+    <string name="statusDisconnected">disconnected</string>
+    <string name="statusOnNet">on-net</string>
+    <string name="statusOffNet">off-net</string>
+    <string name="statusRoaming">roaming</string>
+    
+    <string name="signInPrompt">Contacting server&#8230;</string>
+
+	<string name="signInCompleteHeading">Identified</string>
+	<string name="signInCompleteInfo">Thank you for signing in through your mobile operator. The identity returned by your operator is:</string>
+	<string name="signInCompleteID">ID</string>
+	<string name="differentAssocHandles">Different assoc_handle values. </string>
+	<string name="signInCompleteEmailLabel">Email</string>
+	<string name="signInCompleteEmailValue"></string>
+
+	<string name="signInRejectHeading">Not Identified</string>
+	<string name="signInRejectInfo">Sorry you decided not to sign in through your mobile operator.</string>
+	
+	<string name="completionAttributes">Attributes</string>
+	<string name="completionPageRestart">Run again</string>
+			
+	<string name="discoveryCompleteText">Operator Discovery Complete</string>
+	<string name="discoveryPromptServices">These services are available</string>
+	<string name="discoveryOperatorID">Operator ID</string>
+	<string name="discoveryTest">Start</string>
+	<string name="discoveryNotYetImplemented">Not yet implemented</string>
+	<string name="discoveryServingOperatorName">Operator Name</string>
+					
+	<string name="attributesHeading">Attributes</string>
+	<string name="attributesPromptPrefix">Prefix</string>
+	<string name="attributesValuePrefix"></string>
+	<string name="attributesPromptFirstName">First Name</string>
+	<string name="attributesValueFirstName"></string>
+	<string name="attributesPromptLastName">Last Name</string>
+	<string name="attributesValueLastName"></string>
+	<string name="attributesPromptCity">City</string>
+	<string name="attributesValueCity"></string>
+	<string name="attributesPromptCountry">Country</string>
+	<string name="attributesValueCountry"></string>
+	<string name="attributesPromptLanguage">Language</string>
+	<string name="attributesValueLanguage"></string>
+	<string name="attributesPromptPostalCode">Postal Code</string>
+	<string name="attributesValuePostalCode"></string>
+	<string name="attributesPromptPostalAddress">Postal Address</string>
+	<string name="attributesValuePostalAddress"></string>
+	<string name="attributesPageRestart">Run again</string>
+	
+	<string name="authorizationCompleteHeading">Authorization Complete</string>
+	<string name="authorizationCompleteInfo">Thank you. Result of your sign-in:</string>
+	<string name="authorizationCompleteStatus">Status</string>
+	<string name="authorizationCompleteNameLabel">Name</string>
+	<string name="authorizationCompleteNameValue"></string>
+	<string name="authorizationCompleteEmailLabel">Email</string>
+	<string name="authorizationCompleteEmailValue"></string>
+	<string name="authorizationCompleteSubLabel">Subject Identifier</string>
+	<string name="authorizationCompleteSubValue"></string>
+	<string name="authorizationCompleteGenderLabel">Gender</string>
+	<string name="authorizationCompleteGenderValue"></string>
+	<string name="authorizationCompleteLocaleLabel">Locale</string>
+	<string name="authorizationCompleteLocaleValue"></string>
+	<string name="authorizationCompleteRestart">Restart</string>
+	
+	
+</resources>

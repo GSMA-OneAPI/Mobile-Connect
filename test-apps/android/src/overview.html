@@ -1,0 +1,50 @@
+<body>
+<h1>Documentation for GSMA SDK</h1>
+<p>This SDK provides an all-in-one package of client library functions for:</p>
+<ul>
+<li><p><strong>Operator API Discovery</strong> - allowing an application to determine the operator and available API services for the user<p></li>
+<li><p><strong>Operator/API Logo</strong> - allowing an application to obtain 'official' image resources that can be used in the application user interface</p></li>
+<li><p><strong>Mobile Connect API Services</strong> - allowing an application to use authentication services linked with a mobile phone account</p></li>
+</ul>
+<h2>Operator API Discovery</h2>
+<p>Use the 'discovery' API to determine the operator and available API services for the mobile user. This API works with a network based discovery service 
+together using various mechanisms to identify the operator.</p>
+<p>Once this is done the application is notified of the available API services and associated 'meta data' for the operator.</p>
+<p>See {@link com.gsma.android.oneapi.discovery.DiscoveryProvider} for details on the main interface for the discovery service</p>
+
+<h2>Operator/API Logo</h2>
+<p>Use the 'logo' API to obtain 'official' logos/ images relevant to the operator and API combination. This is related to the 
+discovery API and in case the operator is known allows the application to see if operator specific logos are available.</p>
+<p>The 'logo' API works with a network based logo store service and handles the retrieval of image resources as a convenience to the 
+application.</p>
+<p>See {@link com.gsma.android.oneapi.logo.LogoProvider} for details on the main interface for the discovery service</p>
+
+<h2>Mobile Connect</h2>
+<p>The Mobile Connect service is based on OAuth2/ OpenID Connect API services, but specialised for use with mobile networks providing
+mobile authentication services. Applications can be sure that there is a real end user accessing the service, with access validated through the use of
+the mobile device.</p>
+<p>Mobile Connect provides a common API service across operators independent of the authentication methods preferred by the home network operator.</p>
+<p>The Mobile Connect SDK provides a convenient interface allowing flexibility over the use of Mobile Connect and the OAuth2/ OpenID Connect API 
+services on which it is based.</p>
+<p>See the following main interfaces for Mobile Connect:</p>
+<ul>
+<li><p><strong>{@link com.gsma.android.mobileconnect.authorization.Authorization}</strong> - sign in to the application using the user's Mobile Connect account as a secure alternative to 
+offering username/ password based registration or login. See {@link com.gsma.android.mobileconnect.authorization.Authorization} for the main interface 
+for application authorization.</p></li>
+<li><p><strong>{@link com.gsma.android.mobileconnect.token.Token}</strong> - once the user is authorized the application receives a one time use code which is exchanged for a reusable
+access token. See {@link com.gsma.android.mobileconnect.token.Token} for the main interface for exchanging an authorization code for a token.</p></li>
+<li><p><strong>{@link com.gsma.android.mobileconnect.userinfo.Userinfo}</strong> - if supported by the Mobile Network and subject to user consent allows the application to receive 'user information' fields such as
+email address, physical address etc using a previously obtained access token. See {@link com.gsma.android.mobileconnect.userinfo.Userinfo} for 
+the main interface for obtaining 'user information' based on an access token. </p></li>
+</ul>
+
+<h2>Dependencies</h2>
+<p>Operation of this SDK is dependent on the following external libraries</p>
+<ul>
+<li><p><strong>Google Android Support Library</strong> - version 4 (or later) which can be obtained from
+	<a href="http://developer.android.com/tools/support-library/index.html">http://developer.android.com/tools/support-library/index.html</a></p></li>
+<li><p><strong>The Jackson JSON library</strong> - version 1.9.3 which can be obtained from
+	<a href="https://github.com/FasterXML/jackson">https://github.com/FasterXML/jackson</a></p></li>
+</ul>
+
+</body>
