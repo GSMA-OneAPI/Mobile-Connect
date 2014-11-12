@@ -45,6 +45,9 @@
     Utils* utils;
 }
 
+/** Property definition for trace mode (YES/NO)
+ @property Logo delegate definition
+ */
 @property BOOL traceMode;
 
 /** Property definition for Logo delegate
@@ -96,6 +99,7 @@
  @param aspectRatio Conditional parameter to check in the logo stored item to return an specific logo url image. Types availables: 'SQUARE','LANDSCAPE'.
  @param bg_color Conditional parameter to check in the logo stored item to return an specific logo url image.Types availables: 'NORMAL','REVERSED','BLACK'
  @param operatorName Operator Conditional parameter to check in the logo stored item to return an specific logo url image
+ @param language Conditional parameter for set the language if available
  
  @return Object representation of the result stored in the last success getLogo request made.
  */
@@ -107,38 +111,6 @@
  @return Boolean representation of the result
  */
 - (BOOL)clearCachedLogoItem;
-
-
-
-/**
- This function extract all the parameters in the url
- @param url Provided url containing the mcc, mnc
- @return NSMutableDictionary representation of parameters. Nil if parse error ocurred.
- */
-//- (NSMutableDictionary*)extractRedirectParameter: (NSString*) url;
-
-
-
-/**
- This function extract a field String from the Discovery NSMutableDiscovery result
- @param discoveryData data to extract a field
- @param field to look for it in the discovery data
- @return NSString value of the searched field in the discovery data
- */
-//- (NSString *) responseField: (NSMutableDictionary *) discoveryData field: (NSString *) field;
-
-
-
-
-/**
- This function extract information of a discovery object
- @param discoveryData response data obtained with the discovery request
- @param api param to match in the discovery data
- @param function param to match in the discovery data
- @return endpoint NSString field match with the provided api and function parameters in the discoveryData object
- */
-//- (NSString *)endpoint: (NSMutableDictionary *)discoveryData api:(NSString *)api function:(NSString *)function;
-
 
 
 @end
