@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LogoSDK: HTML tutorial</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Logo</h2>
+        <ul>
+            <li><a href="installHTML.html">Getting Started</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="tutorialsHTML.html" actual>Tutorials</a></li>
+            <li><a href="referencesHTML.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h5>JS/HTML Tutorial </h5>
+        <p>
+        Here a brief instructions for using the LogoSDK on HTML.<br/>
+        Please remember to show the console navigator.
+        </p>
+        <h6>In the HTML/JSP file:</h6>
+        <code class="prettyprint linenums:1">&lt;html>
+    &lt;head>
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        &lt;title>tester logo API&lt;/title>
+        &lt;script type="text/javascript" src="js/LogoSDK.js">&lt;/script>
+        &lt;script type="text/javascript" src="js/code.js">&lt;/script>
+    &lt;/head>
+    &lt;body>
+        &lt;h1>Other actions&lt;/h1>
+        &lt;button id='clearButton' style="float: left;">
+            Clear logo saved
+        &lt;/button>
+        &lt;div id='ClearCache'>&lt;/div>
+        &lt;br/>
+        &lt;h1>Logo tests:&lt;/h1> 
+        &lt;button id="getLogoButton">
+            Test Logo
+        &lt;/button>
+        &lt;button id="getSmallLogoButton">
+            Test small Logo 
+        &lt;/button>
+    &lt;/body>
+&lt;/html>
+</code>
+
+            <h6>In the Javascript <span class="italicStyle">code.js </span>file:</h6>
+            <code class="prettyprint linenums:1">var serviceUri="https://integration-axiatagroup.apiexchange.org/v1/logo";
+var mcc = "214";
+var mnc = "18";
+var sourceIP = null;
+var logosize = null;
+var bg_color = null;
+var aspect_radio = null;
+window.onload = function(e){ 
+    document.getElementById("clearButton").onclick = function(){
+        clearCacheLogo();
+        document.getElementById("ClearCache").innerHTML="Cleared!!  ";
+    };
+    document.getElementById("getLogoButton").onclick = function(){
+        getLogo(serviceUri, mcc, mnc, sourceIP, logosize, bg_color, aspect_ratio, callbackLogoFunction);
+    };
+    mcc = null;
+    mnc = null;
+    logosize = "small";
+    document.getElementById("getSmallLogoButton").onclick = function(){
+        getLogo(serviceUri, mcc, mnc, sourceIP, logosize, bg_color, aspect_ratio, callbackLogoFunction);
+    };
+};
+function callbackLogoFunction(result) {
+    if(result.error===undefined){
+        console.log('logo Result: '+JSON.stringify(result));
+        for ( var int = 0; int < result.getLogos().length; int++) {
+            console.log(int+" >> "+JSON.stringify(result.getLogos()[int]));
+            console.log('img url '+result.getLogos()[int].getUrl());
+        }   
+    }else{  
+        console.log("ERROR: "+result.error+": ", result.error_description);
+    }
+}</code>
+        <h5>Clear memory:</h5>
+        <div class="codeBox">
+            <h6>HTML code:</h6>
+            <code class="prettyprint linenums:1">&lt;button id='clearButton' style="float: left;">
+    Clear logo saved
+&lt;/button></code>
+            <h6>Javascript code:</h6>
+            <code class="prettyprint linenums:1">document.getElementById("clearButton").onclick = function(){
+    clearCacheLogo();
+};</code>
+
+        </div>
+        <h5>Access to LogoItem:</h5>
+        The access to LogoItem could be as a simple JSON or using the data structure. In the following function you can see how to explore this structure tree. 
+        <div class="codeBox">
+            <p>
+            <h6>In the Javascript file:</h6>
+                <code class="prettyprint linenums:1">for ( var int = 0; int < result.getLogos().length; int++) {
+    console.log(int+" >> "+JSON.stringify(result.getLogos()[int]));
+    console.log('img url '+result.getLogos()[int].getUrl());
+} </code>
+            </p>
+        </div>
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li actual>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial </a>
+        </li>
+    </ul>
+</nav>
+<br clear="both">
+
+<footer>
+    
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

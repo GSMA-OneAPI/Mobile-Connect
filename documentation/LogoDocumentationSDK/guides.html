@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LogoSDK: Guide</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.css"> </script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Logo</h2>
+        <ul>
+            <!-- <li><a href="installHTML.html">Getting Started</a></li> -->
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="installiOS.html">Getting Started</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="installAndroid.html">Getting Started</a></li>');
+                } else {
+                document.write('<li><a href="installHTML.html">Getting Started</a></li>');
+                }
+            </script> 
+            <li><a href="guides.html" actual>Guides</a></li>
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="tutorialsiOs.html">Tutorials</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="tutorialsAndroid.html">Tutorials</a></li>');
+                } else {
+                document.write('<li><a href="tutorialsHTML.html">Tutorials</a></li>');
+                }
+            </script> 
+<!--        <li><a href="tutorialsHTML.html">Tutorials</a></li> 
+            <li><a href="referencesHTML.html">References</a></li> -->
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="referencesiOs.html">References</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="referencesAndroid.html">References</a></li>');
+                } else {
+                document.write('<li><a href="referencesHTML.html">References</a></li>');
+                }
+            </script> 
+        </ul>
+    </div>
+    <div class="centeredBlock">
+        <h3>Using LogoSDK</h3>
+        <p>
+            The Logo API allows the application to obtain approved network operator logos associated with particular API services. 
+            These logos are based on the user's mobile network and specific functions such as 'Identify with Operator' or 'Pay via Operator'. 
+           </br></br>
+            Below are explained and detailed in each of the languages ​​(<span class="italicStyle">JS/HTML</span>, <span class="italicStyle">Android</span> and <span class="italicStyle">iOS</span>), the main functions of this API.
+        </p>
+        <h3 id="obtainLogo">Obtain Logo:</h3>
+        <p>
+            <p>
+            This method obtains logos which can be used in applications.
+            </p>
+            <div class="tabbed-area" blockId="obtainLogo">
+                <ul class="tabs group">
+                    <li><a  who="#box-one1" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two1" language="Android" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three1" language="iOS" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one1" language="JS/HTML"> 
+                        <div class="codeBox">
+                            <p>
+                                It should be noted that if you want a logo from your operator the MCC and MNC must be known previously.  saved in cache. In other words you need to make a <span class="italicStyle">getDiscovery</span> before this.
+                                <br/>
+                                The <a href="referencesHTML.html">getLogo()</a> function:
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * Get operator specific logo if operator discovered, or a generic one if operator not discovered.
+ * @param serviceUri {String} Api location.
+ * @param mcc {?String} Mobile Country Code
+ * @param mnc {?String} Mobile Network Code 
+ * @param sourceIP {?String} Source IP
+ * @param logosize {?String} (small, medium or large) 
+ * @param bg_color {?String} logo colors (normal|reversed)
+ * @param aspect_ratio {?String} logo layouts (square|landscape)
+ * @param callbackFunction {function} It will be called with LogoItemArray result as single param.
+ */
+ getLogo(serviceUri, mcc, mnc, sourceIP, logosize, bg_color, aspect_ratio, callbackFunction);</code>
+                            <p>                        
+                            The callbackFunction will be called with result as single param. The result could be a <span class="italicStyle">LogoItem</span> object or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">function callbackFunctionGetLogoExample(result){
+    if (result.error){
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }else{
+        &#47&#47 Logo object received succesfully
+        console.log('Logo object: '+JSON.stringify(result));
+    }
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two1" language="Android">
+                    	<div class="codeBox">
+                           <p>In the case of Android, Logo API includes two variants of the <span class="italicStyle">obtain logo</span> function:</br></br>
+1. One which automatically accesses <span class="italicStyle">mcc (Mobile Country Code)</span>/<span class="italicStyle">mnc (Mobile Network Code)</span> (through <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a>).</br>
+2. One which accepts application defined <span class="italicStyle">mcc (Mobile Country Code)</span>/<span class="italicStyle">mnc (Mobile Network Code)</span> to help with SDK testing if not have corresponding SIMs for the networks so can’t get very far.
+                    		</p>
+                    		</br>
+                            <p>
+                                1. The <a href="referencesAndroid.html">getLogoAutomaticMCCMNC()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param logosize (SMALL, MEDIUM, LARGE)
+ * @param color (NORMAL, BLACK, REVERSED)
+ * @param ratio (LANDSCAPE, SQUARE)
+ * @param listener It is necessary to implement logoInfo(LogoItemArray li) 
+ * and errorLogoInfo(JSONObject o) to wait the response.
+ * @param context
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getLogoAutomaticMCCMNC(String serviceUri, String consumerKey,
+			String consumerSecret, String sourceIP, Size logosize,
+			BgColor color, AspectRatio ratio, LogoListener listener, Context context);</code>
+							<p>
+                                2. The <a href="referencesAndroid.html">getLogo()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param mcc
+ * @param mnc
+ * @param logosize (SMALL, MEDIUM, LARGE)
+ * @param color (NORMAL, BLACK, REVERSED)
+ * @param ratio (LANDSCAPE, SQUARE)
+ * @param listener It is necessary to implement logoInfo(LogoItemArray li) 
+ * and errorLogoInfo(JSONObject o) to wait the response.
+ * @param context
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getLogo(String serviceUri, String consumerKey,
+			String consumerSecret, String sourceIP, String mcc, String mnc, Size logosize,
+			BgColor color, AspectRatio ratio, LogoListener listener, Context context);
+</code>
+                            <p>                        
+                            The <span class="italicStyle">listener</span> will be called with result. It could be a <a href="referencesAndroid.html">LogoItemArray</a> object or <span class="italicStyle">JSONObject</span> with error. 
+                            </br>
+                            To know how to use <a href="referencesAndroid.html">LogoListener</a> response, read <a href="tutorialsAndroid.html#logoComplete">Android tutorial</a>.                
+                        	</br>
+                        	You can see <a href="referencesAndroid.html">Size</a>, <a href="referencesAndroid.html">BgColor</a> or <a href="referencesAndroid.html">AspectRatio</a> objects in <a href="referencesAndroid.html">Full API Reference for Android</a>.</p>
+                        </div>
+                    </div>
+                    <div id="box-three1" language="iOS">
+                  
+                  
+                                        <div class="codeBox">
+
+							<ol>
+								<li>
+								                 		<p>
+                                The <a href="referencesiOS.html">getLogo()</a> function with automatic mnc mcc detection
+                            </p>
+                            <code class="prettyprint linenums:1">/** Make the get logo request
+ @param url Destination url location where the request will make
+ @param logoSize Provided size of the logo. Types availables: 'SMALL','MEDIUM','LARGE'
+ @param aspectRatio Provided aspect ratio. Types availables: 'SQUARE','LANDSCAPE'.
+ @param bg_color Provided background color. Types availables: 'NORMAL','REVERSED','BLACK'
+ @param ipAddress Provided ip address for the 'x-source-ip' header in the request
+ */
+- (void) getLogo:(NSString*)url logoSize:(logoSizeTypeEnum)logoSize aspectRatio:(aspect_ratioTypeEnum)aspectRatio bg_color:(bg_colorTypeEnum)bg_color ipAddress:(NSString*)ipAddress;</code>
+				
+								</li>
+								<li>
+								                 		<p>
+                                The <a href="referencesiOS.html">getLogo()</a> function using manual mnc mcc parameters
+                            </p>
+                            <code class="prettyprint linenums:1">/** Make the get logo request
+ @param url Destination url location where the request will make
+ @param logoSize Provided size of the logo. Types availables: 'SMALL','MEDIUM','LARGE'
+ @param aspectRatio Provided aspect ratio. Types availables: 'SQUARE','LANDSCAPE'.
+ @param bg_color Provided background color. Types availables: 'NORMAL','REVERSED','BLACK'
+ @param ipAddress Provided ip address for the 'x-source-ip' header in the request
+ @param mcc Mobile Country Code provided
+ @param mnc Mobile Network Code provided
+ */
+- (void) getLogo:(NSString*)url logoSize:(logoSizeTypeEnum)logoSize aspectRatio:(aspect_ratioTypeEnum)aspectRatio bg_color:(bg_colorTypeEnum)bg_color ipAddress:(NSString*)ipAddress mcc:(NSString*)mcc mnc:(NSString*)mnc;</code>
+                            
+								</li>
+							</ol>			
+   			
+                            <p>                        
+                            A callback function <span class="italicStyle">getLogoSuccessful</span> or <span class="italicStyle">getDiscoveryError</span> will be called with result. It will be a <a href="referencesiOS.html">NSMutableDictionary</a> object with <span class="italicStyle">logo url </span>, discovery information or error. To know how to use <a href="referencesiOS.html">protocol functions</a> read <a href="tutorialsiOS.html">iOS tutorial</a></p>
+                        </div>
+                  
+                  
+                  
+                  
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="persisted">Persisted logo response:</h3>
+        <p>
+            These required logos are downloaded on demand and persisted in application specific local storage. HTTP headers for content expiry to be used in deciding if the logo should be re-fetched. This method gets the logo information.
+            <div class="tabbed-area" blockId="persisted">
+                <ul class="tabs group">
+                    <li><a  who="#box-one2" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two2" language="Android" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three2" langunpage="iOS" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one2" language="JS/HTML"> 
+                        <div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the  <a href="referencesHTML.html">LogoItem</a> from cache using the following function.
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * getCacheApiLogo
+ * @param operatorName
+ * @param api {?String} type (payment or operatorid)
+ * @param logosize {?String} size (Small, Medium or Large) 
+ * @param bg_color {?String} logo colors (normal|reversed|black)
+ * @param aspect_ratio {?String} logo layouts (square|landscape)
+ * @return Url image if exists {?String}
+ */
+ getCacheApiLogo(operatorName,api,logosize,bg_color,aspect_ratio);</code>
+                            <p>   
+                                The result could be a LogoItem object or null if it was not found.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="box-two2" language="Android">
+                    	<div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the logo from cache using the two following function. </br></br>
+1. Gets saved <a href="https://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a> object with the specific logo.</br>
+2. Gets an array with the complete saved logo information.
+                    		</p>
+                            </p></br>
+                             <p>
+                                1. The <a href="referencesAndroid.html">getCacheApiLogo()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param operatorName
+ * @param api (PAYMENT, OPERATORID)
+ * @param logosize (SMALL, MEDIUM, LARGE)
+ * @param color (NORMAL, BLACK, REVERSED)
+ * @param ratio (LANDSCAPE, SQUARE)
+ * @param context
+ * @return Bitmap
+ * @throws NullPointerException
+ */
+public Bitmap getCacheApiLogo(String operatorName, Apis api, Size logosize, BgColor color, AspectRatio ratio, Context context);</code>
+							<p>
+                                2. The <a href="referencesAndroid.html">getCacheLogo()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param context
+ * @return ArrayList(LogoCacheItem)
+ * @throws NullPointerException
+ */
+getCacheLogo(Context context);
+</code>
+</br>
+                        	You can see <a href="referencesAndroid.html">Size</a>, <a href="referencesAndroid.html">BgColor</a> or <a href="referencesAndroid.html">AspectRatio</a> objects in <a href="referencesAndroid.html">Full API Reference for Android</a>.
+                       </br>
+                       		In addition, you can see how to explore a <span class="italicStyle">LogoCacheItem</span> structure reading <a href="tutorialsAndroid.html#logoButton2">Android tutorial</a>.
+                        </div>
+                    </div>
+                    <div id="box-three2" language="iOS">
+                    
+                    
+                    <div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the logo information from cache using the following function.
+                            </p></br>
+                            The <a href="referencesiOS.html">getCachedApiLogo()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/** This function return the image url requested that fits the params provided. Null params will be ignored in the search
+ @param api Conditional parameter to check in the logo stored item to return an specific logo url image. Types availables: 'PAYMENT','OPERATORID'
+ @param size Conditional parameter to check in the logo stored item to return an specific logo url image. Types availables: 'SMALL','MEDIUM','LARGE'
+ @param aspectRatio Conditional parameter to check in the logo stored item to return an specific logo url image. Types availables: 'SQUARE','LANDSCAPE'.
+ @param bg_color Conditional parameter to check in the logo stored item to return an specific logo url image.Types availables: 'NORMAL','REVERSED','BLACK'
+ @param operatorName Operator Conditional parameter to check in the logo stored item to return an specific logo url image
+ @param language Conditional parameter for set the language if available
+ @return Object representation of the result stored in the last success getLogo request made.
+ */
+- (UIImage*)getCachedApiLogo:(NSString*)api size:(logoSizeTypeEnum)size aspectRatio:(aspect_ratioTypeEnum)aspectRatio bg_color:(bg_colorTypeEnum)bg_color operatorName:(NSString*)operatorName language:(NSString *)language;</code>
+                        </div>
+                    
+                    
+                    
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="clearCache">Clear cached logo response:</h3>
+        <p>
+           Method to clear the saved logo information.
+            <div class="tabbed-area" blockId="clearCache">
+                <ul class="tabs group">
+                    <li><a  who="#box-one3" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two3" language="Android" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three3" language="iOS" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one3" language="JS/HTML"> 
+                        <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            <code class="prettyprint linenums:1">clearCacheLogo();</code>
+                        </div>
+                    </div>
+                    <div id="box-two3" language="Android">
+                    	 <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            </br>
+                            The <a href="referencesAndroid.html">clearCacheLogo()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">clearCacheLogo();</code>
+                        </div>
+                    </div>
+                    <div id="box-three3" language="iOS">
+                   
+                   
+                   <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            </br>
+                            The <a href="referencesiOS.html">clearCachedLogoItem()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/** This function clear the logo item stored in the last successfull call to the getLogo function
+ @return Boolean representation of the result
+ */
+- (BOOL)clearCachedLogoItem;</code>
+                        </div>
+                   
+                   
+                   
+                    </div>
+                </div>
+            </div>
+        </p>
+    </div>
+</div>
+
+<nav>
+    <h3>Guide</h3>
+    <ul>
+        <li>
+            <a href="#obtainLogo">Obtain logo</a>
+        </li>
+        <li>
+            <a href="#persisted">Persisted logo response</a>
+        </li>
+        <li>
+            <a href="#clearCache">Clear cached logo response</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+<script type="text/javascript">
+    $( document ).ready(function() {
+        var from = "JS/HTML";
+        if(window.location.href.indexOf('?')>=0)
+            from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+
+        $("a.tabGuide").click(function(){
+            // var from = $(this).attr("language");
+            // $("ul.tabs>li>a").css('color','rgba(0, 108, 230, 0.4)');
+            // $("a[language=\""+from+"\"]").css('color','rgba(0, 108, 230, 1)');
+            // $("div.box-wrap>div").hide();
+            // $("div[language=\""+from+"\"]").show();
+            $(this).parent().siblings().children().css('color','rgba(0, 108, 230, 0.4)');
+            $(this).css('color','rgba(0, 108, 230, 1)');
+            var blockId = $(this).parent().parent().parent().attr('blockId');
+            $("div[blockId=\""+blockId+"\"]>div.box-wrap>div").hide();
+            $($(this).attr('who')).show();
+        });
+        $("div.box-wrap>div").hide();
+        $("ul.tabs>li>a").css('color','rgba(0, 108, 230, 0.4)');        
+        $("a[language=\""+from+"\"]").css('color','rgba(0, 108, 230, 1)');
+        $("div[language=\""+from+"\"]").show();
+    });
+</script>
+</body>
+</html>

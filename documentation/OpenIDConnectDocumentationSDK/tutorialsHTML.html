@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OpenID Connect: HTML tutorial</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>OpenID Connect</h2>
+        <ul>
+            <li><a href="installHTML.html">Getting Started</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="tutorialsHTML.html" actual>Tutorials</a></li>
+            <li><a href="referencesHTML.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>JS/HTML Tutorial </h3>
+        <p>
+        Here a brief instructions for using the OpenID Connect on HTML.<br/>
+        Please remember to show the console navigator.
+        </p>
+
+        <h3 id="developerHelper">Starting with authorize</h3>
+        <p>
+            You may use our proposal of helper.
+            <br/>
+            This method is based on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage" target="_blank">Window.postMessage</a> the safety method that enables to stablish communication between different pages. In our case we need to communicate a pop-up with the redirectUrl opened and the main page, In order to obtain the session identification value from the url redirected.
+            <br/>
+            <h5>Lets start:</h5>
+            Please, follow this steps to use the developer helper provided by this API appropriately.<br/> 
+            <ol>
+                <li>
+                    Fist step is to make a little loading web-page which will be the pop-up.
+                </li>
+                <li>
+                    Import <span class="italicStyle">OpenIdConnectSDK.js</span> in this little page in head tag.
+                    <br/>
+                    <code class="prettyprint lang-html linenums:1">&lt;script src="/code/OpenIdConnectSDK.js"&gt;&lt;/script&gt;</code>
+                </li>
+                <li>
+                    Add the following code embebbed:
+                    <br/>
+                    The following function obtains the complete url and sent to main page.
+                    <br/>
+                    <code class="prettyprint lang-html linenums:1">&lt;script type="text/javascript"&gt;
+    helperRedirectOpenIdAuthorize();
+&lt;/script&gt;</code>
+                </li>
+                <li>
+                    Authorize function will wait for the pop-up message and try to parse the result to pass it to the callbackFunction. If any result was obtained, the callbackFunction will received a -1.
+                    <br/>
+                    <code class="prettyprint lang-js linenums:1">authorize(url, client_id, scope, redirect_uri, response_type, state, nonce, prompt, max_age, acer_values, authorizationOptions, callbackFunction);
+function callbackFunction(result){
+    console.log(JSON.stringify(result));
+}</code>
+                </li>
+            </ol>
+   		</p>
+        <div style="height:20px;"></div>
+        <h5>Next step obtain the token from authorization</h5>
+        <div class="codeBox">
+            <div class="codeBoxTutorial">
+                Request access token from authorization code:
+            </div>
+            <h6>In the Javascript file:</h6>
+            <ol>
+                <li>
+                    Call:
+                    <code class="prettyprint lang-js linenums:1">tokenFromAuthorizationCode(url, code, client_id, client_secret, redirect_uri, callbackFunction);</code>
+                </li>
+                <li>
+                    CallbackFunction:
+                    <code class="prettyprint lang-js linenums:1">function callbackFunction(result){
+    if(!result.error){
+        console.log("Result: "+JSON.stringify(result));
+    }else{
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }
+}</code>
+                </li>    
+            </ol>
+
+        </div>
+        <h5>Check the validity of token</h5>
+        <div class="codeBox">
+            <div class="codeBoxTutorial">
+                Checks if the access token is still valid based on current time and expires_in value:
+            </div>
+            <h6>In the Javascript file:</h6>
+<code class="prettyprint lang-js linenums:1">if(isAccessTokenValid (expires_in))
+    console.log("VALID TOKEN");
+}else{
+    console.log("INVALID TOKEN");
+}</code>
+        </div>
+        <h5>Refresh token</h5>
+        <div class="codeBox">
+            <p>
+            
+            <div class="codeBoxTutorial">
+                
+            </div>
+            <h6>In the Javascript file:</h6>
+            <ol>
+                <li>
+                    The call:
+                    <code class="prettyprint lang-js linenums:1">refreshToken(url, refresh_token, scope, client_id, client_secret, callbackFunction);</code>
+                </li>
+                <li>
+                    CallbackFunction:
+                </li>
+<code class="prettyprint lang-js linenums:1">function callbackFunction(result){
+    if(!result.error){
+        console.log("Result: "+JSON.stringify(result));
+    }else{
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }
+}</code>
+            </ol>
+            </p>
+        </div>
+        <h5>Revoke token:</h5>
+        <div class="codeBox">
+            <p>
+                <h6>In the Javascipt code:</h6>
+                <code class="prettyprint lang-html linenums:1">revokeToken(url, access_token, client_id, client_secret);</code>
+            </p>
+        </div>
+        <h5>Obtain user information:</h5>
+        <div class="codeBox">
+            <p>
+            <h6>In the Javascript file:</h6>
+                <code class="prettyprint lang-js linenums:1">userinfo(url, access_token, callbackFunction);</code>
+            </p>
+        </div>
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li actual>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial </a>
+        </li>
+    </ul>
+</nav>
+<br clear="both">
+
+<footer>
+    
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

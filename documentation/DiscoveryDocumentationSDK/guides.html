@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DiscoverySDK: Guide</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.css"> </script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Discovery</h2>
+        <ul>
+            <!-- <li><a href="installHTML.html">Getting Started</a></li> -->
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="installiOS.html">Getting Started</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="installAndroid.html">Getting Started</a></li>');
+                } else {
+                document.write('<li><a href="installHTML.html">Getting Started</a></li>');
+                }
+            </script> 
+            <li><a href="guides.html" actual>Guides</a></li>
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="tutorialsiOs.html">Tutorials</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="tutorialsAndroid.html">Tutorials</a></li>');
+                } else {
+                document.write('<li><a href="tutorialsHTML.html">Tutorials</a></li>');
+                }
+            </script> 
+<!--        <li><a href="tutorialsHTML.html">Tutorials</a></li> 
+            <li><a href="referencesHTML.html">References</a></li> -->
+            <script>
+                var from = "JS/HTML";
+                if(window.location.href.indexOf('?')<=0)
+                    console.log('no from');
+                else{
+                    from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+                }
+                var navegador = navigator.userAgent;
+                if (from === "iOS") {
+                document.write('<li><a href="referencesiOs.html">References</a></li>');
+                } else if (from === "Android") {
+                document.write('<li><a href="referencesAndroid.html">References</a></li>');
+                } else {
+                document.write('<li><a href="referencesHTML.html">References</a></li>');
+                }
+            </script> 
+        </ul>
+    </div>
+    <div class="centeredBlock">
+        <h3>Using DiscoverySDK</h3>
+        <p>
+            The Discovery API returns a list of endpoints for all available Network API services. Therefore if a mobile network does not provide a particular API service the application can adapt accordingly based on information returned from the Discovery API call. The mobile user may be connected to the mobile network directly, or using other Internet connectivity for example WiFi. <br/>
+            The Discovery API is used by either a Developer's Application or another Operator API inside Custom connector to:
+            <ol>
+                <li>
+                    Discover the wireless operator of an end-user
+                </li>
+                <li>
+                    Get information about the endpoints of wireless operator.
+                </li>
+                <li>
+                    Get a temporary client id &amp; secret (optional) in exchange of a valid Developer application credentials. These temporary credentials wouldbe used to make further API calls to the subscriber operator.
+                </li>
+            </ol>
+            Below are explained and detailed in each of the languages ​​(<span class="italicStyle">JS/HTML</span>, <span class="italicStyle">Android</span> and <span class="italicStyle">iOS</span>), the main functions of this API.
+        </p>
+        <h3 id="passiveMode">Passive mode:</h3>
+        <p>
+        This is a mode to get the discovery information in passive mode so the user will not at this time be asked to manually select their operator. Discovers if possible but if not returns the operator selection page URL to the app. 
+            <div class="tabbed-area" blockId='passiveMode'>
+                <ul class="tabs group">
+                    <li><a  who="#box-one1" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two1" class='tabGuide' language="Android">Android</a></li>
+                    <li><a  who="#box-three1" class='tabGuide' language="iOS">iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one1" language="JS/HTML">
+                        <div class="codeBox">
+                            <p>
+                                The <a href="referencesHTML.html">getDiscoveryPasive()</a> function:
+                                <br/>
+                                Please read the <a href="tutorialsHTML.html#developerHelper">Using developer helper</a> because you need to create the pop-up page. 
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 serviceUri &gt;&gt; the url where the Api is located.
+&#47&#47 consumerKey &gt;&gt; Username
+&#47&#47 consumerSecret &gt;&gt; Password.
+&#47&#47 encrypt &gt;&gt; (none, basic or sha-256)
+&#47&#47 mcc &gt;&gt; Mobile Country Code
+&#47&#47 mnc &gt;&gt; Mobile Network Code
+&#47&#47 msisdn &gt;&gt; MSISDN
+&#47&#47 sourceIP &gt;&gt; Source IP (of the client application if this request is invoked server side)
+&#47&#47 callbackFunction &gt;&gt; function where continue
+getDiscoveryPassive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);</code>
+                            <p>                        
+                            The callbackFunction will be called with result as single param. The result could be a <span class="italicStyle">DiscoveryItem</span> object or an array with redirect url which could be accessed with <span class="italicStyle">result["operatorSelection"]</span> or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">function callbackFunctionGetDiscoveryPasiveExample(result){
+    if (result.error){
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }else if(result["operatorSelection"]){
+        console.log("Operator selector page "+result["operatorSelection"]);
+    }else{
+        &#47&#47 Discovery object received succesfully
+        console.log('Discovery object: '+JSON.stringify(result));
+    }
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two1" language="Android">
+                    <div class="codeBox">
+                    		<p>In the case of Android, Discovery API includes two variants of the <span class="italicStyle">passive</span> function:</br></br>
+1. One which automatically accesses <span class="italicStyle">mcc (Mobile Country Code) </span>/<span class="italicStyle">mnc (Mobile Network Code)</span> (through <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a>).</br>
+2. One which accepts application defined <span class="italicStyle">mcc (Mobile Country Code)</span>/<span class="italicStyle">mnc (Mobile Network Code)</span> to help with SDK testing if not have corresponding SIMs for the networks so can’t get very far.
+                    		</p>
+                    		</br>
+                            <p>
+                                1. The <a href="referencesAndroid.html">getDiscoveryPassiveAutomaticMCCMNC()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param msisdn
+ * @param listener It is necessary to implement discoveryInfo(DiscoveryItem di) 
+ * and errorDiscoveryInfo(JSONObject jo) to manage the response
+ * @param context
+ * @param credentials (NONE, PLAIN, SHA256)
+ * @param redirectUri will point to a developer specified location which continues the discovery process
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getDiscoveryPassiveAutomaticMCCMNC(String serviceUri, String consumerKey,
+		String consumerSecret, String sourceIP, String msisdn, DiscoveryListener listener,
+		Context context, DiscoveryCredentials credentials, String redirectUri);</code>
+							<p>
+                                2. The <a href="referencesAndroid.html">getDiscoveryPassive()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param mcc
+ * @param mnc
+ * @param msisdn
+ * @param listener It is necessary to implement discoveryInfo(DiscoveryItem di) 
+ * and errorDiscoveryInfo(JSONObject jo) to manage the response
+ * @param context
+ * @param credentials (NONE, PLAIN, SHA256)
+ * @param redirectUri will point to a developer specified location which continues the discovery process
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getDiscoveryPassive(String serviceUri, String consumerKey,
+		String consumerSecret, String sourceIP, String mcc, String mnc, String msisdn, 
+		DiscoveryListener listener, Context context, DiscoveryCredentials credentials, String redirectUri);
+</code>
+                            <p>                        
+                            The <span class="italicStyle">listener</span> will be called with result. It could be a <a href="referencesAndroid.html">DiscoveryItem</a> object or <span class="italicStyle">JSONObject</span> with <span class="italicStyle">redirect url (operatorSelection)</span> or error. To know how to use <a href="referencesAndroid.html">DiscoveryListener</a> response, read <a href="tutorialsAndroid.html#discoveryComplete">Android tutorial</a></p>
+                        </div>
+                    </div>
+                    <div id="box-three1" language="iOS">
+                    
+                    
+                    
+                    
+                      <div class="codeBox">
+						<ol>
+							<li>	
+								<p>
+	                                The <a href="referencesiOS.html">getDiscoveryPassive()</a> function with automatic mnc mcc detection
+	                            </p>
+                            <code class="prettyprint  linenums:1">/** Make the get discovery request
+ @param url Destination url location where the request will make
+ @param user User provided for the authentication
+ @param key Password/secret provided for the authentication
+ @param encryptation Encrytation type for the authentication header. Types are: 'encryptionTypeEnumBasic', 'encryptionTypeEnumSha-256', 'encryptionTypeEnumNone'.
+ @param ipAddress Provided ip addres for the 'x-source-ip' header in the request
+ @param redirectUri Specifies the location which continues the discovery process (optional)
+ @param msisdn param if provided (optional)
+ */
+- (void)getDiscoveryPasive: (NSString*)url user:(NSString*)user key:(NSString*)key encryptation:(encryptionTypeEnum)encryptation ipAddress:(NSString*)ipAddress  redirectUri:(NSString*)redirectUri msisdn:(NSString*)msisdn;</code>
+							
+	</li>
+							<li>
+							<p>
+                                The <a href="referencesiOS.html">getDiscoveryPassive()</a> function using manual mnc mcc
+                            </p>
+                            <code class="prettyprint  linenums:1">/** Make the get discovery request - Using a provided mcc - mnc
+ @param url Destination url location where the request will make
+ @param user User provided for the authentication
+ @param key Password/secret provided for the authentication
+ @param encryptation Encrytation type for the authentication header. Types are: 'encryptionTypeEnumBasic', 'encryptionTypeEnumSha-256', 'encryptionTypeEnumNone'.
+ @param ipAddress Provided ip addres for the 'x-source-ip' header in the request
+ @param redirectUri Specifies the location which continues the discovery process (optional)
+ @param msisdn param if provided (optional)
+ @param mcc Mobile Country Code provided
+ @param mnc Mobile Network Code provided
+ */
+- (void)getDiscoveryPasive: (NSString*)url user:(NSString*)user key:(NSString*)key encryptation:(encryptionTypeEnum)encryptation ipAddress:(NSString*)ipAddress  redirectUri:(NSString*)redirectUri msisdn:(NSString*)msisdn  mcc:(NSString*)mcc mnc:(NSString*)mnc;</code>
+						</li>
+						</ol>								
+                            <p>                        
+                            A callback function <span class="italicStyle">getDiscoverySuccessful</span> or <span class="italicStyle">getDiscoveryError</span> will be called with result. It will be a <a href="referencesiOS.html">NSMutableDictionary</a> object with <span class="italicStyle">redirect url (operatorSelection)</span>, discovery information or error. To know how to use <a href="referencesiOS.html">protocol functions</a> read <a href="tutorialsiOS.html">iOS tutorial</a></p>
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="activeMode">Active mode:</h3>
+        <p>
+            <p>
+            This is a mode to get the discovery information in active mode so the user is asked if necessary to manually select their operator. Always discovers, handling the opening of the operator selection page if necessary. 
+            </p>
+            <div class="tabbed-area" blockId="activeMode">
+                <ul class="tabs group">
+                    <li><a  who="#box-one2" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two2" class='tabGuide' language="Android">Android</a></li>
+                    <li><a  who="#box-three2" class='tabGuide' language="iOS">iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one2" language="JS/HTML">
+                        <div class="codeBox">
+                            <p>
+                                The <a href="referencesHTML.html">getDiscoveryActive()</a> function:
+                                <br/>
+                                Please read the <a href="tutorialsHTML.html#developerHelper">Using developer helper</a> because you need to create the pop-up page. 
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 serviceUri &gt;&gt; the url where the Api is located.
+&#47&#47 consumerKey &gt;&gt; Username
+&#47&#47 consumerSecret &gt;&gt; Password.
+&#47&#47 encrypt &gt;&gt; (none, basic or sha-256)
+&#47&#47 mcc &gt;&gt; Mobile Country Code
+&#47&#47 mnc &gt;&gt; Mobile Network Code
+&#47&#47 msisdn &gt;&gt; MSISDN
+&#47&#47 sourceIP &gt;&gt; Source IP (of the client application if this request is invoked server side)
+&#47&#47 redirectUri &gt;&gt; Specifies location which continues the discovery process
+&#47&#47 callbackFunction &gt;&gt; function where continue
+getDiscoveryActive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);</code>
+                            <p>                        
+                            The callbackFunction will be called with result as single param. The result could be a <span class="italicStyle">DiscoveryItem</span> object or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">function callbackFunctionGetDiscoveryActiveExample(result){
+    if (result.error){
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }else{
+        &#47&#47 Discovery object received succesfully
+        console.log('Discovery object: '+JSON.stringify(result));
+    }
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two2" language="Android">
+                    	<div class="codeBox">
+                           <p>In the case of Android, Discovery API includes two variants of the <span class="italicStyle">active</span> function too:</br></br>
+1. One which automatically accesses <span class="italicStyle">mcc (Mobile Country Code)</span>/<span class="italicStyle">mnc (Mobile Network Code)</span> (through <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a>).</br>
+2. One which accepts application defined <span class="italicStyle">mcc (Mobile Country Code)</span>/<span class="italicStyle">mnc (Mobile Network Code)</span> to help with SDK testing if not have corresponding SIMs for the networks so can’t get very far.
+                    		</p>
+                    		</br>
+                            <p>
+                                1. The <a href="referencesAndroid.html">getDiscoveryActiveAutomaticMCCMNC()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param msisdn
+ * @param listener. It is necessary to implement discoveryInfo(DiscoveryItem di) 
+ * and errorDiscoveryInfo(JSONObject jo) to manage the response
+ * @param context
+ * @param credentials (NONE, PLAIN, SHA256)
+ * @param redirectUri will point to a developer specified location which continues the discovery process
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getDiscoveryActiveAutomaticMCCMNC(String serviceUri, String consumerKey,
+		String consumerSecret, String sourceIP, String msisdn, DiscoveryListener listener,
+		Context context, DiscoveryCredentials credentials, String redirectUri);</code>
+							<p>
+                                2. The <a href="referencesAndroid.html">getDiscoveryActive()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param serviceUri
+ * @param consumerKey
+ * @param consumerSecret
+ * @param sourceIP
+ * @param mcc
+ * @param mnc
+ * @param msisdn
+ * @param listener. It is necessary to implement discoveryInfo(DiscoveryItem di) 
+ * and errorDiscoveryInfo(JSONObject jo) to manage the response
+ * @param context
+ * @param credentials (NONE, PLAIN, SHA256)
+ * @param redirectUri will point to a developer specified location which continues the discovery process
+ * @throws Exception
+ * @throws NullPointerException
+ */
+getDiscoveryActive(String serviceUri, String consumerKey,
+		String consumerSecret, String sourceIP, String mcc, String mnc, String msisdn, 
+		DiscoveryListener listener, Context context, DiscoveryCredentials credentials, String redirectUri);
+</code>
+                            <p>                        
+                            The <span class="italicStyle">listener</span> will be called with result. It could be a <a href="referencesAndroid.html">DiscoveryItem</a> object or <span class="italicStyle">JSONObject</span> with <span class="italicStyle">redirect url (operatorSelection)</span>, handling the opening of the <span class="italicStyle">operator selection page</span>, or error. </br> To know how to use <a href="referencesAndroid.html">DiscoveryListener</a> response, read <a href="tutorialsAndroid.html#discoveryComplete">Android tutorial</a></p>                 
+                        </div>
+                    </div>
+                    <div id="box-three2" language="iOS">
+                  
+                  
+                                        <div class="codeBox">
+							
+							<ol>
+								<li>
+									<p>
+		                                The <a href="referencesiOS.html">getDiscoveryActive()</a> function with automatic mnc mcc detection
+		                            </p>
+		                            <code class="prettyprint linenums:1">/** Make the get discovery request using auto mcc - mnc
+ @param url Destination url location where the request will make
+ @param clientId Application client id provided for the authentication
+ @param clientSecret Application client secret (password)provided for the authentication
+ @param encryption Encrytation type for the authentication header. Types are: 'encryptionTypeEnumBasic', 'encryptionTypeEnumSha-256', 'encryptionTypeEnumNone'.
+ @param ipAddress Provided ip addres for the 'x-source-ip' header in the request
+ @param redirectUri Specifies the location which continues the discovery process (optional)
+ @param msisdn param if provided (optional)
+ @param webview Specifies the webview created by the application used if required to display the operator selection screen
+ */
+- (void)getDiscoveryActive: (NSString*)url clientId:(NSString*)clientId clientSecret:(NSString*)clientSecret encryption:(encryptionTypeEnum)encryption ipAddress:(NSString*)ipAddress redirectUri:(NSString*)redirectUri msisdn:(NSString*)msisdn webview:(UIWebView *) webview;</code>
+							
+								</li>
+																
+								<li>
+								
+								<p>
+			                    	The <a href="referencesiOS.html">getDiscoveryActive()</a> function using manual mnc mcc
+			                    </p>
+                            	<code class="prettyprint linenums:1">/** Make the get discovery request using provided mcc - mnc
+ @param url Destination url location where the request will make
+ @param clientId Application client id provided for the authentication
+ @param clientSecret Application client secret (password)provided for the authentication
+ @param encryption Encryption type for the authentication header. Types are: 'encryptionTypeEnumBasic', 'encryptionTypeEnumSha-256', 'encryptionTypeEnumNone'.
+ @param ipAddress Provided ip addres for the 'x-source-ip' header in the request
+ @param redirectUri Specifies the location which continues the discovery process (optional)
+ @param msisdn param if provided (optional)
+ @param mcc Mobile Country Code provided
+ @param mnc Mobile Network Code provided
+ @param webview Specifies the webview created by the application used if required to display the operator selection screen
+ */
+- (void)getDiscoveryActive: (NSString*)url clientId:(NSString*)clientId clientSecret:(NSString*)clientSecret encryption:(encryptionTypeEnum)encryption ipAddress:(NSString*)ipAddress redirectUri:(NSString*)redirectUri msisdn:(NSString*)msisdn mcc:(NSString*)mcc mnc:(NSString*)mnc  webview:(UIWebView *) webview;</code>
+							
+								</li>
+							</ol>
+	
+                            <p>
+                            A <span class="italicStyle">webview</span> will be opened with the generated discovery web site in case of wrong/unknown operator for a operator selection interaction. Once a operator its selected the SDK will call the passive function using the new operator data. To know how to use <a href="referencesiOS.html">protocol functions</a> read <a href="tutorialsiOS.html">iOS tutorial</a></p>
+                        </div>
+                  
+                  
+                  
+                  
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="persisted">Persisted discovery data:</h3>
+        <p>
+            Discovery results are persisted in application specific local storage according to a time to live value in the discovery response. This method gets the complete discovery information.
+
+            <div class="tabbed-area" blockId="persisted">
+                <ul class="tabs group">
+                    <li><a  who="#box-one3" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two3" class='tabGuide' language="Android">Android</a></li>
+                    <li><a  who="#box-three3" class='tabGuide' language="iOS">iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one3" language="JS/HTML">
+                        <div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the <a href="referencesHTML.html">DiscoveryItem</a> from cache using the following function.
+                            </p>
+                            <code class="prettyprint linenums:1">getCacheDiscoveryItem();</code>
+                            <p>   
+                            Apart from discovery the <span class="italicStyle">mcc (Mobile Country Code)</span> and <span class="italicStyle">mnc (Mobile Network Code)</span> are saved too. 
+                            Every time that <span class="italicStyle">getDiscoveryActive()</span> or <span class="italicStyle">getDiscoveryPassive()</span> are called the mcc and mnc are checked in cache and used in the call.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="box-two3" language="Android">
+                    	<div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the <span class="italicStyle">DiscoveryItem</span> from cache using the following function.
+                            </p></br>
+                            The <a href="referencesAndroid.html">getCacheDiscoveryItem()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param context
+ * @return DiscoveryItem
+ * @throws JsonParseException
+ * @throws JsonMappingException
+ * @throws IOException
+ * @throws NullPointerException
+ */
+ getCacheDiscoveryItem(Context context);</code>
+                        </div>
+                    </div>
+                    <div id="box-three3" language="iOS">
+                    
+                    
+                    <div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the discovery information from cache using the following function.
+                            </p></br>
+                            The <a href="referencesiOS.html">getCachedDiscoveryItem()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/** This function return the last stored item representation
+ @return Object representation of the result stored in the last success getDiscoveryActive/getDiscoveryPasive request made.
+ */
+- (NSMutableDictionary*)getCachedDiscoveryItem;</code>
+                        </div>
+                    
+                    
+                    
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="clearCache">Clear saved data:</h3>
+        <p>
+            Method to clear the saved discovery information.
+            <div class="tabbed-area" blockId="clearCache">
+                <ul class="tabs group">
+                    <li><a  who="#box-one4" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two4" class='tabGuide' language="Android">Android</a></li>
+                    <li><a  who="#box-three4" class='tabGuide' language="iOS">iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one4" language="JS/HTML">
+                        <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            <code class="prettyprint linenums:1">clearCacheDiscoveryItem();</code>
+                            <p>   
+                            Apart from removing discovery also remo the <span class="italicStyle">mcc (Mobile Country Code)</span> and <span class="italicStyle">mnc (Mobile Network Code)</span> are saved too. 
+                            Every time that <span class="italicStyle">getDiscoveryActive()</span> or <span class="italicStyle">getDiscoveryPassive()</span> are called the mcc and mnc are checked in cache and used in the call.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="box-two4" language="Android">
+                    	 <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            </br>
+                            The <a href="referencesAndroid.html">clearCacheDiscoveryItem()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param context
+ * @throws NullPointerException
+ */
+ clearCacheDiscoveryItem(Context context);</code>
+                        </div>
+                    </div>
+                    <div id="box-three4" language="iOS">
+                   
+                   
+                   <div class="codeBox">
+                            <p>
+                               The next function was created with the only propose of clearing the cache memory.
+                            </p>
+                            </br>
+                            The <a href="referencesiOS.html">clearCachedDiscoveryItem()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ This function clear the logo item stored in the last successfull call to the getDiscoveryActive/getDiscoveryPasive function
+ @return Boolean representation of the result
+ */
+- (BOOL)clearCachedDiscoveryItem;</code>
+                        </div>
+                   
+                   
+                   
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="parameter">Extract redirect parameter:</h3>
+        <p>
+            Helper function developed to parse the redirect sent by the discovery active server to the application and extract mcc_mnc value.
+            <div class="tabbed-area" blockId="parameter">
+                <ul class="tabs group">
+                    <li><a  who="#box-one5" class='tabGuide' language="JS/HTML">JS/HTML</a></li>
+                    <li><a  who="#box-two5" class='tabGuide' language="Android">Android</a></li>
+                    <li><a  who="#box-three5" class='tabGuide' language="iOS">iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one5" language="JS/HTML">
+                        <div class="codeBox">
+                            <p>
+                                Focusing on <span style='italicStyle'>getDiscoveryPassive()</span> without mcc and mnc, the server returns an url on <span class="italicStyle">result["operatorSelection"]</span>.
+                                <br/>
+                                This url is the operator selector page redirects to your control. You can use the following function to obtain the String composed for <span class="italicStyle">mcc</span> an <span class="italicStyle">mnc</span> (<span class="italicStyle">mcc_mnc</span>).
+                            </p>
+                            <code class="prettyprint linenums:1">getMccAndMncFromUrl();</code>
+                            <p>
+                               Now, to obtain one of the values from the previous returned <span class="italicStyle">mcc_mnc</span> you can use this functions:
+                            </p>
+                            <code class="prettyprint linenums:1">getMccFromCombined(mcc_mnc);</code>
+                            <p>
+                                 Previous one returns only the <span class="italicStyle">mcc</span> and the following one the <span class="italicStyle">mnc</span>.
+                            </p>
+                            <code class="prettyprint linenums:1">getMncFromCombined(mcc_mnc);</code>
+                        </div>
+                    </div>
+                    <div id="box-two5" language="Android">
+                    	<div class="codeBox" language="Android">
+                    	
+                            The <a href="referencesAndroid.html">extractRedirectParameter()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param returnUri which is the return point after the user has selected.
+ * @return String
+ */
+ extractRedirectParameter(Uri returnUri);</code>
+                        </div>
+                    </div>
+                    <div id="box-three5" language="iOS">
+                                 	<div class="codeBox">
+                    	
+                            The <a href="referencesiOS.html">extractRedirectParameter(NSString* returnUri)</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ This function extract the mnc mcc of an provided url
+ @param url Provided url containing the mcc, mnc
+ @return NSMutableDictionary representation of mcc_mnc parameter. Nil if parse error ocurred.
+ */
+- (NSMutableDictionary*)extractRedirectParameter: (NSString*) url;</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p>
+    </div>
+</div>
+
+<nav>
+    <h3>Guide</h3>
+    <ul>
+        <li>
+            <a href="#passiveMode">Passive mode</a>
+        </li>
+        <li>
+            <a href="#activeMode">Active mode</a>
+        </li>
+        <li>
+            <a href="#persisted">Persisted discovery data</a>
+        </li>
+        <li>
+            <a href="#clearCache">Clear saved data</a>
+        </li>
+        <li>
+            <a href="#parameter">Extract redirect parameter</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+<script type="text/javascript">
+    $( document ).ready(function() {
+        var from = "JS/HTML";
+        if(window.location.href.indexOf('?')>=0)
+            from = window.location.href.substring(window.location.href.indexOf('?')+1,window.location.href.length);
+
+        $("a.tabGuide").click(function(){
+            // var from = $(this).attr("language");
+            // $("ul.tabs>li>a").css('color','rgba(0, 108, 230, 0.4)');
+            // $("a[language=\""+from+"\"]").css('color','rgba(0, 108, 230, 1)');
+            // $("div.box-wrap>div").hide();
+            // $("div[language=\""+from+"\"]").show();
+            
+            $(this).parent().siblings().children().css('color','rgba(0, 108, 230, 0.4)');
+            $(this).css('color','rgba(0, 108, 230, 1)');
+            var blockId = $(this).parent().parent().parent().attr('blockId');
+            $("div[blockId=\""+blockId+"\"]>div.box-wrap>div").hide();
+            $($(this).attr('who')).show();
+        });
+        $("div.box-wrap>div").hide();
+        $("ul.tabs>li>a").css('color','rgba(0, 108, 230, 0.4)');        
+        $("a[language=\""+from+"\"]").css('color','rgba(0, 108, 230, 1)');
+        $("div[language=\""+from+"\"]").show();
+    });
+</script>
+</body>
+</html>

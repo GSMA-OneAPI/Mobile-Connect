@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DiscoverySDK: Android tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Discovery</h2>
+        <ul>
+            <li><a href="installAndroid.html">Getting Started</a></li>
+            <li><a href="guides.html?Android">Guides</a></li>
+            <li><a href="tutorialsAndroid.html" actual>Tutorials</a></li>
+            <li><a href="referencesAndroid.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>Android Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use DiscoverySDK on Android.
+        </p>
+        
+        <h3>ExampleActivity</h3>
+		<p>
+            This is a simple android <a href="https://developer.android.com/guide/components/activities.html" target="_blank">Activity</a> which invokes, through buttons (<a href="https://developer.android.com/guide/topics/ui/controls/button.html" target="_blank">Button</a>), some methods that DiscoverySDK has (explained in <a href="guides.html">Guides</a>).
+          
+           <pre class="prettyprint lang-java linenums:1">
+import android.app.Activity;
+import android.widget.Button;
+import android.view.View;
+import android.util.Log;
+
+import com.gsma.android.oneapi.discovery.DiscoveryProvider;
+
+import com.gsma.android.oneapi.discovery.DiscoveryListener;
+import com.gsma.android.oneapi.valuesDiscovery.DiscoveryCredentials;
+
+import com.gsma.android.oneapi.discovery.DiscoveryItem;
+import com.gsma.android.oneapi.discovery.Api;
+import com.gsma.android.oneapi.discovery.Link;
+
+public class ExampleActivity extends Activity{
+	private static final String TAG = "ExampleActivity";
+				
+	Button discoveryPassiveButton = null;
+	Button discoveryActiveButton = null;
+	Button discoveryCacheButton = null;
+					
+	String serviceUri="example/discovery";
+	String consumerKey="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+	String consumerSecret="YYYYYYYYYYYYYYYY";
+	String redirectUri = "test://test";
+			
+	DiscoveryProvider discoveryProvider=new DiscoveryProvider();
+					
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+						
+		discoveryPassiveButton = (Button) findViewById(R.id.discoveryPassiveButton);
+		discoveryPassiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button1();
+			}
+		});
+						
+		discoveryActiveButton = (Button) findViewById(R.id.discoveryActiveButton);
+		discoveryActiveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button2();
+			}
+		});
+						
+		discoveryCacheButton = (Button) findViewById(R.id.discoveryCacheButton);
+		discoveryCacheButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button3();
+			}
+		});
+		
+}</pre>
+                       
+            <h5>onClick event:</h5>
+            Below an explanation about each of those three previous methods <span class="italicStyle">button1()</span>, <span class="italicStyle">button2()</span> and <span class="italicStyle">button3()</span>.<br/> 
+            <ol>
+                <li>
+                    <span class="italicStyle">button1()</span> implements the <a href="guides.html#passiveMode">"Passive mode"</a>.
+                </li>
+                <pre class="prettyprint lang-java">
+public void button1(){
+	DiscoveryListener listener=new DiscoveryComplete();
+	discoveryProvider.getDiscoveryPassiveAutomaticMCCMNC(serviceUri, consumerKey, consumerSecret, null, null, listener, getApplicationContext(),DiscoveryCredentials.PLAIN, redirectUri);
+	}</pre>
+                <li>
+                    <span class="italicStyle">button2()</span> implements the <a href="guides.html#activeMode">"Active mode"</a>.
+                <pre class="prettyprint lang-java">
+public void button2(){
+	DiscoveryListener listener=new DiscoveryComplete();
+	discoveryProvider.getDiscoveryActiveAutomaticMCCMNC(serviceUri, consumerKey, consumerSecret, null, null, listener, getApplicationContext(),DiscoveryCredentials.PLAIN, redirectUri);
+	}</pre>
+                </li>
+                <li>
+                    <span class="italicStyle">button3()</span> implements <a href="guides.html#persisted">"Persisted discovery data"</a> and explores a <span class="italicStyle">DiscoveryItem</span> structure tree.
+                     <pre class="prettyprint lang-java">
+public void button3(){
+	DiscoveryItem di = discoveryProvider.getCacheDiscoveryItem(getApplicationContext());
+	if(di!=null){
+	   Api apiID = di.getResponse().getApi("operatorid");
+	   if(apiID!=null){
+	   	   Link[] operatorid = apiID.getLink();
+		   if(operatorid!=null && operatorid.length>0){
+		       Link link1 = operatorid[0];
+		       String href1 = link1.getHref();
+		       String rel1 = link1.getRel();
+		       Log.d(TAG, "getCacheDiscoveryItem info about operatorid. HREF: "+href1+" - REL: "+rel1);
+		   }
+	   }
+	   Api apiPay = di.getResponse().getApi("payment");
+	   if(apiPay!=null){
+		   Link[] payment = apiPay.getLink();
+		   if(payment!=null &&payment.length>0){
+		       Link link2 = payment[0];
+		       String href2 = link2.getHref();
+		       String rel2 = link2.getRel();
+		       Log.d(TAG, "getCacheDiscoveryItem info about payment. HREF: "+href2+" - REL: "+rel2);
+		   }
+	   }
+	}
+}</pre>
+                </li>
+            </ol>
+       </p>
+       
+       <h3 id="discoveryComplete">DiscoveryComplete</h3>
+		<p>
+            This is a simple class which implements the interface called <span class="italicStyle">DiscoveryListener</span>. 
+            In addition, you can see how to explore a <span class="italicStyle">DiscoveryItem</span> structure tree.
+          
+           <pre class="prettyprint lang-java linenums:1">
+import org.json.JSONObject;
+
+import android.util.Log;
+
+import com.gsma.android.oneapi.discovery.DiscoveryListener;
+import com.gsma.android.oneapi.discovery.DiscoveryItem;
+import com.gsma.android.oneapi.discovery.Api;
+import com.gsma.android.oneapi.discovery.Link;
+
+public class DiscoveryComplete implements DiscoveryListener{
+	private static final String TAG = "DiscoveryComplete";
+	
+	@Override
+	public void discoveryInfo(DiscoveryItem di) {
+		Api apiID = di.getResponse().getApi("operatorid");
+		if(apiID!=null){
+			Link[] operatorid = apiID.getLink();
+			if(operatorid!=null && operatorid.length>0){
+				Link link1 = operatorid[0];
+				String href1 = link1.getHref();
+				String rel1 = link1.getRel();
+				Log.d(TAG, "DiscoveryItem info about operatorid. HREF: "+href1+" - REL: "+rel1);
+			}else
+				Log.d(TAG, "DiscoveryItem info about operatorid: empty");
+		}else
+			Log.d(TAG, "DiscoveryItem info about operatorid: empty");
+		Api apiPay = di.getResponse().getApi("payment");
+		if(apiPay!=null){
+			Link[] payment = apiPay.getLink();
+			if(payment!=null && payment.length>0){
+				Link link2 = payment[0];
+				String href2 = link2.getHref();
+				String rel2 = link2.getRel();
+				Log.d(TAG, "DiscoveryItem info about payment. HREF: "+href2+" - REL: "+rel2);
+			}else
+				Log.d(TAG, "DiscoveryItem info about payment: empty");
+		}else
+			Log.d(TAG, "DiscoveryItem info about payment: empty");
+	}
+
+	@Override
+	public void errorDiscoveryInfo(JSONObject error) {
+		Log.d(TAG, "JSONObject response");
+		Log.d(TAG, "JSONObject warning: "+error.toString());
+	}
+
+}</pre>
+                  
+</p>
+       
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li actual>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

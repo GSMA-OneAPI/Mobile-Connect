@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LogoSDK: Android tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Logo</h2>
+        <ul>
+            <li><a href="installAndroid.html">Getting Started</a></li>
+            <li><a href="guides.html?Android">Guides</a></li>
+            <li><a href="tutorialsAndroid.html" actual>Tutorials</a></li>
+            <li><a href="referencesAndroid.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>Android Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use LogoSDK on Android.
+        </p>
+        
+        <h3>ExampleActivity</h3>
+		<p>
+            This is a simple android <a href="https://developer.android.com/guide/components/activities.html" target="_blank">Activity</a> which invokes, through buttons (<a href="https://developer.android.com/guide/topics/ui/controls/button.html" target="_blank">Button</a>), some methods that LogoSDK has (explained in <a href="guides.html">Guides</a>).
+          
+           <pre class="prettyprint lang-java linenums:1">
+import android.app.Activity;
+import android.widget.Button;
+import android.view.View;
+import android.util.Log;
+
+import com.gsma.android.oneapi.logo.LogoProvider;
+import com.gsma.android.oneapi.logo.LogoListener;
+import com.gsma.android.oneapi.valuesLogo.Apis;
+import com.gsma.android.oneapi.valuesLogo.AspectRatio;
+import com.gsma.android.oneapi.valuesLogo.BgColor;
+import com.gsma.android.oneapi.valuesLogo.Size;
+import com.gsma.android.oneapi.logo.LogoCacheItem;
+
+public class ExampleActivity extends Activity{
+	private static final String TAG = "ExampleActivity";
+				
+	Button logoButton = null;
+	Button logoCacheButton = null;
+					
+	String serviceUriLogo="example/logo";
+	String consumerKey="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+	String consumerSecret="YYYYYYYYYYYYYYYY";
+	String redirectUri = "test://test";
+	
+	String DefaultLogosOperator="exchange";
+			
+	LogoProvider logoProvider = new LogoProvider();
+					
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+						
+		logoButton = (Button) findViewById(R.id.logoButton);
+		logoButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button1();
+			}
+		});
+		
+		logoCacheButton = (Button) findViewById(R.id.logoCacheButton);
+		logoCacheButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button2();
+			}
+		});
+		
+}</pre>
+                       
+            <h5>onClick event:</h5>
+            Below an explanation about each of those two previous methods <span class="italicStyle">button1()</span> and <span class="italicStyle">button2()</span>.<br/> 
+            <ol>
+                <li>
+                    <span class="italicStyle">button1()</span> implements <a href="guides.html#obtainLogo">"Obtain Logo"</a>.
+                </li>
+                <pre class="prettyprint lang-java">
+public void button1(){
+	LogoListener listener = new LogoComplete();
+	logoProvider.getLogoAutomaticMCCMNC(serviceUriLogo, consumerKey, consumerSecret, null, Size.SMALL, BgColor.BLACK, AspectRatio.LANDSCAPE, listener, getApplicationContext());
+}</pre>
+                <li id="logoButton2">
+                    <span class="italicStyle">button2()</span> implements <a href="guides.html#persisted">"Persisted logo response"</a> and explores a <span class="italicStyle">LogoCacheItem</span> structure.
+                     <pre class="prettyprint lang-java">
+public void button2(){
+	ArrayList(LogoCacheItem) array = logoProvider.getCacheLogo(getApplicationContext());
+	if(array!=null && array.size()>0){
+		LogoCacheItem logoArray1 = array.get(0);
+		Log.d(TAG, "LogoCacheItem info1: "+logoArray1);
+		LogoCacheItem logoArray2 = array.get(1);
+		Log.d(TAG, "LogoCacheItem info2: "+logoArray2);
+	}
+	Bitmap pay = logoProvider.getCacheApiLogo(DefaultLogosOperator, Apis.PAYMENT, Size.SMALL, BgColor.BLACK, AspectRatio.LANDSCAPE, getApplicationContext());
+	if(pay!=null)
+		Log.d(TAG, "Bitmap pay: "+pay);
+	Bitmap id = logoProvider.getCacheApiLogo(DefaultLogosOperator, Apis.OPERATORID, Size.SMALL, BgColor.BLACK, AspectRatio.LANDSCAPE, getApplicationContext());
+	if(id!=null)
+		Log.d(TAG, "Bitmap id: "+id);
+}</pre>
+                </li>
+            </ol>
+       </p>
+       
+       <h3 id="logoComplete">LogoComplete</h3>
+		<p>
+            This is a simple class which implements the interface called <span class="italicStyle">LogoListener</span>. 
+            In addition, you can see how to explore a <span class="italicStyle">LogoItemArray</span> structure.
+          
+           <pre class="prettyprint lang-java linenums:1">
+import org.json.JSONObject;
+
+import android.util.Log;
+
+import com.gsma.android.oneapi.logo.LogoItem;
+import com.gsma.android.oneapi.logo.LogoItemArray;
+import com.gsma.android.oneapi.logo.LogoListener;
+
+public class LogoComplete implements LogoListener{
+	private static final String TAG = "LogoComplete";
+	
+	@Override
+	public void logoInfo(LogoItemArray li) {
+		LogoItem[] logoArray = li.getLogos();
+		if(logoArray!=null && logoArray.length>0){
+			LogoItem logo1 = logoArray[0];
+			LogoItem logo2 = logoArray[1];
+			if(logo1!=null){
+				String urlLogo1 = logo1.getUrl();
+				String apiLogo1 = logo1.getApiName();
+				Log.d(TAG, "LogoItem info about "+apiLogo1+": URL: "+urlLogo1);
+			}
+			if(logo2!=null){
+				String urlLogo2 = logo2.getUrl();
+				String apiLogo2 = logo2.getApiName();
+				Log.d(TAG, "LogoItem info about "+apiLogo2+": URL: "+urlLogo2);
+			}
+		}
+	}
+
+	@Override
+	public void errorDiscoveryInfo(JSONObject error) {
+		Log.d(TAG, "JSONObject response");
+		Log.d(TAG, "JSONObject warning: "+error.toString());
+	}
+
+}</pre>
+                  
+</p>
+       
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li actual>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

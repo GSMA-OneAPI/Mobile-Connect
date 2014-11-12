@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LogoSDK: iOS tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Logo</h2>
+        <ul>
+            <li><a href="installiOS.html">Getting Started</a></li>
+            <li><a href="guides.html?iOs">Guides</a></li>
+            <li><a href="tutorialsiOS.html" actual>Tutorials</a></li>
+            <li><a href="referencesiOS.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+
+        <h3>iOS Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use LogoSDK on iOS.
+        </p>
+
+		  <h3>Including Logo library</h3>
+		<p>
+			To start we need to import the Logo library in to the project (refer to <a href="installiOS.html">Getting Started</a>).
+          
+           <pre class="prettyprint linenums:1">#import "LogoAPI.h"</pre>
+           
+           <h3>Creating Logo object</h3>
+		<p>
+			To invoke the Discovery functions its needed to set up first a Discovery object. We need also to assign a delegate class which will be the receiver class for the calls responses (in the example below will use self)   
+          
+           <pre class="prettyprint linenums:1">//API object creation
+LogoAPI *logoObj = [[LogoAPI alloc] init];
+
+//Delegate assignments
+logoObj.logoDelegate = self;
+logoObj.traceMode=TRUE;</pre>
+    
+    
+            <h3>Executing Logo functions</h3>
+		<p>
+            The Logo library implement the following functions.      
+            <ul style="list-style-type:none;">
+	            
+	           <li> 
+	           		<h3>Get logo automatic mnc mcc</h3> 
+	           		<p>
+		            This functions make a request to obtain a Logo information. In a wrong case the error will be returned.
+		          
+		           <pre class="prettyprint linenums:1">//Get Logo call
+[logoObj getLogo:@"https://integration-dt.apiexchange.org/v1/logo" logoSize:logoSizeTypeEnumMEDIUM aspectRatio:aspect_ratioTypeEnumLANDSCAPE bg_color:bg_colorTypeEnumBLACK ipAddress:nil];</pre>
+	           
+	           </li>
+	           
+	           <li> 
+	           		<h3>Get logo manual mnc mcc</h3> 
+	           		<p>
+		            This functions make a request to obtain a Logo information. In a wrong case the error will be returned.
+		          
+		           <pre class="prettyprint linenums:1">//Get Logo call
+[logoObj getLogo:@"https://integration-dt.apiexchange.org/v1/logo" logoSize:logoSizeTypeEnumMEDIUM aspectRatio:aspect_ratioTypeEnumLANDSCAPE bg_color:bg_colorTypeEnumBLACK ipAddress:nil mcc:@"1234" mnc:@"4321"];</pre>
+	           
+	           </li>
+	           
+	           	           
+	           <li> 
+	           		<h3>Get cached Logo item</h3> 
+	           		<p>
+		            This functions get the last success Logo request cached information.
+		          
+		           <pre class="prettyprint linenums:1">//Get cached Logo call
+[logoObj getCachedLogoItem]</pre>
+	           
+	           </li>
+	           <li> 
+	           		<h3>Get cached API Logo item</h3> 
+	           		<p>
+		            This functions look for in the last success Logo request cached information. The result will be an UIImage object.
+		          
+		           <pre class="prettyprint linenums:1">//Get cached API Logo call
+UIImage *imageLogo = [logoProvider getCachedApiLogo:@"operatorid" size:logoSizeTypeEnumSMALL aspectRatio:aspect_ratioTypeEnumLANDSCAPE bg_color:bg_colorTypeEnumNORMAL operatorName:@"exchange" language:@"en"];</pre>
+	           
+	           </li>
+	           
+	            
+	           <li>      
+		           <h3>Clear cached Logo item</h3>
+					<p>
+					Clear the last stored Logo item.
+					
+		           <pre class="prettyprint linenums:1">//Clear Cached Logo
+NSLog(@"Cleared cache logo item?: %@",([logoObj clearCachedLogoItem] ? @"YES" : @"NO"));</pre>
+	           </li>   
+	            
+           </ul>
+            
+            
+            
+            <p>        
+            <h3>Managing Logo response</h3>
+			<p>
+            The Logo function use asynchronous request internally. Due to this a formal protocol is defined to manage the Logo functions response. 
+          
+           <pre class="prettyprint linenums:1">#import "LogoAPI.h.h"
+@interface GenericClass : NSObject &lt;ProcessGetLogoResponseDelegate&gt;</pre>
+                       
+          <p>
+            The protocol implementation force us to declare the getLogoSuccessful, getLogoError functions which will receive the get Discovery responses.
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+// FORMAL PROTOCOL IMPLEMENTATION
+-(void)getLogoSuccessful:(long)statusCode data:(NSArray *)data{
+    NSLog(@"logo successful");
+    NSLog(@"statusCode - %ld",statusCode);
+    NSLog(@"result - %@",data);
+}
+-(void)getLogoError:(long)statusCode data:(NSMutableDictionary *)errorData{
+    NSLog(@"logo error");
+    NSLog(@"statusCode - %ld",statusCode);
+    NSLog(@"result - %@",errorData);
+}</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li actual>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OpenID Connect: Guide</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.css"> </script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>OpenID Connect</h2>
+        <ul>
+            <li><a href="installHTML.html">Getting Started</a></li>
+            <li><a href="guides.html" actual>Guides</a></li>
+            <li><a href="tutorialsHTML.html" class="active">Tutorials</a></li>
+            <li><a href="referencesHTML.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+        <h3>Using OpenID Connect</h3>
+        <p>
+            Applications can provide a 'login' mechanism based on a user identity managed by a mobile operator. This allows users to have a single user account with their mobile operator that can be used for login purposes with a range of other websites. This is similar to the use of Facebook, Twitter or Google accounts for login purposes but with the possibility of linking to more robust 'Levels of Assurance' that may be available through the mobile operator.
+
+			Operator Identity is based on the OpenID Connect specification. Applications are able to benefit from a cross operator 'identity' solution which is enabled via the OneAPI Exchange. OpenID Connect is in turn based on the OAuth 2 standard. 
+			</br></br>
+			OpenID Connect provides three main functions:
+            <ol>
+                <li>
+                    User authenticates with their mobile operator and authorizes an application to have access to requested data or services.
+                </li>
+                <li>
+                    Application exchanges an authorization code for an access token which can be used to authenticate access to services.
+                </li>
+                <li>
+                    Application can optionally use the access token to request access to stored user information via the OpenID Connect 'userinfo' service.
+                </li>
+            </ol>
+            </br>
+            Below are explained and detailed in each of the languages ​​(<span class="italicStyle">JS/HTML</span>, <span class="italicStyle">Android</span> and <span class="italicStyle">iOS</span>), the main functions of this API.
+        </p>
+        <h3 id="authorization">Authorization:</h3>
+        <p>
+        Authorization code process where the user logs in to an operator provider. Handles the process between the MNO and the end user for the end user to sign in/ authorize the application. The application hands over to the browser during the authorization step. On completion the MNO redirects to the application sending the completion information as URL parameters.
+            <div class="tabbed-area" blockId='authorization'>
+                <ul class="tabs group">
+                    <li><a  who="#box-one1" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two1" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three1" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one1"> 
+                        <div class="codeBox">
+                            <p>
+                                The <a href="referencesHTML.html">authorize()</a> function in order to obtain an authorization code
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 url {String}
+&#47&#47 client_id {String}
+&#47&#47 scope {String}
+&#47&#47 redirect_uri {String}
+&#47&#47 response_type {String}
+&#47&#47 state {String}
+&#47&#47 nonce {String}
+&#47&#47 prompt {String} (none, login, consent or select_account)
+&#47&#47 max_age {Number}
+&#47&#47 acer_values {String}
+&#47&#47 authorizationOptions {AuthorizationOptions}
+&#47&#47 callbackFunction {Function}
+authorize(url, client_id, scope, redirect_uri, response_type, state, nonce, prompt, max_age, acer_values, authorizationOptions, callbackFunctionOpenId);</code>
+                            <p>                        
+                            The callbackFunctionOpenId will be called with result as single param. The result could be a correct result JSON object<span class="italicStyle"> {scope: String, code: String, state: String}</span> or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">var code;
+function callbackFunctionOpenId(result){
+    $('#openIdMyFLow').html('authorize  '+JSON.stringify(result));
+    code=result.code;
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two1">
+                    <div class="codeBox">
+                            <p>
+                                The <a href="referencesAndroid.html">authorize()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+	 * @param authUri
+	 *            authorization endpoint.
+	 * @param responseType
+	 *            (CODE).
+	 * @param clientId
+	 *            which is an ID for the application.
+	 * @param clientSecret
+	 *            which is an secret for the application.
+	 * @param scopes
+	 *            which is an application specified string value.
+	 * @param redirectUri
+	 *            which is the return point after the user has
+	 *            authenticated/consented.
+	 * @param state
+	 *            which is application specified.
+	 * @param nonce
+	 *            which is application specified.
+	 * @param prompt
+	 *            (NONE, LOGIN, CONSENT, SELECT_ACCOUNT).
+	 * @param maxAge
+	 *            which is an integer value.
+	 * @param acrValues
+	 *            which is an application specified.
+	 * @param authorizationOptions
+	 *            structure in which you can provide values for any of the
+	 *            optional parameters in the authorization request: Display,
+	 *            Ui_locales, Claims_locales, Id_token_hint, Login_hint and
+	 *            Dtbs.
+	 * @param listener It is necessary to implement authorizationCodeResponse(String state, String authorizationCode, String error, String clientId, String clientSecret, String scopes, String redirectUri)
+	 * and authorizationError(String reason) to manage the response
+	 * @param activity
+	 * @throws NullPointerException
+	 */
+	public void authorize(String authUri, ResponseType responseType, String clientId, String clientSecret, String scopes,
+			String redirectUri, String state, String nonce, Prompt prompt,
+			int maxAge, String acrValues,
+			AuthorizationOptions authorizationOptions, AuthorizationListener listener, Activity activity);</code>
+			<p>                        
+                            The <span class="italicStyle">listener</span> will be called with result. To know how to use <a href="referencesAndroid.html">AuthorizationListener</a> response, read <a href="tutorialsAndroid.html#openIdConnectComplete">Android tutorial</a></p>
+                        </div>
+                    </div>
+                    <div id="box-three1">
+                        <div class="codeBox">
+                    		<p>
+                    			The authorize() function in order to obtain an authorization code
+                            </p>
+                            <code class="prettyprint  linenums:1">/** Authorize request
+ @param url request url location
+ @param clientID Needed for OAuth 2.0 authorisation request.
+ @param scope Space delimited and case-sensitive list of ASCII strings for OAuth 2.0 scope values. OIDC Authorisation request MUST contain the scope value “openid”. The other optional values for scope in OIDC are: “profile”, “email”, “address”, “phone” and “offline_access”.
+ @param redirectUri The URI where the response will be sent through redirection. The URI MUST match one of the pre-registered redirect_uris at client registration/provisioning.
+ @param responseType The value MUST be “code”, to indicate that the grant type flow to be used is Authorisation Code. It also indicates that the access_token (and id_token) be returned in exchange of “code”.
+ @param state Value used by the client to maintain state between request and callback. A security mechanism as well, if a cryptographic binding is done with the browser cookie, to prevent Cross-Site Request Forgery.
+ @param nonce String value used to associate a client session with the ID Token. It is passed unmodified from Authorisation Request to ID Token. The value SHOULD be unique per session to mitigate replay attacks.
+ @param prompt String velues to specify to the authorization sever
+ @param maxAge Specifies the maximum elapsed time in seconds since last authentication of the user. If the elapsed time is greater than this value, a reauthentication MUST be done. When this parameter is used in the request, the ID Token MUST contain the auth_time claim value.
+ @param acrValues Authentication Context class Reference. Space separated string that specifies the Authentication Context Reference to be used during authentication processing. The LOA required by the RP/Client for the use case can be used here. The values appear as order of preference. The acr satisfied during authentication is returned as acr claim value.
+ The recommended values are the LOAs as specified in ISO/IEC 29115 Clause 6 – 1, 2, 3, 4 – representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.
+ The acr_values are indication of what authentication method to used by the IDP. The authentication methods to be used are linked to the LOA value passed in the acr_values. The IDP configures the authentication method selection logic based on the acr_values.
+ @param authorizationOptions Object representation of the display, ui_locales, claims_locales, id_token_hint, login_hint and dtbs.
+ @param clientSecret which is secret for the application
+ @param webview UIWebView object to manage the authorize credentials login
+ */
+-(void)authorize:(NSString *)url clientID:(NSString *)clientID clientSecret:(NSString *)clientSecret scope:(NSString *)scope redirectUri:(NSString *)redirectUri responseType:(NSString *)responseType state:(NSString *)state nonce:(NSString *)nonce prompt:(promptEnumType)prompt maxAge:(int)maxAge acrValues:(NSString *)acrValues authorizationOptions:(AuthorizationOptions *)authorizationOptions webview:(UIWebView *) webview;</code>
+							
+                            <p>         
+                            A <span class="italicStyle">WebView</span> will be displayed opening an authorization login web site. 
+                            To know how to use <a href="referencesiOS.html">protocol functions</a> read <a href="tutorialsiOS.html">iOS tutorial</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="parameter">Extract redirect parameter:</h3>
+        <p>
+            Helper function developed to parse the redirect sent by the authorization server to the application and extract code, state and error values.
+            <div class="tabbed-area" blockId="parameter">
+                <ul class="tabs group">
+                    <li><a  who="#box-one2" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two2" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three2" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one2"> 
+                        <div class="codeBox">
+                            <p>
+                                Focusing on <span style='italicStyle'>getDiscoveryPassive()</span> without mcc and mnc, the server returns an url on <span class="italicStyle">result["operatorSelection"]</span>.
+                                <br/>
+                                This url is the operator selector page redirects to your control. You can use the following function to obtain the String composed for <span class="italicStyle">mcc</span> an <span class="italicStyle">mnc</span> (<span class="italicStyle">mcc_mnc</span>).
+                            </p>
+                            <code class="prettyprint linenums:1">getMccAndMncFromUrl();</code>
+                            <p>
+                               Now, to obtain one of the values from the previous returned <span class="italicStyle">mcc_mnc</span> you can use this functions:
+                            </p>
+                            <code class="prettyprint linenums:1">getMccFromCombined(mcc_mnc);</code>
+                            <p>
+                                 Previous one returns only the <span class="italicStyle">mcc</span> and the following one the <span class="italicStyle">mnc</span>.
+                            </p>
+                            <code class="prettyprint linenums:1">getMncFromCombined(mcc_mnc);</code>
+                        </div>
+                    </div>
+                    <div id="box-two2">
+                    	<div class="codeBox">
+                    	
+                            The <a href="referencesAndroid.html">extractRedirectParameter()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param returnUri
+ *            which is the return point after the user has
+ *            authenticated/consented.
+ * @return ParameterList
+ */
+extractRedirectParameter(String returnUri);</code>
+                        </div>
+                    </div>
+                    <div id="box-three2">
+                                 	<div class="codeBox">
+                    	
+                            The <a href="referencesiOS.html">extractRedirectParameter(NSString* returnUri)</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**This function extract the parameters within a provided url
+@param Uri Provided url containing one or more parameters to parse (code, error_description, error_code, access_token, expires_in
+@return NSMutableDictionary representation of the result. Nil if parse error ocurred or empty NSMutableDictionary if non parameters to parse
+*/
+- (NSMutableDictionary*)extractRedirectParameter: (NSString*) Uri;</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="token">Token from authorization code:</h3>
+        <p>
+            <p>
+            Exchanges an authorization code for an access token which can be used to authenticate access to services.
+            </p>
+            <div class="tabbed-area" blockId="token">
+                <ul class="tabs group">
+                    <li><a  who="#box-one3" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two3" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three3" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one3"> 
+                        <div class="codeBox">
+                            <p>
+                                To get token from authorization code
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 url {String} 
+&#47&#47 code {String} The authorisation code received from the authorisation server, from the authorisation request
+&#47&#47 client_id {String}
+&#47&#47 client_secret {String}
+&#47&#47 redirect_uri {String} The redirect_uri value MUST match the one sent in the authorisation request
+&#47&#47 callbackFunction {Function} 
+tokenFromAuthorizationCode(url, code, client_id, client_secret, redirect_uri, callbackFunction)</code>
+                            <p>                        
+                            The callbackFunction will be called with result as single param. The result could be a <span class="italicStyle">....</span> object or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">function callbackFunction(result){
+    if (result.error){
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }else{
+        console.log('... object: '+JSON.stringify(result));
+    }
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two3">
+                    	<div class="codeBox">
+                            <p>
+                                The <a href="referencesAndroid.html">tokenFromAuthorizationCode()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+ * @param tokenUri
+ *            token endpoint.
+ * @param code
+ *            as returned from the authorization call.
+ * @param clientId
+ *            used for HTTP Basic Authorization of the request.
+ * @param clientSecret
+ *            used for HTTP Basic Authorization of the request.
+ * @param returnUri
+ *            which is the return point after the user has
+ *            authenticated/consented.
+ * @param listener
+ *            It is necessary to implement tokenResponse(JSONObject
+ *            response) and errorToken(JSONObject error) to manage the
+ *            response.
+ */
+tokenFromAuthorizationCode(String tokenUri, String code,
+			String clientId, String clientSecret, String returnUri, TokenListener listener);</code>
+                        </div>
+                    </div>
+                    <div id="box-three3">
+                        <div class="codeBox">
+                    		<p>
+                                The <a href="referencesiOS.html">tokenFromAuthorizationCode()</a> function
+                            </p>
+                            <code class="prettyprint linenums:1">/**
+Parse the authorization code and get the token
+@param url request url location
+@param code The authorisation code received from the authorisation server, from the authorisation request
+@param clientID Needed for OAuth 2.0 authorisation request.
+@param clientSecret The client_secret used in HTTP Basic Authentication using the OAuth 2.0 Client Password mechanism [RFC 6749 Section 2.3.1]
+@param redirectUri The URI where the response will be sent through redirection. The URI MUST match one of the pre-registered redirect_uris at client registration/provisioning.
+ */
+-(void)tokenFromAuthorizationCode:(NSString*)url code:(NSString*)code clientID:(NSString*)clientID clientSecret:(NSString*)clientSecret redirectUri:(NSString*)redirectUri;</code>
+							
+                            <p>                        
+                            A callback function <span class="italicStyle">tokenFromAuthorizationCodeSuccessful</span> or <span class="italicStyle">tokenFromAuthorizationCodeError</span> will be called with result. It will be a <a href="referencesiOS.html">NSMutableDictionary</a> object with <span class="italicStyle">redirect url (operatorSelection)</span>, discovery information or error. To know how to use <a href="referencesiOS.html">protocol functions</a> read <a href="tutorialsiOS.html">iOS tutorial</a></p>
+                        </div>
+                  
+                  
+                  
+                  
+                    </div>
+                </div>
+            </div>
+        </p>
+        <h3 id="refreshToken">Token based on refresh token:</h3>
+        <p>
+            Handles the refresh process and will return a new access token if successful as well as marking the old access token and refresh token as revoked.
+            <div class="tabbed-area" blockId="refreshToken">
+                <ul class="tabs group">
+                    <li><a  who="#box-one4" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two4" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three4" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one4"> 
+                        <div class="codeBox">
+                            <p>
+                                Refreshing a token.
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 url {String}
+&#47&#47 refresh_token {String}
+&#47&#47 scope {String}
+&#47&#47 client_id {String}
+&#47&#47 client_secret {String}
+&#47&#47 callbackFunction {Function}
+refreshToken(url, refresh_token, scope, client_id, client_secret, callbackFunction) </code>
+                            <p>  </p>
+                        </div>
+                    </div>
+                    <div id="box-two4">
+                    	<div class="codeBox">
+                            The <a href="referencesAndroid.html">refreshingToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param tokenUri
+ * @param refreshToken
+ * @param scope
+ * @param clientId
+ * @param clientSecret
+ * @param listener
+ */
+refreshingToken(String tokenUri, String refreshToken, String scope,
+			String clientId, String clientSecret, TokenListener listener);</code>
+                        </div>
+                    </div>
+                    <div id="box-three4">
+                    
+                    
+                    <div class="codeBox">
+                            <p>
+                                In order to minimize the use of network. If it was discovered and therefore saved automatically previously, you could get the discovery information from cache using the following function.
+                            </p></br>
+                            The <a href="referencesiOS.html">refreshToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+Refresh an existing token with an expiration time
+@param url request url location
+@param scope Space delimited and case-sensitive list of ASCII strings for OAuth 2.0 scope values. OIDC Authorisation request MUST contain the scope value “openid”. The other optional values for scope in OIDC are: “profile”, “email”, “address”, “phone” and “offline_access”.
+@param clientID Needed for OAuth 2.0 authorisation request.
+@param clientSecret The client_secret used in HTTP Basic Authentication using the OAuth 2.0 Client Password mechanism [RFC 6749 Section 2.3.1]
+@param refreshToken OAuth 2.0 referesh token to get the access_token when the access_token expires.
+*/
+-(void)refreshToken:(NSString *)url refreshToken:(NSString*)refreshToken  scope:(NSString*)scope clientID:(NSString*)clientID clientSecret:(NSString *)clientSecret;</code>
+                        </div>
+                    
+                    
+                    
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="revokingToken">Revoking access token:</h3>
+        <p>
+           Handles the revocation process and if successful marking the old access token and any associated refresh token as revoked.
+            <div class="tabbed-area" blockId="revokingToken">
+                <ul class="tabs group">
+                    <li><a  who="#box-one5" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two5" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three5" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one5"> 
+                        <div class="codeBox">
+                            <p>
+                            It request revocation of an access token at any time. 
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 url {String}
+&#47&#47 access_token {String}
+&#47&#47 client_id {String}
+&#47&#47 client_secret {?String}
+revokeToken(url, access_token, client_id, client_secret);</code>
+                        </div>
+                    </div>
+                    <div id="box-two5">
+                    	<div class="codeBox">
+                            The <a href="referencesAndroid.html">revokingAccessToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param tokenUri
+ * @param accessToken
+ * @param clientId
+ * @param clientSecret
+ * @param listener
+ */
+revokingAccessToken(String tokenUri, String accessToken, String clientId,
+			String clientSecret, TokenListener listener);</code>
+                        </div>
+                    </div>
+                    <div id="box-three5">
+                    
+                    
+                    <div class="codeBox">
+                            
+                            <ol>
+                            	<li>
+                            	 The <a href="referencesiOS.html">revokeToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**Revoke an existing token 
+@param url request url location
+@param clientID Needed for OAuth 2.0 authorisation request.
+@param clientSecret The client_secret used in HTTP Basic Authentication using the OAuth 2.0 Client Password mechanism [RFC 6749 Section 2.3.1]
+*/
+-(void)revokeToken:(NSString*)url clientID:(NSString*)clientID clientSecret:(NSString *)clientSecret;</code>
+                            	</li>
+                            	<li>
+                            	 The <a href="referencesiOS.html">revokingAccessToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**Revoke an existing access token
+@param url request url location
+@param clientID Needed for OAuth 2.0 authorisation request.
+@param clientSecret The client_secret used in HTTP Basic Authentication using the OAuth 2.0 Client Password mechanism [RFC 6749 Section 2.3.1]
+@param accessToken OAuth 2.0 referesh token to get the access_token when the access_token expires.
+ */
+-(void)revokingAccessToken:(NSString*)url accessToken:(NSString*)accessToken clientID:(NSString*)clientID clientSecret:(NSString *)clientSecret;</code>
+                            	</li>
+                            
+                            </ol>
+                           
+                        </div>
+                    
+                    
+                    
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="decodeJWTIDToken">Decode JWT IDToken:</h3>
+        <p>
+            Decodes the contents of JSON Web Token.
+            <div class="tabbed-area" blockId="decodeJWTIDToken">
+                <ul class="tabs group">
+                    <li><a  who="#box-one6" class='tabGuide'>JS/HTML</a></li> 
+                    <li><a  who="#box-two6" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three6" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one6"> 
+                        <div class="codeBox">
+                            <p>
+                               Not implemented in JS/HTML
+                            </p>
+                        </div>
+                    </div> 
+                    <div id="box-two6">
+                    	 <div class="codeBox">
+                            The <a href="referencesAndroid.html">decodeJWTIDToken()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param idToken
+ * @return JSONObject
+ * @throws JSONException
+ */
+decodeJWTIDToken(String idToken);</code>
+                        </div>
+                    </div>
+                    <div id="box-three6">
+                   
+                   <div class="codeBox">
+                            <p>
+                               Not implemented in iOS
+                            </p>
+                        </div>
+                   
+                   
+                   
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="validityAccessToken">Validity of access token:</h3>
+        <p>
+            Checks if the access token is still valid based on current time and expires_in value.
+            <div class="tabbed-area" blockId="validityAccessToken">
+                <ul class="tabs group">
+                    <li><a  who="#box-one7" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two7" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three7" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one7"> 
+                        <div class="codeBox">
+                            <p>
+                               The next function checks if the access token is still valid based on current time and expires_in value.
+                            </p>
+                            <code class="prettyprint linenums:1">&#47&#47 expires_in {String}
+&#47&#47  returns result {Boolean}
+isAccessTokenValid (expires_in);</code>
+                        </div>
+                    </div>
+                    <div id="box-two7">
+                    	 <div class="codeBox">
+                            The <a href="referencesAndroid.html">isAccessTokenValid()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param expiresIn
+ * @return boolean
+ * @throws NumberFormatException
+ */
+isAccessTokenValid(String expiresIn);</code>
+                        </div>
+                    </div>
+                    <div id="box-three7">
+                   
+                   
+                   <div class="codeBox">
+                             The <a href="referencesAndroid.html">isAccessTokenValid()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**Is access token valid 
+@param timestamp Timestamp to campare with the current time
+@return boolean with the result. 'YES' if access token is valid, 'NO' otherwise
+*/
+-(BOOL)isAccessTokenValid:(NSTimeInterval*)timestamp;</code>
+                        </div>
+                   
+                   
+                   
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+        <h3 id="userinfo">Userinfo:</h3>
+        <p>
+            Application can optionally use the access token to request access to stored user information via the OpenID Connect 'userinfo' service.
+            <div class="tabbed-area" blockId="userinfo">
+                <ul class="tabs group">
+                    <li><a  who="#box-one8" class='tabGuide'>JS/HTML</a></li>
+                    <li><a  who="#box-two8" class='tabGuide'>Android</a></li>
+                    <li><a  who="#box-three8" class='tabGuide'>iOS</a></li>
+                </ul>
+                <div class="box-wrap">
+                    <div id="box-one8"> 
+                        <div class="codeBox">
+                            <p>Obtain userinfo using access token</p>
+                            <code class="prettyprint linenums:1">&#47&#47 url {String}
+&#47&#47 access_token {String}
+&#47&#47 callbackFunction {Function}
+userinfo(url, access_token, callbackFunction);</code>
+                            <p>                        
+                            The callbackFunction will be called with result as single param. The result could be a <span class="italicStyle">....</span> object or an <span class="italicStyle">errorObject {error: String, error_description: String}</span>
+                            </p>
+                            <code class="prettyprint linenums:1">function callbackFunction(result){
+    if (result.error){
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }else{
+        console.log('... object: '+JSON.stringify(result));
+    }
+}</code>
+                        </div>
+                    </div>
+                    <div id="box-two8">
+                    	 <div class="codeBox">
+                            The <a href="referencesAndroid.html">userinfo()</a> function
+                            </br>
+                            <code class="prettyprint linenums:1">/**
+ * @param userinfoUri
+ *            userinfo endpoint.
+ * @param accessToken
+ * @param listener
+ *            It is necessary to implement userinfoResponse(JSONObject
+ *            response) and errorUserinfo(JSONObject error) to manage the
+ *            response.
+ */
+userinfo(String userinfoUri, String accessToken,
+			UserinfoListener listener);</code>
+                        </div>
+                    </div>
+                    <div id="box-three8">
+                   
+                   
+                   <div class="codeBox">
+                            <p>
+                               The <a href="referencesiOS.html">userinfo()</a> function
+                            </p>
+                            
+                            <code class="prettyprint linenums:1">/**Get user info
+@param url request url location
+@param accessToken OAuth 2.0 access_token, used to get the UserInfo object from the UserInfo end-point and can be reused for accessing other protected resources, if required.
+*/
+-(void)userInfo:(NSString*)url accessToken:(NSString*)accessToken;</code>
+                        </div>
+                   
+                   
+                   
+                    </div>
+                </div>
+            </div>
+        </p>
+        
+    </div>
+</div>
+
+<nav>
+    <h3>Guide</h3>
+    <ul>
+        <li>
+            <a href="#authorization">Authorization</a>
+        </li>
+        <li>
+            <a href="#parameter">Extract redirect parameter</a>
+        </li>
+        <li>
+            <a href="#token">Token from authorization code</a>
+        </li>
+        <li>
+            <a href="#refreshToken">Token based on refresh token</a>
+        </li>
+        <li>
+            <a href="#revokingToken">Revoking access token</a>
+        </li>
+        <li>
+            <a href="#decodeJWTIDToken">Decode JWT IDToken</a>
+        </li>
+        <li>
+            <a href="#validityAccessToken">Validity of access token</a>
+        </li>
+        <li>
+            <a href="#userinfo">Userinfo</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+
+
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        $("a.tabGuide").click(function(){
+            $(this).parent().siblings().children().css('color','rgba(0, 108, 230, 0.4)');
+            $(this).css('color','rgba(0, 108, 230, 1)');
+            var blockId = $(this).parent().parent().parent().attr('blockId');
+            $("div[blockId=\""+blockId+"\"]>div.box-wrap>div").hide();
+            $($(this).attr('who')).show();
+        });
+        $("div.box-wrap>div").hide();
+        $("div.box-wrap>div:first-child").show();
+        $("ul.tabs>li>a").css('color','rgba(0, 108, 230, 0.4)');
+        $("ul.tabs>li:first-child>a").css('color','rgba(0, 108, 230, 1)');
+    });
+    </script>
+</body>
+</html>

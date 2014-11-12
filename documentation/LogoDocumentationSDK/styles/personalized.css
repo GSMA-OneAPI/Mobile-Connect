@@ -1,0 +1,499 @@
+@import url(http://fonts.googleapis.com/css?family=Josefin+Sans);
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+
+.name,.signature {
+	font-family: 'Inconsolata';
+}
+
+.description {
+	margin-bottom: 5px;
+}
+
+body {
+	margin: 0;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+#main {
+	margin-top: 10px;
+}
+
+#main>h1 {
+	padding: 5px 10px 0px 10px;
+	background: none repeat scroll 0% 0% #333;
+	color: #F5F5F5;
+	margin-top: 0px;
+	line-height: 45px;
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	border-bottom: solid 5px white;
+	font-family: 'Josefin Sans', sans-serif;
+	z-index: 2;
+}
+
+dd {
+	margin-left: 20px;
+}
+
+h3 {
+	font-family: 'Josefin Sans', sans-serif;
+	font-size: 20px;
+}
+h5 {
+	font-family: 'Josefin Sans', sans-serif;
+	color: rgba(0, 108, 230, 0.4);
+}
+
+nav {
+	border-radius: 5px;
+	border: 1px solid rgba(0, 108, 230, 0.4);
+	padding-left: 0px;
+	margin-top: 65px;
+	position: fixed;
+	right: 15px;
+}
+
+nav a {
+	text-decoration: none;
+}
+
+nav li {
+	padding-left: 10px;
+	border-bottom: 1px solid rgba(0, 108, 230, 0.4);
+	padding: 5px 10px;
+	margin: 0px;
+}
+
+nav li:hover,nav li[actual] {
+	background: #EEE;
+	color: #006CE6;
+	font-weight: bold;
+}
+
+nav a {
+	color: inherit;
+}
+
+nav h3 {
+	margin-top: 15px;
+	border-bottom: 2px solid;
+	padding-left: 5px;
+	color: rgba(0, 108, 230, 0.4);
+	margin-bottom: 0px;
+}
+
+article h3 {
+	font-size: 25px;
+	margin-bottom: -10px;
+}
+
+h4 {
+	color: rgba(0, 108, 230, 1);
+	margin-top: 30px;
+	margin-bottom: -5px;
+}
+
+.name code {
+	color: rgba(0, 108, 230, 1);
+}
+
+.param-type {
+	color: #BF5757;
+}
+
+.params thead tr {
+	color: whitesmoke;
+	background: rgba(0, 108, 230, 1);
+}
+
+.params td,.params th {
+	border-color: rgba(0, 108, 230, 1);
+}
+
+td.attributes {
+	color: red;
+}
+
+h5 {
+	color: rgba(0, 108, 230, 1);
+	margin-left: 0px;
+	font-size: 20px;
+margin-bottom: 5px;
+margin-top: 10px;
+}
+
+section {
+	margin-top: 20px;
+	margin-right: 10px;
+}
+
+nav h2 a {
+	color: white !important;;
+	background: #006CE6;
+	width: 100%;
+	line-height: 30px;
+}
+
+nav h2 {
+	background: #006CE6;
+	width: calc(100% -   20px);
+	padding: 5px 10px 5px 10px;
+	margin: 0 0 -5px 0px;
+}
+
+.details {
+	border-color: #006CE6;
+}
+
+.syntaxhighlighter {
+	background-color: #f5f7f8 !important;
+}
+
+.syntaxhighlighter {
+	margin: 1em 0 1em 0 !important;
+	position: relative !important;
+	overflow: auto !important;
+	font-size: 1em !important;
+	width: calc(100% -   5px) !important;
+	padding: 5px;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+tbody {
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+#content .syntaxhighlighter tr {
+	border-bottom: none;
+}
+
+.syntaxhighlighter table td.code {
+	width: 100% !important;
+}
+
+pre,code {
+	font-family: "source-code-pro", Consolas, monospace !important;
+	word-spacing: 0;
+}
+
+pre,code {
+	white-space: pre;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-spacing: 0;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+p,pre {
+	margin: 1em 0;
+}
+
+.syntaxhighlighter a,.syntaxhighlighter div,.syntaxhighlighter pre,.syntaxhighlighter code,.syntaxhighlighter table,.syntaxhighlighter table td,.syntaxhighlighter table tr,.syntaxhighlighter table tbody,.syntaxhighlighter table thead,.syntaxhighlighter table caption,.syntaxhighlighter textarea
+	{
+	border-radius: 0 0 0 0 !important;
+	background: none !important;
+	bottom: auto !important;
+	float: none !important;
+	height: auto !important;
+	left: auto !important;
+	line-height: 1.1em !important;
+	margin: 0 !important;
+	outline: 0 !important;
+	overflow: visible !important;
+	padding: 0 !important;
+	position: static !important;
+	right: auto !important;
+	text-align: left !important;
+	top: auto !important;
+	vertical-align: baseline !important;
+	width: auto !important;
+	box-sizing: content-box !important;
+	font-family: "source-code-pro", Consolas, monospace !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	font-size: 1em !important;
+	min-height: inherit !important;
+	min-height: auto !important;
+}
+
+.syntaxhighlighter table {
+	width: 100% !important;
+}
+
+.syntaxhighlighter table td.code .container {
+	position: relative !important;
+}
+
+.syntaxhighlighter .gutter {
+	color: #afafaf !important;
+}
+
+.syntaxhighlighter.nogutter td.code .container textarea,.syntaxhighlighter.nogutter td.code .line
+	{
+	padding-left: 1em !important;
+}
+
+.syntaxhighlighter table td.code .line {
+	padding: 0 0.5em !important;
+}
+
+.syntaxhighlighter .line {
+	white-space: pre !important;
+}
+
+.syntaxhighlighter .line.alt2 {
+	background-color: #f5f7f8 !important;
+	white-space: pre !important;
+}
+
+.syntaxhighlighter .plain,.syntaxhighlighter .plain a {
+	color: black !important;
+}
+
+.syntaxhighlighter .keyword {
+	color: #006699 !important;
+	font-weight: bold !important;
+}
+
+.syntaxhighlighter .comments,.syntaxhighlighter .comments a {
+	color: #008200 !important;
+}
+
+.syntaxhighlighter .string,.syntaxhighlighter .string a {
+	color: blue !important;
+}
+
+.syntaxhighlighter .gutter .line {
+	padding-left: 5px;
+	padding-right: 5px;
+	border-right: solid 1px #e4e4e4 !important;
+}
+
+.sub-nav {
+	max-width: 980px;
+	margin: 0px 15px;
+	position: relative;
+	border-bottom: 1px solid #d8d8d8;
+	max-width: calc(100% -   20px);
+}
+
+.sub-nav>h2>a {
+	z-index: 10;
+	position: relative;
+}
+
+.sub-nav>h2,.sub-nav>h2>a {
+	color: #333;
+	font-weight: normal;
+	font-size: 22px;
+	-webkit-backface-visibility: hidden;
+	margin: 50px 0 10px 0;
+	text-decoration: none;
+}
+
+.sub-nav ul {
+	list-style: none;
+	margin: 50px 10px 0px;
+	position: absolute;
+	right: 0;
+	bottom: 8px;
+	width: 100%;
+	text-align: right;
+}
+
+.sub-nav li {
+	display: inline-block;
+}
+
+.sub-nav li a {
+	color: #767676;
+	font-size: 14px;
+	margin-left: 16px;
+	padding: 4px 2px 8px;
+	text-decoration: none;
+}
+
+.sub-nav li a:hover {
+	text-decoration: none;
+	color: #327fc7;
+}
+
+a:hover,a:active {
+	text-decoration: none;
+}
+
+.sub-nav li a[actual] {
+	border-bottom: 2px solid;
+	color: #327fc7;
+}
+
+nav a[actual] {
+	
+}
+
+#main {
+	margin-top: 10px;
+	width: calc(100% -   250px);
+}
+
+.centeredBlock {
+	padding: 5px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+pre .tag,pre .tag .title,pre .rules .property,pre .django .tag .keyword
+	{
+	color: #000080;
+	font-weight: normal;
+}
+
+pre .title,pre .id {
+	color: #900;
+	font-weight: bold;
+}
+pre .comment {
+    color: green;
+}
+
+pre .attribute,pre .variable,pre .lisp .body {
+	color: #008080;
+}
+
+pre .string,pre .tag .value,pre .phpdoc,pre .tex .formula {
+	color: #d14;
+}
+
+iframe {
+	width: 100%;
+	height: 580px;
+}
+.centeredBlock > p{    
+	line-height: 24px;
+  font-size: 15px;
+	margin-bottom: 5px; 
+}
+br{
+	margin-bottom: 10px;
+}
+.centeredBlock h3{
+	margin-top: 30px;
+	color: rgba(0, 108, 230, 0.4);
+}
+.centeredBlock > h3{
+	margin-top: 30px;
+	color: rgba(0, 108, 230, 0.4);
+}
+.centeredBlock > h3:first-child {
+	margin-top: 0px;
+}
+.centeredBlock > ol{
+	margin-top: 0px;
+}
+.centeredBlock a{
+	text-decoration: none;
+	color:  rgba(0, 108, 230, 0.8);
+}
+.centeredBlock a:link{
+	text-decoration: none;
+	color:  rgba(0, 108, 230, 0.4);
+}
+.centeredBlock a:hover{
+	text-decoration: none;
+	color:  rgba(0, 108, 230, 1);
+}
+span.italicStyle{
+	font-style: italic;
+	color:  rgba(0, 108, 230, 1);
+}
+.centeredBlock > ol > li{
+	margin-top: 6px;
+}
+
+.tabs { list-style: none; padding-left: 0px;
+margin-bottom: 0px;}
+.tabs li { display: inline; }
+.tabs li a { color: black; float: left; display: block; padding: 4px 10px; margin-left: -1px; position: relative; left: 1px; background: white; text-decoration: none; }
+.tabs li a:hover { background: #ccc; }
+.group:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+.box-wrap { position: relative;border: 1px #ddd solid;
+overflow-y: auto;
+}
+.tabbed-area div div :not(div.codeBox) {background: none repeat scroll 0% 0% #FFF;
+padding: 20px;
+height: 220px;
+position: absolute;border: 1px solid #CCC;
+	overflow-y: auto;
+top: -1px;
+left: 0px;
+width: calc(100% - 40px); }
+.tabs li a { border: 1px solid #ccc; }
+.tabbed-area > div > div > div.syntaxhighlighter{border: none;
+	width: calc(100% - 20px) !important;
+margin-left: 5px !important;
+margin-right: 5px !important;
+margin-top: 5px !important;}
+.tabbed-area > div > div.syntaxhighlighter{border: none;}
+.tabbed-area > div > div > div.syntaxhighlighter div{border: none;}
+#box-one:target, #box-two:target, #box-three:target {
+  z-index: 1;
+}
+#box-four:target a[href="#box-four"] { color: red; }
+.cur-nav-fix .tabs { position: absolute; bottom: 100%; left: -1px; }
+.cur-nav-fix .tabs li a { 
+   background: -webkit-linear-gradient(top, white, #eee); 
+   background: -moz-linear-gradient(top, white, #eee); 
+   background: -ms-linear-gradient(top, white, #eee); 
+   background: -o-linear-gradient(top, white, #eee); 
+}
+#box-four { z-index: 1; }
+#box-four:target .tabs, #box-five:target .tabs, #box-six:target .tabs { z-index: 3; }
+.cur-nav-fix .tabs li.cur a { border-bottom: 1px solid white; background: white; }
+.tabbed-area p{
+	padding-left: 5px;
+	padding-right: 5pz;
+}
+.tabbed-area div div div.codeBox{
+	border: none;
+}
+div.codeBox{
+	padding: 10px 10px 10px 5px ;
+	width: calc( 100% - 15px );
+	height: calc( 100% - 15px );
+	border: none;
+}
+
+div.codeBox>p{
+	margin: 0 5px 0 5px;
+}
+code.prettyprint {
+	margin: 1px !important;
+	border: none  !important;
+}
+
+div.codeBoxTutorial{
+	
+}
+.centeredBlock > p {
+	   text-align: justify;
+}
+
+.tabs.group{
+	cursor: pointer;
+}
+
+
+        li.L0, li.L1, li.L2, li.L3,
+        li.L5, li.L6, li.L7, li.L8
+        { list-style-type: decimal !important }

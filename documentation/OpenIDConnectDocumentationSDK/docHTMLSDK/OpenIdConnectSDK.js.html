@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JSDoc: Source: OpenIdConnectSDK.js</title>
+
+<script src="../scripts/prettify/prettify.js">
+	
+</script>
+<script src="../scripts/prettify/lang-css.js">
+	
+</script>
+<link type="text/css" rel="stylesheet"
+	href="../styles/prettify-tomorrow.css">
+<link type="text/css" rel="stylesheet"
+	href="../styles/jsdoc-default.css">
+<link type="text/css" rel="stylesheet" href="../styles/personalized.css">
+</head>
+</head>
+
+<body>
+
+	<div id="main">
+
+		<h1 class="page-title">Source: OpenIdConnectSDK.js</h1>
+
+
+
+
+
+		<section>
+			<article>
+				<pre class="prettyprint source linenums">
+					<code>if (typeof console == "undefined" || typeof console.log == "undefined") var console = { log: function() {} };
+/**
+ * @constructor
+ * @param display {?String} (page, popup, touch or wap)
+ * @param ui_locales {?String}
+ * @param claims_locales {?String}
+ * @param id_token_hint {?String}
+ * @param login_hint {?String}
+ * @param dtbs {?String}
+ */
+function AuthorizationOptions(display, ui_locales, claims_locales, id_token_hint, login_hint, dtbs) {
+	if(display)
+		display = display.toLowerCase();
+	if(display!='page' &amp;&amp; display!='popup' &amp;&amp; display!='touch' &amp;&amp; display!='wap')
+		throw (new callApiConnectException("AuthorizationOptions create error", "Bad format: display is not 'page', 'popup', 'touch' or 'wap'"));
+ 	if(!!display)
+		this['display'] = display;
+	if(!!ui_locales)
+		this['ui_locales'] = ui_locales;
+	if(!!claims_locales)
+		this['claims_locales'] = claims_locales;
+	if(!!id_token_hint)
+		this['id_token_hint'] = id_token_hint;
+	if(!!login_hint)
+		this['login_hint'] = login_hint;
+	if(!!dtbs)
+		this['dtbs'] = dtbs;	
+}
+/**
+ * AuthorizationOptions get
+ * @param name
+ * @returns {?String}
+ */
+AuthorizationOptions.prototype.get = function get(name) {
+	return(this[name]);
+};
+
+AuthorizationOptions.prototype.set = function set(name, object) {
+	this[name] = object;
+};
+
+/**
+ * isAString
+ * @access private
+ * @param obj {Object | string}
+ * @returns {Boolean} 
+ */
+function isAString(obj) {		
+	return((typeof(obj)==='string')||(typeof(obj)==="String"));
+}
+/**
+ * isANumber
+ * @access private
+ * @param obj {Object | number}
+ * @returns {Boolean}
+ */
+function isANumber(obj) {		
+	return((typeof(obj)==='number')||(typeof(obj)==="Number"));
+}
+
+/**
+ * Obtain Authorization Code
+ * @param url {String}
+ * @param client_id {String}
+ * @param scope {String}
+ * @param redirect_uri {String}
+ * @param response_type {String}
+ * @param state {String}
+ * @param nonce {String}
+ * @param prompt {String} (none, login, consent or select_account)
+ * @param max_age {Number}
+ * @param acer_values {String}
+ * @param authorizationOptions {AuthorizationOptions}
+ * @param callbackFunction {Function}
+ */
+function authorize(url, client_id, scope, redirect_uri, response_type, state, nonce, prompt, max_age, acer_values, authorizationOptions, callbackFunction) {
+	var parameters = '';	
+	if(!!response_type)
+		parameters+="&amp;response_type="+encodeURIComponent(response_type);
+	if(!!redirect_uri)	
+		parameters+="&amp;redirect_uri="+encodeURIComponent(redirect_uri);
+	if(!!client_id)
+		parameters+="&amp;client_id="+encodeURIComponent(client_id);
+	if(!!scope)
+		parameters+="&amp;scope="+encodeURIComponent(scope);
+//	&amp;response_type=code"
+	if(!!state)
+		parameters+="&amp;state="+encodeURIComponent(state);
+	if(!!nonce)
+		parameters+="&amp;nonce="+encodeURIComponent(nonce);
+	if(!!prompt){
+		prompt = prompt.toLowerCase();
+		if(prompt!='none' &amp;&amp; prompt!='login' &amp;&amp; prompt!='consent' &amp;&amp;  prompt!='select_account')
+			throw (new callApiConnectException("AuthorizationOptions request error", "Bad format: prompt is not 'login', 'none', 'consent' or 'select_account'"));
+		parameters+="&amp;prompt="+encodeURIComponent(prompt);
+	}
+	if(!!max_age)	
+		parameters+="&amp;max_age="+encodeURIComponent(max_age);
+	if(!!acer_values)
+		parameters+="&amp;acer_values="+encodeURIComponent(acer_values);
+	//authorizationOptions
+	if(!!authorizationOptions){
+		if(!!authorizationOptions.get('display'))
+			parameters+="&amp;display="+encodeURIComponent(authorizationOptions.get('display'));
+		if(!!authorizationOptions.get('ui_locales'))
+			parameters+="&amp;ui_locales="+encodeURIComponent(authorizationOptions.get('ui_locales'));
+		if(!!authorizationOptions.get('claims_locales'))
+			parameters+="&amp;claims_locales="+encodeURIComponent(authorizationOptions.get('claims_locales'));
+		if(!!authorizationOptions.get('id_token_hint'))
+			parameters+="&amp;id_token_hint="+encodeURIComponent(authorizationOptions.get('id_token_hint'));
+		if(!!authorizationOptions.get('login_hint'))
+			parameters+="&amp;login_hint="+encodeURIComponent(authorizationOptions.get('login_hint'));
+		if(!!authorizationOptions.get('dtbs'))
+			parameters+="&amp;dtbs="+encodeURIComponent(authorizationOptions.get('dtbs'));	
+	}
+	//Replace first &amp; for ?
+	if(parameters!="")
+		parameters = "?"+parameters.substr(1,parameters.length);
+	//HTTP request
+	loginOpenId(url+parameters, function(data){
+		callbackFunction(data);
+	});
+}
+
+function loginOpenId(url,callbackFunction){
+	var ancho = 400;
+	var alto = 400;
+	var posicion_x; 
+	var posicion_y; 
+	posicion_x=(screen.width/2)-(ancho/2); 
+	posicion_y=(screen.height/2)-(alto/2); 
+	var aux = window.open(url, "loginOpenId", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=no,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	var eventListener = function(m){
+		console.log("RECEIVED: "+m.data);
+		window.clearInterval(interval);
+		removeEventListener("message", eventListener);
+		console.log("**** "+m.data);
+		if(m.data.indexOf('error_code')>=0){
+			console.log("**** error");
+			var a = m.data;
+			var code = a.substring(a.indexOf("error_code")+11,a.indexOf("&amp;error_description"));
+			var description = a.substring(a.indexOf("error_description")+18,a.length);
+			var result = {error_code: code, error_description: description};
+			aux.close();
+			callbackFunction(result);			
+		}else if((m.data.indexOf('code')&lt;0)&amp;&amp;(m.data.indexOf('access_token')&lt;0)){
+			console.log("**** no code y access_token");
+			aux.close();
+			callbackFunction(-1);			
+		}else if(m.data.indexOf('code')>=0){
+			var code = m.data.substring(m.data.indexOf('code=')+5,m.data.length);
+			console.log("**** code");
+			var result = {code: code};
+			aux.close();
+			callbackFunction(result);
+		}else if(m.data.indexOf('access_token')>=0){
+			console.log("**** access_token");
+			var access_token = m.data.substring(m.data.indexOf('access_token=')+13,m.data.indexOf('expires_in='));
+			var expires_in = m.data.substring(m.data.indexOf('expires_in=')+11,m.data.length);
+			var result = {access_token: access_token, expires_in: expires_in };
+			aux.close();
+			callbackFunction(result);
+		}
+	};
+	addEventListener("message", eventListener,false);
+	var interval = setInterval(function(){
+		if(!aux.closed){
+			aux.postMessage(window.location.href, "*");
+		}else{
+			window.clearInterval(interval);
+			callbackFunction(-1);
+		}
+	}, 1000);	
+}
+function callApiConnectException(name, description) {
+	this.name = name;
+	this.description = description;
+}
+
+function parseResponseData(){
+	var params = {};
+	var url = location.hash.substring(1);
+	regex = /([^&amp;=]+)=([^&amp;]*)/g, url;
+	while (url = regex.exec(queryString)) {
+	  params[decodeURIComponent(url[1])] = decodeURIComponent(url[2]);
+	}
+	return(params);	
+}
+
+/**
+ * tokenFromAuthorizationCode
+ * Request access token from authorization code
+ * @param url {String} 
+ * @param code {String} The authorisation code received from the authorisation server, from the authorisation request
+ * @param client_id {String}
+ * @param client_secret {String}
+ * @param redirect_uri {String} The redirect_uri value MUST match the one sent in the authorisation request
+ * @param callbackFunction {Function} 
+ */
+function tokenFromAuthorizationCode(url, code, client_id, client_secret, redirect_uri, callbackFunction){
+	var data = "&amp;grant_type=authorization_code";
+	if(!!client_id)
+		data += "&amp;client_id=" + client_id;
+	if(!!client_secret)
+		data += "&amp;client_secret=" + client_secret;
+	if(!!code)
+		data += "&amp;code=" + code;
+	if(!!redirect_uri)
+		data += "&amp;redirect_uri=" + redirect_uri;
+	//Remove first &amp;
+	if(data!="")
+		data = data.substr(1,data.length);
+	//HTTP request
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) { //DONE
+			var result = xhr;
+			if(xhr.status===200){
+				result = JSON.parse(result);
+			}else{
+				console.log(xhr.status+" --- "+JSON.stringify(result));
+				if(xhr.responseText!='')
+					result = JSON.parse(xhr.responseText);
+				else
+					result = { "error":"0" , "error_description":"no description received" };
+			}
+			callbackFunction(result);
+		}
+	};
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.setRequestHeader('Accept','application/json');
+	xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
+	xhr.send(data);
+}
+
+function tokenResponse (access_token, token_type, id_token, expires_in, refresh_token){
+	this[access_token] = access_token;
+	this[token_type] = token_type;
+	this[id_token] = id_token;
+	this[expires_in] = expires_in;
+	this[refresh_token] = refresh_token;
+}
+
+tokenResponse.prototype.get = function (name){
+	return(this[name]);
+};
+
+function generateTokenResponse (json){
+	var token = new tokenResponse (json.access_token, json.token_type, json.id_token, json.expires_in, json.refresh_token);
+	return (token);
+}
+/**
+ * Checks if the access token is still valid based on current time and expires_in value.
+ * @param expires_in
+ * @returns {Boolean}
+ */
+function isAccessTokenValid (expires_in){
+	var d = new Date();
+	return( d.getTime() &lt;= expires_in );
+}
+
+/**
+ * Refreshing a token
+ * @param url {String}
+ * @param refresh_token {String}
+ * @param scope {String}
+ * @param client_id {String}
+ * @param client_secret {String}
+ * @param callbackFunction {Function}
+ */
+function refreshToken(url, refresh_token, scope, client_id, client_secret, callbackFunction) {
+	var parameters = "";
+	if(!!client_id)
+		parameters += "&amp;client_id=" + client_id;
+	if(!!client_secret)
+		parameters += "&amp;client_secret=" + client_secret;
+	if(!!refresh_token)
+		parameters += "&amp;refresh_token=" + refresh_token;
+	parameters += "&amp;grant_type=refresh_token";
+	if (!!scope)
+		parameters += "&amp;scope=" + scope;
+	//Remove first &amp; 
+	if(parameters!="")
+		parameters = parameters.substr(1,parameters.length);
+	//HTTP request
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) { //DONE
+			var result = xhr;
+			if(xhr.status===200){
+				result = JSON.parse(result);
+			}else{
+				console.log(xhr.status+" --- "+JSON.stringify(result));
+				if(xhr.responseText!='')
+					result = JSON.parse(xhr.responseText);
+				else
+					result = { "error":"0" , "error_description":"no description received" };
+			}
+			callbackFunction(result);
+		}
+	};
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.setRequestHeader('Accept','application/json');
+	xhr.send(parameters);
+}
+
+/**
+ * It request revocation of an access token at any time. 
+ * @param url {String}
+ * @param access_token {String}
+ * @param client_id {String}
+ * @param client_secret {?String}
+ */
+function revokingAccessToken(url, access_token, client_id, client_secret) {
+	var parameters = "&amp;scope=revoke";
+	parameters += "&amp;grant_type=access_token";
+	if(!!client_id)
+		parameters += "&amp;client_id=" + client_id;
+	if(!!client_secret)
+		parameters += "&amp;client_secret=" + client_secret;
+	if(!!access_token)
+		parameters += "&amp;access_token=" + access_token;
+	//Remove first &amp; 
+	if(parameters!="")
+		parameters = parameters.substr(1,parameters.length);
+	//HTTP request
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) { //DONE
+			var result = xhr;
+			if(xhr.status===200){
+				result = JSON.parse(result);
+			}else{
+				console.log(xhr.status+" --- "+JSON.stringify(result));
+				if(xhr.responseText!='')
+					result = JSON.parse(xhr.responseText);
+				else
+					result = { "error":"0" , "error_description":"no description received" };
+			}
+			callbackFunction(result);
+		}
+	};
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.setRequestHeader('Accept','application/json');
+	xhr.send(parameters);
+}
+
+/**
+ * It handles the revokation process and if successful marking the old access token and any associated refresh token as revoked.
+ * @param url {String}
+ * @param client_id {String}
+ * @param client_secret {String}
+ */
+function revokeToken(url, client_id, client_secret) {
+	var parameters = "";
+	parameters += "&amp;scope=revoke";
+	if(!!client_id)
+		parameters += "&amp;client_id=" + client_id;
+	if(!!client_secret)
+		parameters += "&amp;client_secret=" + client_secret;
+	parameters += "&amp;grant_type=access_token";
+	//Remove first &amp; 
+	if(parameters!="")
+		parameters = parameters.substr(1,parameters.length);
+	//HTTP request
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) { //DONE
+			var result = xhr;
+			if(xhr.status===200){
+				result = JSON.parse(result);
+			}else{
+				console.log(xhr.status+" --- "+JSON.stringify(result));
+				if(xhr.responseText!='')
+					result = JSON.parse(xhr.responseText);
+				else
+					result = { "error":"0" , "error_description":"no description received" };
+			}
+			callbackFunction(result);
+		}
+	};
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.setRequestHeader('Accept','application/json');
+	xhr.send(parameters);
+}
+
+/**
+ * Obtain userinfo using access token
+ * @param url {String}
+ * @param access_token {String}
+ * @param callbackFunction {Function}
+ */
+function userinfo(url, access_token, callbackFunction){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) { //DONE
+			var result = xhr;
+			if(xhr.status===200){
+				 result = JSON.parse(xhr.responseText);
+				// result = generateTokenResponse (responseObj);
+				result = '';
+			}else{
+				console.log(xhr.status+" --- "+JSON.stringify(result));
+				if(xhr.responseText!='')
+					result = JSON.parse(xhr.responseText);
+				else
+					result = { "error":"0" , "error_description":"no description received" };
+			}
+			callbackFunction(result);
+		}
+	};
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.setRequestHeader('Accept','application/json');
+	if(!!access_token)
+		xhr.setRequestHeader('Authorization',"Bearer "+access_token);
+	xhr.send();
+}
+
+
+
+/**
+ * helperRedirectOpenIdAuthorize
+ * get from redirected url and sent to SDK
+ */
+function helperRedirectOpenIdAuthorize() {
+	if(!!window.opener &amp;&amp; !window.opener.closed){
+		addEventListener("message",function(m){
+			console.log("_______ "+window.location.href);
+			console.log("_______ "+m.data);
+    		window.opener.postMessage(window.location.href, m.data);
+		},false);
+	}
+}</code>
+				</pre>
+			</article>
+		</section>
+
+
+
+
+	</div>
+
+	<nav>
+		<h2>
+			<a href="index.html">Index</a>
+		</h2>
+		<h3>Classes</h3>
+		<ul>
+			<li><a href="AuthorizationOptions.html">AuthorizationOptions</a></li>
+		</ul>
+		<h3>Global</h3>
+		<ul>
+			<li><a href="global.html#authorize">authorize</a></li>
+			<li><a href="global.html#helperRedirectOpenIdAuthorize">helperRedirectOpenIdAuthorize</a></li>
+			<li><a href="global.html#isAccessTokenValid">isAccessTokenValid</a></li>
+			<li><a href="global.html#refreshToken">refreshToken</a></li>
+			<li><a href="global.html#revokeToken">revokeToken</a></li>
+			<li><a href="global.html#revokingAccessToken">revokingAccessToken</a></li>
+			<li><a href="global.html#tokenFromAuthorizationCode">tokenFromAuthorizationCode</a></li>
+			<li><a href="global.html#userinfo">userinfo</a></li>
+		</ul>
+	</nav>
+
+	<br clear="both">
+
+	<footer>
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc
+			3.3.0-dev</a> on Wed Oct 15 2014 12:38:58 GMT+0200 (CEST)
+	</footer>
+
+	<script>
+		prettyPrint();
+	</script>
+	<script src="scripts/linenumber.js">
+		
+	</script>
+</body>
+</html>

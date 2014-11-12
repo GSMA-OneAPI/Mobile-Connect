@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OpenID Connect: iOS tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>OpenID Connect</h2>
+        <ul>
+            <li><a href="installiOS.html">Getting Started</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="tutorialsiOS.html" actual>Tutorials</a></li>
+            <li><a href="referencesiOS.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>iOS Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use OpenID Connect on iOS.
+        </p>
+        
+        
+        
+        
+        
+        
+<!-- 		  <h3>Including OpenID library</h3> -->
+<!-- 		<p> -->
+<!-- 			To start we need to import the OpenID library in to the project (refer to <a href="installiOS.html">Getting Started</a>). -->
+          
+<!--            <pre class="prettyprint linenums:1">#import "MobileConnect.h" -->
+<!-- #import "AuthorizationOptions.h"</pre> -->
+           
+<!--              <h3>Creating a WebView for Authorization and interacting with it</h3> -->
+<!-- 		<p> -->
+<!-- 			For the authorization function we need to implement a webview and set it in the OpenId object.  -->
+          
+          
+<!--            <pre class="prettyprint linenums:1">@interface ViewController : UIViewController  &lt;UIWebViewDelegate&gt; -->
+
+<!-- //Test webview to associate -->
+<!-- @property (nonatomic, strong) IBOutlet UIWebView *webViewTest; -->
+
+<!-- @end -->
+<!--            </pre> -->
+           
+<!--                       <pre class="prettyprint linenums:1"> -->
+<!-- @implementation ViewController -->
+
+<!-- @synthesize webViewTest; -->
+                      
+
+<!-- //Initializing load of webview -->
+<!-- - (void)webViewDidStartLoad:(UIWebView *)webView -->
+<!-- { -->
+<!--     NSLog(@"Start loading the URL"); -->
+
+<!-- } -->
+
+<!-- //Loaing webview -->
+<!-- - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType -->
+<!-- { -->
+<!--     NSLog(@"Loading URL :%@",request.URL.absoluteString); -->
+    
+<!--     MobileConnect *mobileConnectObj = [[MobileConnect alloc] init]; -->
+<!--     [mobileConnectObj extractRedirectParameter:request.URL.absoluteString]; -->
+    
+<!--     //return FALSE; //to stop loading -->
+<!--     return YES; -->
+<!-- } -->
+
+<!-- //Fail if error in load webview -->
+<!-- - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error -->
+<!-- { -->
+<!--     NSLog(@"Failed to load with error :%@",[error debugDescription]); -->
+    
+<!-- } -->
+
+<!-- @end -->
+<!--            </pre> -->
+           
+           
+           <h3>Creating OpenID object</h3>
+		<p>
+			To invoke the OpenID functions its needed to set up first a OpenID object. We need also to assign a delegate class which will be the receiver class for the calls responses (in the example below will use self). It's needed for the developer to set up the webview in the OpenId object (for some help regarding the WebView use the example in the above paragraph).    
+          
+           <pre class="prettyprint linenums:1">//API object creation
+MobileConnect *mobileConnectObj = [[MobileConnect alloc] init];
+    
+//Create webview for further assingments
+UIWebView *authorizationWebview = [[UIWebView alloc]initWithFrame:self.view.frame];     
+
+    
+//Assign Mobile Connect delegate for manage the responses
+self.mobileConnectProvider.traceMode=TRUE;
+self.mobileConnectProvider.authorizationDelegate=self;
+self.mobileConnectProvider.tokenFromAuthorizationCodeDelegate=self;
+self.mobileConnectProvider.userInfoDelegate=self;</pre>
+           
+
+    
+            <h3>Executing OpenID Connect functions</h3>
+		<p>
+            The OpenID Connect library implement the following functions.      
+            <ul style="list-style-type:none;">
+	            
+	           <li> 
+	           		<h3>Authorize</h3> 
+	           		<p>
+	           		
+		            This functions open a loggin web site for authorize. Do not return any result.
+		          
+		           <pre class="prettyprint linenums:1">//Prepare webView
+UIWebView *authorizationWebview=[[UIWebView alloc]initWithFrame:self.view.frame];
+
+//Authorize Call
+AuthorizationOptions *authOpts=[[AuthorizationOptions alloc] init];
+authorizationOptions->ui_locales=@"en";
+authorizationOptions->display=PAGE;
+authorizationOptions->claims_locales=@"en";
+authorizationOptions->id_token_hint=nil;
+authorizationOptions->login_hint=nil;
+authorizationOptions->dtbs=nil;
+    
+MobileConnect *mobileConnectObj = [[MobileConnect alloc] init];
+    
+[mobileConnectObj authorize:@"https://etelco-prod.apigee.net/v1/oauth2/authorize" clientID:@"clienIDKey"  clientSecret:@"ClientIdSecret"  scope:@"openid profile email userinfo" redirectUri:@"http://localhost/" responseType:@"code" state:@"7D0BCA69-0635-4103-859F-A625957EBE53" nonce:@"1DE1670F-1F88-42C0-A750-64CB6EF4ED4E" prompt: (promptEnumType)LOGIN maxAge:3600 acrValues:nil authorizationOptions:authOpts webview:authorizationWebview];
+    
+
+</pre>
+	           
+	           
+	           </li>
+	           
+	           <li> 
+	           		<h3>Extract parameters function</h3> 
+	           		<p>
+		            This functions parse a provided url an return a list of parameters extracted from it. The result will be returned to the delegate functions.
+		          
+		           <pre class="prettyprint linenums:1">//Extract parameters
+MobileConnect *MobileConnectObj = [[MobileConnect alloc] init];
+NSString *url = @"https://192.168.0.35:9443/oauth2/authorize?client_id=cY1GaZiQyDgBy3dmrdrR5c0UfTIa&client_secret=secret&scope=my_scope&redirect_uri=http://192.168.0.35/testerGSMA/redirecto_openId.html&response_type=code";
+NSLog(@"Extracted parameters: %@", [MobileConnectObj extractRedirectParameter:url]);</pre>
+	           
+	           </li>
+	            
+	           
+	           <li>
+		            <h3>Token from authorization code</h3>
+					<p>
+		            Request access token from authorization code. The result will be returned to the delegate functions.
+		          
+		           <pre class="prettyprint linenums:1">//Token from authorization code
+MobileConnect *MobileConnectObj = [[MobileConnect alloc] init];
+[MobileConnectObj tokenFromAuthorizationCode:url code:code clientID:clientID clientSecret:clientSecret redirectUri:redirectUri];</pre>
+	           </li>
+	           
+	           <li>
+		            <h3>Refresh token</h3>
+					<p>
+						Refresh access token. The result will be returned to the delegate functions.
+		          
+		          
+		           <pre class="prettyprint linenums:1">//Refresh token
+MobileConnect *MobileConnectObj = [[MobileConnect alloc] init];
+[MobileConnectObj refreshToken:url refreshToken:refreshToken scope:scope clientID:clientID clientSecret:clientSecret];</pre>
+	           </li>
+	            
+	            
+	           <li>      
+		           <h3>Revoke access token</h3>
+					<p>
+					This function revoke the access token provided. The result will be returned to the delegate functions.
+					
+		           <pre class="prettyprint linenums:1">//Revoking token
+MobileConnect *MobileConnectObj = [[MobileConnect alloc] init];
+[MobileConnectObj revokingAccessToken:url accessToken:accessToken clientID:clientID clientSecret:clientSecret];</pre>
+	           </li>   
+	           
+	           
+	            <li>      
+		           <h3>Valid access token</h3>
+					<p>
+					This function return if the access token provided still valid or is expired. Return a BOOL object with the result representation.
+					
+		           <pre class="prettyprint linenums:1">//Revoking token
+MobileConnect *MobileConnectObj = [[MobileConnect alloc] init];
+[MobileConnectObj isAccessTokenValid:timeStampObject];</pre>
+	           </li>   
+	            
+           </ul>
+            
+            
+            
+ 
+        
+        
+        <h3>Managing functions response</h3>
+			<p>
+            All the OpenID functions use asynchronous request internally. Due to this a formal protocol is defined to manage the OpenId functions response. 
+          
+           <pre class="prettyprint linenums:1">#import "MobileConnect.h"
+
+@interface GenericClass : NSObject &lt;ProcessAuthorizationDelegate , ProcessRefreshTokenDelegate, ProcessRevokeTokenDelegate, ProcessRevokingAccessTokenDelegate, ProcessTokenFromAuthorizationCodeDelegate, ProcessUserInfoDelegate&gt;</pre>
+             
+             <ol>
+             
+             <li>                       
+          <p>
+            The protocol implementation force us to declare the authorizationSuccessful, authorizationError functions which will receive the authorize responses. The iOS SDK declare a <a href="referencesiOS.html">responseField</a> function for the developer to get the desire field. In the example below we are involved some discovery and tokenFromAuthorizationCode functions needed.  
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+- (void) authorizationSuccessful:(NSString *) code state:(NSString *) state {
+    NSLog(@"handling authorizationSuccessful code=%@ state=%@", code, state);
+
+    NSMutableDictionary *discoveryData=self.discoveryProvider.getCachedDiscoveryItem;
+    NSString *client_id=[discoveryObj responseField:discoveryData field:@"client_id"];
+    NSString *client_secret=[discoveryObj responseField:discoveryData field:@"client_secret"];
+    NSString *tokenurl=[discoveryObj endpoint:discoveryData api:@"operatorid" function:@"token"];
+
+    NSLog(@"dispatching token request");
+    [MobileConnectObj tokenFromAuthorizationCode:tokenurl code:code clientID:client_id clientSecret:client_secret redirectUri:self.returnUri];
+        
+}
+
+- (void) authorizationError:(NSString *)error errorDescription:(NSString *)errorDescription state:(NSString *) state {
+    NSLog(@"refreshTokenError: %li\n%@", statusCode, errorData);
+}</pre>
+             	</li>
+             	<li>                       
+          <p>
+            The protocol implementation force us to declare the refreshTokenSuccessful, refreshTokenError functions which will receive the get RefreshToken responses.
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+- (void) refreshTokenSuccessful:(long)statusCode data:(NSMutableDictionary*)data{
+    NSLog(@"refreshTokenSuccessful: %li\n%@", statusCode, data);    
+}
+
+- (void) refreshTokenError:(long)statusCode data:(NSMutableDictionary*)errorData{
+    NSLog(@"refreshTokenError: %li\n%@", statusCode, errorData);
+}</pre>
+             	</li>
+	             <li>
+	                       <p>
+            The protocol implementation force us to declare the revokingAccessTokenSuccessful, revokingAccessTokenError functions which will receive the RevokeToken responses.
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+- (void) revokingAccessTokenSuccessful:(long)statusCode data:(NSMutableDictionary*)data{
+    NSLog(@"revokingAccessTokenSuccessful: %li\n%@", statusCode, data);    
+}
+
+- (void) revokingAccessTokenError:(long)statusCode data:(NSMutableDictionary*)errorData{
+    NSLog(@"revokingAccessTokenError: %li\n%@", statusCode, errorData);
+}</pre>
+             	</li>
+             
+             	<li>
+                 <p>
+            The protocol implementation force us to declare the tokenFromAuthorizationCodeSuccessful, tokenFromAuthorizationCodeError functions which will receive the TokenFromAuthorizationCode responses. <i>This example complete the code above in the "iOS Tutorial - Managing functions response - section 1"</i>
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+-(void)tokenFromAuthorizationCode:(NSString*)url code:(NSString*)code clientID:(NSString*)clientID clientSecret:(NSString*)clientSecret redirectUri:(NSString*)redirectUri{
+    
+    NSLog(@"handling tokenFromAuthorizationCodeSuccessful statusCode=%ld access_token=%@, expires_in=%@, refresh_token=%@, all data=%@", statusCode, access_token, expires_in, refresh_token, data);
+    
+    NSMutableDictionary *discoveryData= discoveryObj.getCachedDiscoveryItem;
+    NSString *tokenurl=[discoveryObj endpoint:discoveryData api:@"operatorid" function:@"userinfo"];
+    if (tokenurl && access_token) {
+        NSLog(@"dispatching userinfo request");
+        [MobileConnectObj userInfo:tokenurl accessToken:access_token];
+    }    
+}
+
+- (void) tokenFromAuthorizationCodeError:(long)statusCode data:(NSMutableDictionary*)errorData;{
+    NSLog(@"tokenFromAuthorizationCodeError: %li\n%@", statusCode, errorData);
+}</pre>      	
+             	</li>
+             
+             	<li>
+                 <p>
+            The protocol implementation force us to declare the refreshTokenSuccessful, userInfoError functions which will receive the Userinfo responses.
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+- (void) userInfoSuccessful:(long)statusCode data:(NSMutableDictionary*)data{
+    NSLog(@"userInfoSuccessful: %li\n%@", statusCode, data);    
+}
+
+- (void) userInfoError:(long)statusCode data:(NSMutableDictionary*)errorData{
+    NSLog(@"userInfoError: %li\n%@", statusCode, errorData);
+}</pre>      	
+             	</li>
+        
+             
+             </ol>
+             
+             
+        
+        
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li actual>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DiscoverySDK: HTML tutorial</title>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Discovery</h2>
+        <ul>
+            <li><a href="installHTML.html">Getting Started</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="tutorialsHTML.html" actual>Tutorials</a></li>
+            <li><a href="referencesHTML.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>JS/HTML Tutorial </h3>
+        <p>
+        Here a brief instructions for using the DiscoverySDK on HTML.<br/>
+        Please remember to show the console navigator.
+        </p>
+
+        <h3 id="developerHelper">Using developer helper</h3>
+        <p>
+            In case of your mcc and mnc are not available, and you want to use the operator selector webpage, in order to discover it. You can use our proposal of helper.
+            <br/>
+            This method is based on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage" target="_blank">Window.postMessage</a> the safety method that enables to stablish communication between different pages. In our case we need to communicate a pop-up with the redirectUrl opened and the main page.
+            <br/>
+            Because the mcc and mnc value will be obtained from the url redirected, and it's needed to be able to remake the call to the discovery API and finally get a valid <span class="italicStyle">DiscoveryResponse</span>.
+            <br/>
+            <h5>Lets start:</h5>
+            Please, follow this steps to use the developer helper provided by this API appropriately.<br/> 
+            <ol>
+                <li>
+                    Fist step is to make a little loading web-page which will be the pop-up.
+                </li>
+                <li>
+                    Import <span class="italicStyle">DiscoverySDK.js</span> in this little page in head tag.
+                    <br/>
+                    <code class="prettyprint lang-html linenums:1">&lt;script src="/code/DiscoverySDK.js"&gt;&lt;/script&gt;</code>
+                </li>
+                <li>
+                    Add the following code embebbed:
+                    <br/>
+                    The following function obtains mcc and mnc value and sent to main page.
+                    <br/>
+                    <code class="prettyprint lang-html linenums:1">&lt;script type="text/javascript"&gt;
+    helperRedirectOpenIdAuthorize();
+&lt;/script&gt;</code>
+                </li>
+                <li>
+                    Now, Only in case you are using <span class="italicStyle">getDiscoveryPassive</span> call In the main JavaScript code more concretely in your <span class="italicStyle">callbackFunction</span> if a result["operatorSelection"] is not undefined, include this line.<br/>
+                    <code class="prettyprint lang-js linenums:1">selectOperator(result, callbackFinish);</code>
+                    <br/>
+                    This function will wait for the pop-up message and save the mcc_mnc in cache.<br/>
+                    Now in the callbackFinish function you can remake the initial getDiscovery because now you have the mcc and mnc.
+                    <br/>
+                    <code class="prettyprint lang-js linenums:1">function callbackFinish(mcc, mnc){
+    if(mcc != null && mcc >= 0){
+        getDiscoveryPassive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);
+    }else{
+        console.log("ERROR mcc not found");
+   }
+}</code>
+                </li>
+            </ol>
+            And thats all, if you prefer using the <span class="italicStyle">getDiscoveryActive</span>, without any mcc and mnc parameters, a pop-up will be opened with the operator selected page, when your operator was selected and confirmed, your webpage[1] will be showed for a while, and when the main page received the mcc and mnc the request to get discovery will be do it again automatically. You don't need the last step[4].
+
+   		</p>
+        <div style="height:20px;"></div>
+        <h5>Discovery passive</h5>
+        <div class="codeBox">
+            <p>
+            <h6>In the HTML code:</h6>
+            <ol>
+                <li>
+                    On head tad needs to imports:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&ltscript src="/code/DiscoverySDK.js"&gt;&lt/script&gt;</code>
+                <li>
+                    On body tag include a simple button that make the discovery call:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&lt;button onclick='javascript: getDiscoveryActive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);'&gt;
+    Active discovery
+&lt;/button&gt;</code>
+            </ol>
+            <div class="codeBoxTutorial">
+                
+            </div>
+            <h6>In the Javascript file:</h6>
+            <ol>
+                <li>
+                    CallbackFunction:
+                </li>
+<code class="prettyprint lang-js linenums:1">function callbackFunction(result){
+    if(result["operatorSelection"]!=undefined){
+        selectOperator(result, callbackFinish);
+    }else if(result.error===undefined){
+        console.log("DiscoveryResponse: "+JSON.stringify(result));
+        $("#discovery").append(JSON.stringify(result));
+    }else{
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }
+}</code>
+                <li>
+                    CallbackFinish is the function must be a remake of the origin call because now the mcc and mnc are saved in cache.
+                </li>
+<code class="prettyprint lang-js linenums:1">function callbackFinish(mcc, mnc){
+    if(mcc != null && mcc >= 0){
+        getDiscoveryPassive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);
+    }else{
+        console.log("ERROR mcc not found");
+   }
+}</code>
+            
+                <li>
+                    Don't forget reading <a href="#developerHelper">Using developer helper</a> because you need to create the pop-up page.
+                </li>
+            </ol>
+            </p>
+        </div>
+        <h5>Discovery active</h5>
+        <div class="codeBox">
+            <p>
+            <h6>In the HTML code:</h6>
+            <ol>
+                <li>
+                    On head tad needs to imports:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&ltscript src="/code/DiscoverySDK.js"&gt;&lt/script&gt;</code>
+                <li>
+                    On body tag include a simple button that make the discovery call:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&lt;button onclick='javascript: getDiscoveryPassive(serviceUri, consumerKey, consumerSecret, encrypt, mcc, mnc, msisdn, sourceIP, redirectUri, callbackFunction);'&gt;
+    Passive discovery
+&lt;/button&gt;</code>
+            </ol>
+            <div class="codeBoxTutorial">
+                
+            </div>
+            <h6>In the Javascript file:</h6>
+            <ol>
+                <li>
+                    CallbackFunction:
+                </li>
+<code class="prettyprint lang-js linenums:1">function callbackFunction(result){
+    if(!result.error){
+        console.log("DiscoveryResponse: "+JSON.stringify(result));
+    }else{
+        console.log("ERROR "+result.error+": "+result.error_description);
+    }
+}</code>
+                <li>
+                    Don't forget reading <a href="#developerHelper">Using developer helper</a> because you need to create the pop-up page.
+                </li>
+            </ol>
+            </p>
+        </div>
+        <h5>Clear memory:</h5>
+        <div class="codeBox">
+            <p>
+            <h6>In the HTML code:</h6>
+            <ol>
+                <li>
+                    On head tad needs to imports:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&ltscript src="/code/DiscoverySDK.js"&gt;&lt/script&gt;</code>
+                <li>
+                    On body tag include a simple button that call the clear function:
+                </li>
+                    <code class="prettyprint lang-html linenums:1">&lt;button onclick="javascript: clearCacheDiscoveryItem();"&gt;
+    Clear mcc_mnc saved
+&lt;/button&gt;;</code>
+            </ol>
+            </p>
+        </div>
+        <h5>Access to DiscoveryResponse:</h5>
+        The access to DiscoveryResponse could be as a simple JSON or using the data structure. In the following function you can see how to explore completely a DiscoveryResponse structure tree. 
+        <div class="codeBox">
+            <p>
+            <h6>In the Javascript file:</h6>
+                    <code class="prettyprint lang-js linenums:1">function printDiscoveryResponseOnConsole(result){
+    console.log('Ttl'+ result.getTtl());
+    console.log('Response'+JSON.stringify(result.getResponse()));
+    console.log('Apis'+JSON.stringify(result.getResponse().getApis()));
+    console.log('Client_id'+result.getResponse().getClient_id());
+    console.log('Client_secret'+result.getResponse().getClient_secret());
+    console.log('Country'+result.getResponse().getCountry());
+    console.log('Currency'+result.getResponse().getCurrency());
+    console.log('Subscriber_operator'+result.getResponse().getSubscriber_operator());
+    if(result.getResponse().getApi('operatorid')!=null){
+        for ( var i = 0; i < result.getResponse().getApi('operatorid').getLink().length; i++) {
+            console.log('Link '+i+": "+JSON.stringify(result.getResponse().getApi('operatorid').getLink()[i]));
+            console.log('Href '+i+": "+result.getResponse().getApi('operatorid').getLink()[i].getHref());
+            console.log('Rel '+i+": "+result.getResponse().getApi('operatorid').getLink()[i].getRel());
+        }
+    }
+    if(result.getResponse().getApi('payment')!=null){
+        for ( var i = 0; i < result.getResponse().getApi('payment').getLink().length; i++) {
+            console.log('Link '+i+": "+JSON.stringify(result.getResponse().getApi('payment').getLink()[i]));
+            console.log('Href '+i+": "+result.getResponse().getApi('payment').getLink()[i].getHref());
+            console.log('Rel '+i+": "+result.getResponse().getApi('payment').getLink()[i].getRel());
+        }
+    }       
+}</code>
+            </p>
+        </div>
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li actual>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial </a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial </a>
+        </li>
+    </ul>
+</nav>
+<br clear="both">
+
+<footer>
+    
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

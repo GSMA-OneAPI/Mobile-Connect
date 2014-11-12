@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OpenID Connect: Android tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>OpenID Connect</h2>
+        <ul>
+            <li><a href="installAndroid.html">Getting Started</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="tutorialsAndroid.html" actual>Tutorials</a></li>
+            <li><a href="referencesAndroid.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>Android Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use OpenID Connect on Android.
+        </p>
+        
+        <h3>OpenIdConnectActivity</h3>
+		<p>
+            This is a simple android <a href="https://developer.android.com/guide/components/activities.html" target="_blank">Activity</a> which invokes, through buttons (<a href="https://developer.android.com/guide/topics/ui/controls/button.html" target="_blank">Button</a>), some methods that OpenID Connect has (explained in <a href="guides.html">Guides</a>).
+          
+           <pre class="prettyprint lang-java linenums:1">
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import com.gsma.android.mobileconnect.authorization.Authorization;
+import com.gsma.android.mobileconnect.authorization.AuthorizationOptions;
+
+import com.gsma.android.mobileconnect.token.Token;
+import com.gsma.android.mobileconnect.token.TokenData;
+import com.gsma.android.mobileconnect.token.TokenListener;
+
+import com.gsma.android.mobileconnect.userinfo.Userinfo;
+import com.gsma.android.mobileconnect.userinfo.UserinfoData;
+import com.gsma.android.mobileconnect.userinfo.UserinfoListener;
+
+import com.gsma.android.mobileconnect.utils.ParameterList;
+import com.gsma.android.mobileconnect.values.Prompt;
+import com.gsma.android.mobileconnect.values.ResponseType;
+
+public class OpenIdConnectActivity extends Activity{
+	private static final String TAG = "OpenIdConnectActivity";
+				
+	// Discovery response dates
+	String authUri = "example/oauth2/authorize";
+	String tokenUri = "example/oauth2/token";
+	String userinfoUri = "example/oauth2/userinfo";
+	ResponseType responseType = ResponseType.CODE;
+	String client_id = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+	String client_secret = "";
+	
+	String redirect_uri = "test://test";
+	
+	// Authorize attributes
+	String scopes = "openid profile email";
+	String state = "";
+	String nonce = "";
+	Prompt prompt = Prompt.NONE;
+	int maxAge = 0;
+	String acrValues = "";
+	AuthorizationOptions authorizationOptions = null;
+	String returnUriExtract = "";
+	
+	// Token attributes
+	String code = "";
+	String refreshToken = "";
+	String accessToken = "";
+	String idToken = "";
+	String expiresIn = "";
+	
+	// Userinfo attributes
+	String accessTokenUserinfo = "";
+
+	Button authorize = null;
+	Button extractRedirectParameter = null;
+	Button token = null;
+	Button refreshingToken = null;
+	Button revokingAccessToken = null;
+	Button decodeJWTIDToken = null;
+	Button isAccessTokenValid = null;
+	Button userinfo = null;
+					
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.test://test);
+						
+		authorize = (Button) findViewById(R.id.authorize);
+		authorize.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button1();
+			}
+		});
+
+		extractRedirectParameter = (Button) findViewById(R.id.extractRedirectParameter);
+		extractRedirectParameter.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button2();
+			}
+		});
+
+		token = (Button) findViewById(R.id.token);
+		token.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button3();
+			}
+		});
+
+		refreshingToken = (Button) findViewById(R.id.refreshingToken);
+		refreshingToken.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button4();
+			}
+		});
+
+		revokingAccessToken = (Button) findViewById(R.id.revokingAccessToken);
+		revokingAccessToken.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button5();
+			}
+		});
+
+		decodeJWTIDToken = (Button) findViewById(R.id.decodeJWTIDToken);
+		decodeJWTIDToken.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button6();
+			}
+		});
+
+		isAccessTokenValid = (Button) findViewById(R.id.isAccessTokenValid);
+		isAccessTokenValid.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button7();
+			}
+		});
+
+		userinfo = (Button) findViewById(R.id.userinfo);
+		userinfo.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//button8();
+			}
+		});
+		
+}</pre>
+                       
+            <h5>onClick event:</h5>
+            Below an explanation about each of those previous methods.<br/> 
+            <ol>
+                <li>
+                    <span class="italicStyle">button1()</span> implements the <a href="guides.html#authorization">"Authorization"</a>.
+                </li>
+                <pre class="prettyprint lang-java">
+public void button1(){
+	Authorization auth = new Authorization();
+	AuthorizationListener listener=new OpenIdConnectComplete();
+	auth.authorize(authUri, responseType, client_id, client_secret, scopes, redirect_uri, state,
+						nonce, prompt, maxAge, acrValues, authorizationOptions,
+						listener,OpenIdConnectActivity.this)
+}</pre>
+                <li>
+                    <span class="italicStyle">button2()</span> implements the <a href="guides.html#parameter">"Extract redirect parameter"</a>.
+                <pre class="prettyprint lang-java">
+public void button2(){
+	Authorization auth = new Authorization();
+	ParameterList parameters = auth.extractRedirectParameter(returnUriExtract);
+	Log.d(TAG, "extractRedirectParameter: code: " + parameters.getValue("code")
+		+ " - state: "
+		+ parameters.getValue("state")
+		+ " - error: "
+		+ parameters.getValue("error"));
+}</pre>
+                </li>
+                <li>
+                    <span class="italicStyle">button3()</span> implements <a href="guides.html#token">"Token from authorization code"</a>.
+                     <pre class="prettyprint lang-java">
+public void button3(){
+	Token token = new Token();
+	token.tokenFromAuthorizationCode(tokenUri, code, client_id,
+		client_secret, redirect_uri, new TokenListener() {
+			@Override
+			public void tokenResponse(TokenData arg0) {
+				TokenData td = arg0;
+				if(td==null)
+					Log.d(TAG, "Response success but null object");
+				else
+					Log.d(TAG, "Response success: "+td.toString());
+			}
+
+			@Override
+			public void errorToken(JSONObject arg1) {
+				JSONObject jo = arg1;
+				Log.d(TAG, "JSONObject received: "+jo.toString());
+			}
+	});
+}</pre>
+                </li>
+                 <li>
+                    <span class="italicStyle">button4()</span> implements the <a href="guides.html#refreshToken">"Token based on refresh token"</a>.
+                </li>
+                <pre class="prettyprint lang-java">
+public void button4(){
+	Token token = new Token();
+	token.refreshingToken(tokenUri, refreshToken, scopes,
+		client_id, client_secret, new TokenListener() {
+			@Override
+			public void tokenResponse(TokenData arg0) {
+				TokenData td = arg0;
+				if(td==null)
+					Log.d(TAG, "Response success but null object");
+				else
+					Log.d(TAG, "Response success: "+td.toString());
+			}
+
+			@Override
+			public void errorToken(JSONObject arg1) {
+				JSONObject jo = arg1;
+				Log.d(TAG, "JSONObject received: "+jo.toString());
+			}
+	});
+}</pre>
+                <li>
+                    <span class="italicStyle">button5()</span> implements the <a href="guides.html#revokingToken">"Revoking access token"</a>.
+                <pre class="prettyprint lang-java">
+public void button5(){
+	Token token = new Token();
+	token.revokingAccessToken(tokenUri, accessToken, client_id,
+		client_secret, new TokenListener() {
+			@Override
+			public void tokenResponse(TokenData arg0) {
+				TokenData td = arg0;
+				if(td==null)
+					Log.d(TAG, "Response success but null object");
+				else
+					Log.d(TAG, "Response success: "+td.toString());
+			}
+
+			@Override
+			public void errorToken(JSONObject arg1) {
+				JSONObject jo = arg1;
+				Log.d(TAG, "JSONObject received: "+jo.toString());
+			}
+	});
+}</pre>
+                </li>
+                <li>
+                    <span class="italicStyle">button6()</span> implements <a href="guides.html#decodeJWTIDToken">"Decode JWT IDToken"</a>.
+                     <pre class="prettyprint lang-java">
+public void button6(){
+	Token token = new Token();
+	JSONObject json = token.decodeJWTIDToken(idToken);
+	if(json!=null){
+		try {
+			String iss = json.has("iss") ? json.getString("iss") : null;
+			String sub = json.has("sub") ? json.getString("sub") : null;
+			String aud = json.has("aud") ? json.getString("aud") : null;
+			String exp = json.has("exp") ? json.getString("exp") : null;
+			String iat = json.has("iat") ? json.getString("iat") : null;
+			String auth_time = json.has("auth_time") ? json.getString("auth_time") : null;
+			String nonce = json.has("nonce") ? json.getString("nonce") : null;
+			String at_hash = json.has("at_hash") ? json.getString("at_hash") : null;
+			String acr = json.has("acr") ? json.getString("acr") : null;
+			String amr = json.has("amr") ? json.getString("amr") : null;
+			String azp = json.has("azp") ? json.getString("azp") : null;
+			String dts = json.has("dts") ? json.getString("dts") : null;
+			String upk = json.has("upk") ? json.getString("upk") : null;
+			String dts_time = json.has("dts_time") ? json.getString("dts_time") : null;
+			String email = json.has("email") ? json.getString("email") : null;
+			Log.d(TAG, "decodeJWTIDToken: " + json.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+			Log.d(TAG, "decodeJWTIDToken: error in json response");
+		}
+	}
+}</pre>
+                </li>
+                <li>
+                    <span class="italicStyle">button7()</span> implements the <a href="guides.html#validityAccessToken">"Validity of access token"</a>.
+                <pre class="prettyprint lang-java">
+public void button7(){
+	Token token = new Token();
+	boolean isValid = token.isAccessTokenValid(expiresIn);
+	Log.d(TAG, "isAccessTokenValid for "+expiresIn+": " + isValid);
+}</pre>
+                </li>
+                <li>
+                    <span class="italicStyle">button8()</span> implements <a href="guides.html#userinfo">"Userinfo"</a>.
+                     <pre class="prettyprint lang-java">
+public void button8(){
+	Userinfo userinfo = new Userinfo();
+	userinfo.userinfo(userinfoUri, accessTokenUserinfo,
+		new UserinfoListener() {
+			@Override
+			public void userinfoResponse(UserinfoData arg0) {
+				UserinfoData ud = arg0;
+				if(ud==null)
+					Log.d(TAG, "Response success but null object");
+				else
+					Log.d(TAG, "Response success: "+ud.toString());
+			}
+
+			@Override
+			public void errorUserinfo(JSONObject arg1) {
+				JSONObject jo = arg1;
+				Log.d(TAG, "JSONObject received: "+jo.toString());
+			}
+	});
+}</pre>
+                </li>
+            </ol>
+       </p>
+       
+              <h3 id="openIdConnectComplete">OpenIdConnectComplete</h3>
+		<p>
+            This is a simple class which implements the interface called <span class="italicStyle">AuthorizationListener</span>. 
+           <pre class="prettyprint lang-java linenums:1">
+import android.util.Log;
+
+import com.gsma.android.mobileconnect.authorization.AuthorizationListener;
+
+public class OpenIdConnectComplete implements AuthorizationListener{
+	private static final String TAG = "OpenIdConnectComplete";
+	
+	@Override
+	public void authorizationCodeResponse(String state, String authorizationCode, String error, String clientId, String clientSecret, String scopes, String redirectUri) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "OpenIdConnectComplete response");
+		Log.d(TAG, "state: "+state);
+		Log.d(TAG, "authorizationCode: "+authorizationCode);
+		Log.d(TAG, "error: "+error);
+		Log.d(TAG, "clientId: "+clientId);
+		Log.d(TAG, "clientSecret: "+clientSecret);
+		Log.d(TAG, "scopes: "+scopes);
+		Log.d(TAG, "redirectUri: "+redirectUri);
+	}
+
+	@Override
+	public void authorizationError(String reason) {
+		Log.d(TAG, "JSONObject response");
+		Log.d(TAG, "JSONObject warning: "+reason);
+	}
+
+}
+</pre>
+                  
+</p>
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial </a>
+        </li>
+        <li actual>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

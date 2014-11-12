@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DiscoverySDK: iOS tutorial</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/personalized.css">
+</head>
+
+<body>
+
+<div id="main">
+    <h1 class="page-title">API</h1>
+    <div class="sub-nav">
+        <h2>Discovery</h2>
+        <ul>
+            <li><a href="installiOS.html">Getting Started</a></li>
+            <li><a href="guides.html?iOS">Guides</a></li>
+            <li><a href="tutorialsiOS.html" actual>Tutorials</a></li>
+            <li><a href="referencesiOS.html">References</a></li>
+        </ul>
+    </div>
+    <div class="centeredBlock">
+
+        <h3>iOS Tutorial</h3>
+        <p>
+        Here is an example illustrating the simplest way to use DiscoverySDK on iOS.
+        </p>
+
+		  <h3>Including Discovery library</h3>
+		<p>
+			To start we need to import the Discovery library in to the project (refer to <a href="installiOS.html">Getting Started</a>).
+          
+           <pre class="prettyprint linenums:1">#import "DiscoveryAPI.h"</pre>
+           
+           <h3>Creating Discovery object</h3>
+		<p>
+			To invoke the Discovery functions its needed to set up first a Discovery object. We need also to assign a delegate class which will be the receiver class for the calls responses (in the example below will use self)   
+          
+           <pre class="prettyprint linenums:1">//API object creation
+DiscoveryAPI *discoveryObj = [[DiscoveryAPI alloc] init];
+
+//Delegate assignments
+discoveryObj.discoveryDelegate = self;
+discoveryObj.traceMode = TRUE;</pre>
+    
+    
+            <h3>Executing Discovery functions</h3>
+		<p>
+            The Discovery library implement the following functions.      
+            <ul style="list-style-type:none;">
+	            
+	           <li> 
+	           		<h3>Discovery Active</h3> 
+	           		<p>
+		            This functions make a request to obtain a Discovery information. The active case will manage actively the response, returning the discovery item or in case of operator selection needed a selection web site will be open. In a wrong case the error will be returned.
+		          
+		           <pre class="prettyprint linenums:1">//Create the webview for the active function
+UIWebView *discoveryWebview = [[UIWebView alloc]initWithFrame:self.view.frame];
+[self.view addSubview:self.discoveryWebview];
+self.discoveryWebview.hidden=true;
+self.discoveryWebview.delegate=self.discoveryObj;
+
+//Get Discovery Active function
+NSLog(@"Executing getDiscoveryActive call");
+[discoveryObj getDiscoveryActive:@"http://etelco-prod.apigee.net/v1/discovery" clientId:@"BJL7na81ZEaaFuoz1bbqT3CyS5x9CAFS" clientSecret:@"Mt6HAx5Ujb39Sbs0" encryptation:encryptionTypeEnumBASIC ipAddress:nil redirectUri:@"http://gsma.com" msisdn:nil webview:discoveryWebview];</pre>
+	           
+	           </li>
+	           
+	           <li> 
+	           		<h3>Discovery Active using manual mnc mcc</h3> 
+	           		<p>
+		            This functions make a request to obtain a Discovery information. The active case will manage actively the response, returning the discovery item or in case of operator selection needed a selection web site will be open. In a wrong case the error will be returned.
+		          
+		           <pre class="prettyprint linenums:1">//Create the webview for the active function
+UIWebView *discoveryWebview = [[UIWebView alloc]initWithFrame:self.view.frame];
+[self.view addSubview:self.discoveryWebview];
+self.discoveryWebview.hidden=true;
+self.discoveryWebview.delegate=self.discoveryObj;
+
+//Get Discovery Active function
+NSLog(@"Executing getDiscoveryActive call");
+[discoveryObj getDiscoveryActive:@"http://etelco-prod.apigee.net/v1/discovery" clientId:@"BJL7na81ZEaaFuoz1bbqT3CyS5x9CAFS" clientSecret:@"Mt6HAx5Ujb39Sbs0" encryptation:encryptionTypeEnumBASIC ipAddress:nil redirectUri:@"http://gsma.com" msisdn:nil mcc:@"1234" mnc:@"4321" webview:discoveryWebview];
+</pre>
+	           
+	           </li>
+	            
+	           
+	           <li>
+		            <h3>Discovery Passive</h3>
+					<p>
+		            This functions make a request to obtain a Discovery information. The passive case won't manage actively the response, returning the discovery item  or in case of operation selection needed returning a redirection object.
+		          
+		           <pre class="prettyprint linenums:1">//Get Discovery Passive function
+NSLog(@"Executing getDiscoveryPasive call");
+[discoveryObj getDiscoveryPasive:@"http://etelco-prod.apigee.net/v1/discovery" clientId:@"BJL7na81ZEaaFuoz1bbqT3CyS5x9CAFS" clientSecret:@"Mt6HAx5Ujb39Sbs0" encryptation:encryptionTypeEnumBASIC ipAddress:nil  redirectUri:@"http://gsma.com" msisdn:nil];</pre>
+	           </li>
+	           
+	           <li>
+		            <h3>Discovery Passive using manual mnc mcc</h3>
+					<p>
+		            This functions make a request to obtain a Discovery information. The passive case won't manage actively the response, returning the discovery item  or in case of operation selection needed returning a redirection object.
+		          
+		           <pre class="prettyprint linenums:1">//Get Discovery Passive function
+NSLog(@"Executing getDiscoveryPasive call");
+[discoveryObj getDiscoveryPasive:@"http://etelco-prod.apigee.net/v1/discovery" clientId:@"BJL7na81ZEaaFuoz1bbqT3CyS5x9CAFS" clientSecret:@"Mt6HAx5Ujb39Sbs0" encryptation:encryptionTypeEnumBASIC ipAddress:nil  redirectUri:@"http://gsma.com" msisdn:nil mcc:@"1234" mnc:@"4321"];</pre>
+	           </li>
+	           
+	           <li>
+	               
+		           <h3>Get cached Discovery item</h3>
+					<p>
+		            This function return the last Discovery item. The information is saved in mobile persistent storage. 
+		          
+		           <pre class="prettyprint linenums:1">//Get cached discovery Item
+[discoveryObj getCachedDiscoveryItem];</pre>
+	           </li> 
+	            
+	           <li>      
+		           <h3>Clear cached Discovery item</h3>
+					<p>
+					Clear the last stored Discovery item.
+					
+		           <pre class="prettyprint linenums:1">//Clear cached discovery item
+NSLog(@"Cleared cache discovery item?: %@",([discoveryObj clearCachedDiscoveryItem] ? @"YES" : @"NO"));</pre>
+	           </li>   
+	            
+           </ul>
+            
+            
+            
+            <p>        
+            <h3>Managing Discovery response</h3>
+			<p>
+            All the Discovery functions use asynchronous request internally. Due to this a formal protocol is defined to manage the Discovery functions response. 
+          
+           <pre class="prettyprint linenums:1">#import "DiscoveryAPI.h"
+
+@interface GenericClass : NSObject &lt;ProcessGetDiscoveryResponseDelegate&gt;</pre>
+                       
+          <p>
+            The protocol implementation force us to declare the getDiscoverySucessful, getDiscoveryError functions which will receive the get Discovery responses. The iOS SDK declare a <a href="referencesiOS.html">responseField</a> function for the developer to get the desire field.  
+                       
+           <pre class="prettyprint linenums:1">@implementation GenericClass
+           
+// FORMAL PROTOCOL IMPLEMENTATION
+-(void)getDiscoverySuccessful:(long)statusCode data:(NSMutableDictionary *)data{
+	NSLog(@"discovery completed");
+    NSLog(@"statusCode - %ld",statusCode);
+    NSLog(@"result - %@",data);
+    
+    //Discovery data fields
+    NSString *operator=[self.discoveryProvider responseField:discoveryData field:@"subscriber_operator"];
+    NSString *country=[self.discoveryProvider responseField:discoveryData field:@"country"];
+    NSString *currency=[self.discoveryProvider responseField:discoveryData field:@"currency"];
+    NSString *client_id=[self.discoveryProvider responseField:discoveryData field:@"client_id"];
+    NSString *client_secret=[self.discoveryProvider responseField:discoveryData field:@"client_secret"];
+
+    NSLog(@"operator = %@", operator);
+    NSLog(@"country = %@", country);
+    NSLog(@"currency = %@", currency);
+    NSLog(@"client_id = %@", client_id);
+    NSLog(@"client_secret = %@", client_secret);
+
+}
+
+-(void)getDiscoveryError:(long)statusCode data:(NSMutableDictionary *)errorData{
+    NSLog(@"discovery error");
+    NSLog(@"statusCode - %ld",statusCode);
+    NSLog(@"result - %@",errorData);
+}</pre>
+
+
+
+
+<!--             <p>         -->
+<!--             <h3>Managing Discovery WebView</h3> -->
+<!-- 			<p> -->
+<!--             The Discovery Active functions use asynchronous an webview mechanism to open an operator selection form if needed. Due to this the developer need to asign a webview to the Discovery object. The developer can implement a webview delegate functions to interact with the operator selection page. -->
+          
+<!--            <pre class="prettyprint linenums:1">#import "DiscoveryAPI.h" -->
+
+<!-- @interface GenericClass : NSObject &lt;ProcessGetDiscoveryResponseDelegate, UIWebViewDelegate&gt;</pre> -->
+                       
+<!--           <p> -->
+<!--             The protocol implementation force us to declare the getDiscoverySucessful, getDiscoveryError functions which will receive the get Discovery responses.  -->
+<!--             For interact with the WebView we can implement some WebView delegate methods. -->
+                       
+<!--            <pre class="prettyprint linenums:1">@implementation GenericClass -->
+
+<!-- // FORMAL PROTOCOL IMPLEMENTATION -->
+<!-- -(void)getDiscoverySuccessful:(long)statusCode data:(NSMutableDictionary *)data{ -->
+<!--     NSLog(@"getDiscoverySuccessful: %li\n%@", statusCode, data);     -->
+<!-- } -->
+
+<!-- -(void)getDiscoveryError:(long)statusCode data:(NSMutableDictionary *)errorData{ -->
+<!--     NSLog(@"getDiscoveryError: %li\n%@", statusCode, errorData); -->
+<!-- } -->
+
+
+<!-- //Initializing load of webview -->
+<!-- - (void)webViewDidStartLoad:(UIWebView *)webView{ -->
+<!--         NSLog(@"Start loading the URL"); -->
+<!-- } -->
+
+<!-- //Loaing webview -->
+<!-- - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{ -->
+<!--     NSLog(@"Loading URL :%@",request.URL.absoluteString); -->
+    
+<!--     //return FALSE; //to stop loading -->
+<!--     return YES; -->
+<!-- } -->
+
+<!-- //Fail if error in load webview -->
+<!-- - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{ -->
+<!--     NSLog(@"Failed to load with error :%@",[error debugDescription]); -->
+<!-- } -->
+
+
+
+<!-- </pre> -->
+
+
+    </div>
+</div>
+
+<nav>
+    <h3>Tutorials</h3>
+    <ul>
+        <li>
+            <a href="tutorialsHTML.html">JS/HTML tutorial</a>
+        </li>
+        <li>
+            <a href="tutorialsAndroid.html">Android tutorial</a>
+        </li>
+        <li actual>
+            <a href="tutorialsiOS.html">iOS tutorial</a>
+        </li>
+    </ul>
+</nav>
+
+<br clear="both">
+
+<footer></footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
