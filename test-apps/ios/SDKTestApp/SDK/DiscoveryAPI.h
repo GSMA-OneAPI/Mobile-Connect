@@ -47,21 +47,41 @@
     Utils* utils;
 }
 
+/** Property definition for debugging
+ @property traceMode value
+ */
 @property BOOL traceMode;
 
-/** Delegate definitions */
-
 /** Property definition for Discovery delegate
- 
- @property Discovery delegate definition
+  @property discoveryDelegate delegate definition
  */
 @property  id discoveryDelegate;
 
+/** Property definition for redirect uri
+ @property redirectUri value
+ */
 @property (strong, nonatomic) NSString *redirectUri;
+
+/** Property definition for clien id
+ @property clientId value
+ */
 @property (strong, nonatomic) NSString *clientId;
+
+/** Property definition for client secret
+ @property clientSecret value
+ */
 @property (strong, nonatomic) NSString *clientSecret;
+
+/** Property definition for discovery url
+ @property discoveryurl value
+ */
 @property (strong, nonatomic) NSString *discoveryurl;
+
+/** Property definition for encryption
+ @property encryption value
+ */
 @property encryptionTypeEnum encryption;
+
 
 /** Discovery API functions */
 

@@ -4,4 +4,9 @@ test-apps/android/scripts/etel
 test-apps/android/bin
 test-apps/android/test/discovery.txt
 test-apps/android/gen
-
+test-apps/ios/SDKTestApp/iOS
+test-apps/ios/SDKTest/SDK/old
+test-apps/ios/SDKTestApp/Test
+test-apps/ios/SDKTestApp/OriginalSDK
+test-apps/ios/SDKTestApp/SDK-DiscoveryLogo
+test-apps/ios/SDKTestApp/SDK-MobileConnect

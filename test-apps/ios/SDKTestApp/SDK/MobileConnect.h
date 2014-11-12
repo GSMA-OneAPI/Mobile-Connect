@@ -167,6 +167,9 @@
  Callback function where the tokenFromAuthorizationCode function will return success requested result.
  
  @param statusCode Response code for the tokenFromAuthorizationCode request
+ @param access_token Acces token information
+ @param expires_in expire information for the token
+ @param refresh_token refresh token information
  @param data Response data object for the tokenFromAuthorizationCode request
  
  */
@@ -277,8 +280,10 @@ typedef enum{
     
 } promptEnumType;
 
+/** Property definition for redirect uri
+ @property redirectUri used for functions
+ */
 @property (strong, nonatomic) NSString *redirectUri;
-
 
 /**
  Authorize request
@@ -369,6 +374,5 @@ typedef enum{
  @return NSMutableDictionary representation of the result. Nil if parse error ocurred or empty NSMutableDictionary if non parameters to parse
  */
 - (NSMutableDictionary*)extractRedirectParameter: (NSString*) url;
-
 
 @end

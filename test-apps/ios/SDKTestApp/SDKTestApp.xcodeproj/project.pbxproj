@@ -12,14 +12,10 @@
 		AA03FDDC1A05321900CDB3A3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA03FDD81A05321900CDB3A3 /* LoginViewController.m */; };
 		AA03FDDD1A05321900CDB3A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AA03FDD91A05321900CDB3A3 /* main.m */; };
 		AA03FDE51A05326700CDB3A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA03FDE21A05326700CDB3A3 /* Images.xcassets */; };
+		AA17E90D1A13566A003B5B63 /* libGSMA-IOS-SDK-Universal_i386-x86_64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA17E90C1A13566A003B5B63 /* libGSMA-IOS-SDK-Universal_i386-x86_64.a */; };
 		AA52C6FA1A100108001A7780 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA52C6F81A100108001A7780 /* AuthenticationViewController.m */; };
 		AAA378601A0536EE00CA4822 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA03FDE91A05328200CDB3A3 /* Main.storyboard */; };
 		AAA378611A0536F200CA4822 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA03FDE71A05328200CDB3A3 /* LaunchScreen.xib */; };
-		AAA378671A07A35100CA4822 /* AuthorizationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378621A07A35100CA4822 /* AuthorizationOptions.m */; };
-		AAA378681A07A35100CA4822 /* DiscoveryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378631A07A35100CA4822 /* DiscoveryAPI.m */; };
-		AAA378691A07A35100CA4822 /* LogoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378641A07A35100CA4822 /* LogoAPI.m */; };
-		AAA3786A1A07A35100CA4822 /* MobileConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378651A07A35100CA4822 /* MobileConnect.m */; };
-		AAA3786B1A07A35100CA4822 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA378661A07A35100CA4822 /* Utils.m */; };
 		AACE155C19F653BE008274BE /* SDKTestAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AACE155B19F653BE008274BE /* SDKTestAppTests.m */; };
 		AACE156A19F6545B008274BE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE156919F6545B008274BE /* CoreTelephony.framework */; };
 		AACE156C19F65468008274BE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE156B19F65468008274BE /* CoreLocation.framework */; };
@@ -46,6 +42,7 @@
 		AA03FDE81A05328200CDB3A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		AA03FDEA1A05328200CDB3A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		AA03FDED1A0532E500CDB3A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = SDKTestApp/Info.plist; sourceTree = "<group>"; };
+		AA17E90C1A13566A003B5B63 /* libGSMA-IOS-SDK-Universal_i386-x86_64.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGSMA-IOS-SDK-Universal_i386-x86_64.a"; path = "SDK/libGSMA-IOS-SDK-Universal_i386-x86_64.a"; sourceTree = "<group>"; };
 		AA52C6F71A100108001A7780 /* AuthenticationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthenticationViewController.h; path = SDKTestApp/AuthenticationViewController.h; sourceTree = "<group>"; };
 		AA52C6F81A100108001A7780 /* AuthenticationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AuthenticationViewController.m; path = SDKTestApp/AuthenticationViewController.m; sourceTree = "<group>"; };
 		AAA3785C1A0535FF00CA4822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -84,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA17E90D1A13566A003B5B63 /* libGSMA-IOS-SDK-Universal_i386-x86_64.a in Frameworks */,
 				AACE156C19F65468008274BE /* CoreLocation.framework in Frameworks */,
 				AACE156A19F6545B008274BE /* CoreTelephony.framework in Frameworks */,
 			);
@@ -122,6 +120,7 @@
 		AACE153319F653BD008274BE = {
 			isa = PBXGroup;
 			children = (
+				AA17E90C1A13566A003B5B63 /* libGSMA-IOS-SDK-Universal_i386-x86_64.a */,
 				AA52C6F71A100108001A7780 /* AuthenticationViewController.h */,
 				AA52C6F81A100108001A7780 /* AuthenticationViewController.m */,
 				AAA378621A07A35100CA4822 /* AuthorizationOptions.m */,
@@ -313,11 +312,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA52C6FA1A100108001A7780 /* AuthenticationViewController.m in Sources */,
-				AAA378671A07A35100CA4822 /* AuthorizationOptions.m in Sources */,
-				AAA378681A07A35100CA4822 /* DiscoveryAPI.m in Sources */,
-				AAA378691A07A35100CA4822 /* LogoAPI.m in Sources */,
-				AAA3786A1A07A35100CA4822 /* MobileConnect.m in Sources */,
-				AAA3786B1A07A35100CA4822 /* Utils.m in Sources */,
 				AA03FDDA1A05321900CDB3A3 /* AppDelegate.m in Sources */,
 				AA03FDDB1A05321900CDB3A3 /* DiscoveryViewController.m in Sources */,
 				AA03FDDC1A05321900CDB3A3 /* LoginViewController.m in Sources */,
