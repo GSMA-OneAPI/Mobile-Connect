@@ -181,8 +181,11 @@ function DiscoveryResponse(apis, client_id, client_secret, country, currency, su
 							this.country = country;
 							this.currency = currency;
 							this.subscriber_operator = subscriber_operator;
-							if (subscriber_id)
+							if (subscriber_id) {
 								this.subscriber_id = subscriber_id;
+							} else {
+								this.subscriber_id = localStorage.getObject('subscriber_id');
+							}
 }
 
 /**
@@ -398,7 +401,7 @@ function discoveryGetFunction(url, authorization, mcc_mnc, msisdn, ipAddress, re
 						result["operatorSelection"] = aux.links[int].href;
 					}
 				}
-				console.log('202 – Mcc & mnc not specificated, redirect uri is provided to select your operator '+JSON.stringify(result));
+				console.log('202 – Mcc & mnc not specified, redirect uri is provided to select your operator '+JSON.stringify(result));
 				if(followRedirect && !!result["operatorSelection"]){
 					selectOperator(result, function(mcc, mnc){
 						if(mcc != null && mcc >= 0){
@@ -473,11 +476,17 @@ function selectOperator(result, callbackFunction){
 		if(m.data.indexOf('mcc_mnc')<0){
 			callbackFunction(-1,-1);			
 		}else{
-			var mcc_mnc = m.data.substring(m.data.indexOf('mcc_mnc=')+8,m.data.length);
+			var mcc_mnc=getValueFromUrl(m.data, "mcc_mnc");
+                        var subscriber_id=getValueFromUrl(m.data, "subscriber_id");
+			//var mcc_mnc = m.data.substring(m.data.indexOf('mcc_mnc=')+8,m.data.length);
 			aux.close();
 			if(!!localStorage.getObject('mcc_mnc'))
 				localStorage.removeItem('mcc_mnc');
 			localStorage.setObject('mcc_mnc',mcc_mnc);
+                        if(!!localStorage.getObject('subscriber_id'))
+                                localStorage.removeItem('subscriber_id');
+                        localStorage.setObject('subscriber_id',subscriber_id);
+
 			callbackFunction(getMccFromCombined(mcc_mnc),getMncFromCombined(mcc_mnc));
 		}
 	};
@@ -503,6 +512,25 @@ function getMccAndMncFromUrl() {
 	}
 	return mcc_mnc;
 }
+
+function getValueFromUrl(url, paramName) {
+    var paramValue=null;
+    if (url && paramName && url.indexOf("?")>=0) {
+        var pos=url.indexOf("?");
+        var query = url.substring(pos+1);
+        var vars = query.split('&');
+        var finished = false;
+        for (var i = 0; i < vars.length && !finished; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == paramName) {
+                paramValue=decodeURIComponent(pair[1]);
+                finished=true;
+            }
+        }
+    }
+    return paramValue;
+}
+
 /**
  * Call a ‘Discovery’ API to identify the network operator.
  * The discovery API results are locally cacheable for a period of time identified by a time to live value in the response.
