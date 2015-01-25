@@ -162,30 +162,27 @@ DiscoveryItem.prototype.setResponse = function(response) {
  * @param subscriber_id {?String}
  * @throws {callApiDiscoveryException}  Will throw an error if the arguments has not the correct type.
  */
-function DiscoveryResponse(apis, client_id, client_secret, country, currency, operator, subscriber_id) {
+function DiscoveryResponse(apis, client_id, client_secret, country, currency, subscriber_operator, subscriber_id) {
 	if(!apis instanceof Array)
 		throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: apis is not an Array"));
 		if(!isAString(client_id))
 			throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: client_id is not an String"));
-			if(!!client_secret && !isAString(client_secret))
+			if(!isAString(client_secret))
 				throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: client_secret is not an String"));
-				if(!!country && !isAString(country))
+				if(!isAString(country))
 					throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: country is not an String"));
-					if(!!currency && !isAString(currency))
+					if(!isAString(currency))
 						throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: currency is not an String"));
-						if(!isAString(operator))
+						if(!isAString(subscriber_operator))
 							throw (new callApiDiscoveryException("DiscoveryResponse object create error", "Bad format: subscriber_operator is not an String"));
 							this.apis = apis;
 							this.client_id = client_id;
 							this.client_secret = client_secret;
 							this.country = country;
 							this.currency = currency;
-							this.serving_operator = operator;
-							if (subscriber_id) {
+							this.subscriber_operator = subscriber_operator;
+							if (subscriber_id)
 								this.subscriber_id = subscriber_id;
-							} else {
-								this.subscriber_id = localStorage.getObject('subscriber_id');
-							}
 }
 
 /**
@@ -273,19 +270,19 @@ DiscoveryResponse.prototype.setClient_secret = function(client_secret) {
 };
 
 /**
- * get serving_operator of a DiscoveryResponse object
- * @returns serving_operator {?String}
+ * get subscriber_operator of a DiscoveryResponse object
+ * @returns subscriber_operator {?String}
  */
-DiscoveryResponse.prototype.getServing_operator = function() {
-	return(this.serving_operator);
+DiscoveryResponse.prototype.getSubscriber_operator = function() {
+	return(this.subscriber_operator);
 };
 
 /**
- * Set serving_operator of a DiscoveryResponse object
- * @param serving_operator {String}
+ * Set subscriber_operator of a DiscoveryResponse object
+ * @param subscriber_operator {String}
  */
-DiscoveryResponse.prototype.setServing_operator = function(serving_operator) {
-	this.serving_operator = serving_operator;
+DiscoveryResponse.prototype.setSubscriber_operator = function(subscriber_operator) {
+	this.subscriber_operator = subscriber_operator;
 };
 
 /**
@@ -336,6 +333,8 @@ DiscoveryResponse.prototype.getSubscriber_id = function() {
         return(this.subscriber_id);
 };
 
+//var mcc;
+//var mnc;
 var keyStr = "ABCDEFGHIJKLMNOP" +
 "QRSTUVWXYZabcdef" +
 "ghijklmnopqrstuv" +
@@ -348,10 +347,7 @@ var _retries = 0;
  * @access private
  * @param url {String} api url location 
  * @param authorization {String} Base64 encoded username/password 
- * @param identifiedmcc {?String} Application Identified (from SIM) Mobile Country Code 
- * @param identifiedmnc {?String} Application Identified (from SIM) Mobile Network Code 
- * @param selectededmcc {?String} User Selected (by UI) Mobile Country Code
- * @param selectedmnc {?String} User Selected (by UI) Mobile Network Code
+ * @param mcc_mnc {?String} Mobile Country Code and Mobile Network Code separate by a underscore 262_01
  * @param msisdn {?String} MSISDN if known by the application
  * @param ipAddress {?String} if it's not null it will be sent as a header
  * @param redirectUri {?String} location which continues the discovery process
@@ -371,21 +367,14 @@ function addParameter(root, name, value) {
     return resp;
 }
 
-function discoveryGetFunction(url, authorization, identifiedmcc, identifiedmnc, selectedmcc, selectedmnc, msisdn, ipAddress, redirectUri, callbackFunction, followRedirect){
+function discoveryGetFunction(url, authorization, mcc_mnc, msisdn, ipAddress, redirectUri, callbackFunction, followRedirect){
 	var parameters = url;
 
 	if(!!redirectUri)
-		parameters = addParameter(parameters,'Redirect_URL',redirectUri);
+		parameters = addParameter(parameters,'redirect_uri',redirectUri);
   
-	if(!!identifiedmcc && !!identifiedmnc) {
-		parameters = addParameter(parameters, 'Identified-MCC', identifiedmcc);
-		parameters = addParameter(parameters, 'Identified-MNC', identifiedmnc);
-	}
-
-        if(!!selectedmcc && !!selectedmnc) {
-                parameters = addParameter(parameters, 'Selected-MCC', selectedmcc);
-                parameters = addParameter(parameters, 'Selected-MNC', selectedmnc);
-        }
+	if(!!mcc_mnc)
+		parameters = addParameter(parameters, 'mcc_mnc', mcc_mnc);
 
 	if (!!msisdn) 
 		parameters = addParameter(parameters, 'msisdn', msisdn);
@@ -400,7 +389,7 @@ function discoveryGetFunction(url, authorization, identifiedmcc, identifiedmnc, 
 				var responseObj = JSON.parse(xhr.responseText);
 				setDiscoveryData(responseObj);
 				result = createADiscoveryItemObject(responseObj);
-				callbackFunction(result, xhr.status);
+				callbackFunction(result);
 			}else if (xhr.status===202){
 				var aux = JSON.parse(xhr.responseText);
 				result={};
@@ -409,44 +398,51 @@ function discoveryGetFunction(url, authorization, identifiedmcc, identifiedmnc, 
 						result["operatorSelection"] = aux.links[int].href;
 					}
 				}
-				console.log('202 – Mcc & mnc not specified, redirect uri is provided to select your operator '+JSON.stringify(result));
+				console.log('202 – Mcc & mnc not specificated, redirect uri is provided to select your operator '+JSON.stringify(result));
 				if(followRedirect && !!result["operatorSelection"]){
 					selectOperator(result, function(mcc, mnc){
 						if(mcc != null && mcc >= 0){
-							discoveryGetFunction(url, authorization, null, null, mcc, mnc, msisdn, ipAddress, redirectUri, callbackFunction, false);
+							discoveryGetFunction(url, authorization, mcc+"_"+mnc, msisdn, ipAddress, redirectUri, callbackFunction, false);
 						}else{
-							callbackFunction({"error":"1001","error_description":"The user has closed the popup window without providing an operator"},xhr.status);	
+							callbackFunction({"error":"1001","error_description":"The user has closed the popup window without providing an operator"});	
 						}
 					});	
 				}else
-					callbackFunction(result,xhr.status);				
+					callbackFunction(result);				
 			}else if(xhr.status===400){
 				result = JSON.parse(xhr.responseText);
 				console.log(result.error+' – '+result.error_description);
-				callbackFunction(result,xhr.status);
+				callbackFunction(result);
 			}else if(xhr.status===401){
 				console.log('401 – Unauthorized');
 				console.log(result.error+' – '+result.error_description);
 				result = JSON.parse(xhr.responseText);
-				callbackFunction(result,xhr.status);
+				callbackFunction(result);
 			}else if(xhr.status===404){
 				console.log('404 – Not found: mistake in the host or path of the service URI');
 				console.log(result.error+' – '+result.error_description);
 				result = JSON.parse(xhr.responseText);
 				console.log(redirectUri);
-				callbackFunction(result,xhr.status);
+				callbackFunction(result);
 			}else if(xhr.status===503){
 				console.log('503 – Server busy, server error or service unavailable. Please retry the request');
 				console.log(result.error+' – '+result.error_description);
-				result = {"error":"503","error_description":"Server busy, server error or service unavailable. Please retry the request"};
-				callbackFunction(result,xhr.status);
+				if(_retries<10){
+					setTimeout(function(){
+						_retries++;
+						discoveryGetFunction(authorization, mcc_mnc, accept, ipAddress);
+					}, 1000);
+				}else{
+					result = {"error":"503","error_description":"Server busy, server error or service unavailable. Please retry the request"};
+					callbackFunction(result);
+				}
 			}else{
 				console.log(xhr.status+" --- "+xhr.responseText);
 				if(xhr.responseText!='')
 					result = JSON.parse(xhr.responseText);
 				else
 					result = {"error":"0","error_description":"no description received"};
-				callbackFunction(result,xhr.status);
+				callbackFunction(result);
 			}
 		}
 	};
@@ -458,22 +454,14 @@ function discoveryGetFunction(url, authorization, identifiedmcc, identifiedmnc, 
 	xhr.send();
 }
 
-var popupWidth=400;
-var popupHeight=585;
-
-function setPopupSize(width, height) {
-    	this.popupWidth=width;
-	this.popupHeight=height;
-}
-
 /**
  * selectOperator
  * @param result {Array}
  * @param callbackFunction {function}
  */
 function selectOperator(result, callbackFunction){
-	var ancho = this.popupWidth;
-	var alto = this.popupHeight;
+	var ancho = 400;
+	var alto = 400;
 	var posicion_x; 
 	var posicion_y; 
 	posicion_x=(screen.width/2)-(ancho/2); 
@@ -485,16 +473,11 @@ function selectOperator(result, callbackFunction){
 		if(m.data.indexOf('mcc_mnc')<0){
 			callbackFunction(-1,-1);			
 		}else{
-			var mcc_mnc=getValueFromUrl(m.data, "mcc_mnc");
-                        var subscriber_id=getValueFromUrl(m.data, "subscriber_id");
+			var mcc_mnc = m.data.substring(m.data.indexOf('mcc_mnc=')+8,m.data.length);
 			aux.close();
 			if(!!localStorage.getObject('mcc_mnc'))
 				localStorage.removeItem('mcc_mnc');
 			localStorage.setObject('mcc_mnc',mcc_mnc);
-                        if(!!localStorage.getObject('subscriber_id'))
-                                localStorage.removeItem('subscriber_id');
-                        localStorage.setObject('subscriber_id',subscriber_id);
-
 			callbackFunction(getMccFromCombined(mcc_mnc),getMncFromCombined(mcc_mnc));
 		}
 	};
@@ -512,7 +495,6 @@ function selectOperator(result, callbackFunction){
  * Obtain the mcc and mnc values in 'mcc_mnc' format from URL
  * @returns mcc_mnc{?String}
  */
-/* DEPRECATED 
 function getMccAndMncFromUrl() {
 	var mcc_mnc = null;
 	var m = window.location.href;
@@ -521,26 +503,6 @@ function getMccAndMncFromUrl() {
 	}
 	return mcc_mnc;
 }
-*/
-
-function getValueFromUrl(url, paramName) {
-    var paramValue=null;
-    if (url && paramName && url.indexOf("?")>=0) {
-        var pos=url.indexOf("?");
-        var query = url.substring(pos+1);
-        var vars = query.split('&');
-        var finished = false;
-        for (var i = 0; i < vars.length && !finished; i++) {
-            var pair = vars[i].split('=');
-            if (decodeURIComponent(pair[0]) == paramName) {
-                paramValue=decodeURIComponent(pair[1]);
-                finished=true;
-            }
-        }
-    }
-    return paramValue;
-}
-
 /**
  * Call a ‘Discovery’ API to identify the network operator.
  * The discovery API results are locally cacheable for a period of time identified by a time to live value in the response.
@@ -561,7 +523,7 @@ function getDiscoveryPassive(serviceUri, consumerKey, consumerSecret, encrypt, m
 	if(encrypt)
 		encrypt = encrypt.toLowerCase();
 	
-	discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization), mcc, mnc, null, null, msisdn, sourceIP,redirectUri, callbackFunction);
+	discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization),getMCCandMNCToCallGetDiscovery(mcc,mnc), msisdn, sourceIP,redirectUri, callbackFunction);
 }
 /**
  * Call a ‘Discovery’ API to identify the network operator.
@@ -583,7 +545,7 @@ function getDiscoveryActive(serviceUri, consumerKey, consumerSecret, encrypt, mc
 	if(encrypt)
 		encrypt = encrypt.toLowerCase();
 	
-	discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization), mcc, mnc, null, null, msisdn, sourceIP, redirectUri, callbackFunction, true);
+	discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization),getMCCandMNCToCallGetDiscovery(mcc,mnc), msisdn, sourceIP, redirectUri, callbackFunction, true);
 }
 
 /**
@@ -621,7 +583,7 @@ function completeDiscovery(serviceUri, consumerKey, consumerSecret, encrypt, cal
         }
 
         if (mcc && mnc) {
-                discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization), null, null, mcc, mnc ,null, null,null, callbackFunction,false);
+                discoveryGetFunction(serviceUri,getAuthorizationToCallGetDiscovery(encrypt,authorization),getMCCandMNCToCallGetDiscovery(mcc,mnc),null, null,null, callbackFunction,false);
         } else {
                 throw (new callApiDiscoveryException("completeDiscovery", "unable to identify MCC/MNC"));
         }
@@ -639,7 +601,6 @@ function getAuthorizationToCallGetDiscovery(encrypt,authorization){
 	}		
 	return(authorization);
 }
-
 function getMCCandMNCToCallGetDiscovery(mcc,mnc) {
 	var mcc_mnc = null;
 	if(!!mcc && !!mnc){
@@ -651,11 +612,12 @@ function getMCCandMNCToCallGetDiscovery(mcc,mnc) {
 		getMccAndMnc();
 		if(localStorage.getObject('mcc_mnc')){
 			mcc_mnc = localStorage.getObject('mcc_mnc');
+		}else if(document.cookie.indexOf('mcc_mnc=')>=0){
+			mcc_mnc = document.cookie.substr(document.cookie.indexOf('mcc_mnc=')+8,document.cookie.length);
 		}		
 	}
 	return(mcc_mnc);	
 }
-
 /**
  * createADiscoveryItemObject
  * @access private
@@ -665,28 +627,15 @@ function getMCCandMNCToCallGetDiscovery(mcc,mnc) {
  */
 function createADiscoveryItemObject(json) {
 	var links = new Array();
-        if (!!json.links) {
-	    return links;
-	} else if (!!json.ttl && !!json.response) {
-	    try{
-                var apis=!!json.response.apis?json.response.apis:null;
-		var clientid=!!json.response.client_id?json.response.client_id:null;
-		var clientsecret=!!json.response.client_secret?json.response.client_secret:null;
-		var country=!!json.response.country?json.response.country:null;
-		var currency=!!json.response.currency?json.response.currency:null;
-		var operator=!!json.response.serving_operator?json.response.serving_operator:null;
-		var subscriber=!!json.response.subscriber_id?json.response.subscriber_id:null;
-	  	var discoveryResponse = new DiscoveryResponse(apis, clientid, clientsecret, country, currency, operator, subscriber);
+	try{
+        var apis=json.response.apis;
+		var discoveryResponse = new DiscoveryResponse(apis, json.response.client_id, json.response.client_secret, json.response.country, json.response.currency, json.response.subscriber_operator, json.response.subscriber_id);
 		var discoveryItem = new DiscoveryItem(discoveryResponse, json.ttl);
 		return (discoveryItem);
-	    } catch (aux) {
+	}catch (aux) {
 		console.log(aux.name+" : "+aux.message);
 		throw (new callApiDiscoveryException(aux.name,aux.description));
-	    }
-	} else {
-	    throw (new callApiDiscoveryException("Discovery Error", "Unknown response from discovery"));
 	}
-
 }
 
 /**
@@ -711,8 +660,7 @@ Storage.prototype.getObject = function(key) {
 
 /**
  * Get the discovery API results cached if exits and is not expired.
- * @returns data {?DiscoveryItem}:w
-
+ * @returns data {?DiscoveryItem}
  */
 function getCacheDiscoveryItem() {
 	var discoveryData = localStorage.getObject('discoveryData');
@@ -760,10 +708,8 @@ function clearCacheDiscoveryItem() {
  * get MCC and MNC for FirefoxOS systems 
  * @access private
  */
-/* DEPRECATED
 function getMccAndMnc() {
 }
-*/
 
 function base64_encode(data) {
 	var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';

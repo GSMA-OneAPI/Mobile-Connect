@@ -9,12 +9,10 @@
 
 <script language="JavaScript">
 
-/*var discoveryServiceUri="https://api.exchange.gsma.com/telenorgroup/v2/discovery";*/
-/*var discoveryServiceUri="https://stage-exchange-test.apigee.net/etelco_demo_1/v2/discovery";*/
-var discoveryServiceUri="https://stage-exchange-test.apigee.net/gsma/v2/discovery";
-var discoveryClientID="cUXestEceBaThepasudawRU3";
-var discoveryClientSecret="ECH2denBr7TR4j3za3hExubr";
-var logoServiceUri="https://stage-exchange-test.apigee.net/telenorgroup/v2/logo";
+var discoveryServiceUri="https://integration-sb1.apiexchange.org/v1/discovery";
+var logoServiceUri="https://integration-sb1.apiexchange.org/v1/logo";
+var discoveryClientID="QrAMbeGqP9ufzAAydZAM7JainjQ2U1H8";
+var discoveryClientSecret="jAUyZ5Jp9zHPpDuE";
 
 var apiClientID=null;
 var apiClientSecret=null;
@@ -23,7 +21,6 @@ var operatorIdentified=false;
 var operatorName=null;
 var mcc=null;
 var mnc=null;
-var subscriberId=null;
 
 var authorizationEndpoint=null;
 
@@ -39,16 +36,14 @@ function startPassiveDiscovery() {
                         mcc, mnc, msisdn, sourceIP, redirectUri, passiveDiscoveryComplete);
 }
 
-function passiveDiscoveryComplete(discoveryResult,status) {
-    console.log("HTTP Status Code is "+status);
+function passiveDiscoveryComplete(discoveryResult) {
     console.log("Callback for "+JSON.stringify(discoveryResult));
-    if (status==200) {
-    	if (discoveryResult.getTtl()) { console.log("TTL "+discoveryResult.getTtl()); }
-    	if (discoveryResult.getResponse()) {
-        	console.log("DiscoveryResponse "+JSON.stringify(discoveryResult.getResponse()));
-        	processDiscoveryResult(discoveryResult);
-        	$('#discoveryStatus').val('Discovered in passive mode');
-	}
+    if (discoveryResult.getTtl()) { console.log("TTL "+discoveryResult.getTtl()); }
+    if (discoveryResult.getResponse()) {
+        console.log("DiscoveryResponse "+JSON.stringify(discoveryResult.getResponse()));
+        processDiscoveryResult(discoveryResult);
+        $('#discoveryStatus').val('Discovered in passive mode');
+
     }
     
     getLogos();
@@ -75,7 +70,7 @@ function logoComplete(logoResult) {
     }
 }
 
-function startActiveDiscovery() {
+function startDiscoveryActive() {
     var encrypt="basic";
     var sourceIP=null;
     var msisdn=null;
@@ -87,25 +82,20 @@ function startActiveDiscovery() {
                    mcc, mnc, msisdn, sourceIP, redirectUri, activeDiscoveryComplete);
 }
 
-function activeDiscoveryComplete(discoveryResult, status) {
-    console.log("HTTP Status Code is "+status);
+function activeDiscoveryComplete(discoveryResult) {
     console.log("Callback for "+JSON.stringify(discoveryResult));
-    console.log("Location = "+window.location.href);
-    if (status==200) {
-    	if (discoveryResult && !!discoveryResult.getTtl()) { console.log("TTL "+discoveryResult.getTtl()); }
-    	if (discoveryResult && !!discoveryResult.getResponse()) {
-        	console.log("DiscoveryResponse "+JSON.stringify(discoveryResult.getResponse()));
-        	processDiscoveryResult(discoveryResult);
-        	$('#discoveryStatus').val('Discovered in active mode');
-    	}
+    if (discoveryResult.getTtl()) { console.log("TTL "+discoveryResult.getTtl()); }
+    if (discoveryResult.getResponse()) {
+        console.log("DiscoveryResponse "+JSON.stringify(discoveryResult.getResponse()));
+        processDiscoveryResult(discoveryResult);
+        $('#discoveryStatus').val('Discovered in active mode');
     }
-
     getLogos();
 }
 
 function startDemo() {
     parseMccMnc();
-    startActiveDiscovery();
+    startPassiveDiscovery();
 }
 
 function parseMccMnc() {
@@ -138,18 +128,10 @@ function runAuthorization() {
     prompt='login';
     max_age=3600;
     acr_values='PCR';
-    login_hint=null;
-    if (!!subscriberId) {
-	login_hint="ENCR_MSISDN:"+subscriberId;
-console.log("login_hint="+login_hint);
-    }
-
-    authorizationOptions=new AuthorizationOptions('page', 'en', 'en', 'Enter MSISDN', login_hint, null); 
+    authorizationOptions=AuthorizationOptions('page', 'en', 'en', 'Enter MSISDN', null, null); 
     state='State'+Math.random().toString(36);
     nonce='Nonce'+Math.random().toString(36);
     redirect_uri='http://localhost/xosdk/test/authorised.html';
-
-console.log("Login hint set to "+authorizationOptions['login_hint']);
     authorize(authorizationEndpoint, apiClientID, 'openid profile, email userinfo', redirect_uri, 'code', state, nonce,
               prompt, max_age, acr_values, authorizationOptions, authorizationCallbackFunction);
 }
@@ -207,16 +189,14 @@ function userinfoCallbackFunction(userinfo) {
 
 function processDiscoveryResult(discoveryResult) {
     operatorIdentified=true;
-    operatorName=discoveryResult.getResponse().getServing_operator();
+    operatorName=discoveryResult.getResponse().getSubscriber_operator();
     apiClientID=discoveryResult.getResponse().getClient_id();
     apiClientSecret=discoveryResult.getResponse().getClient_secret();
-    subscriberId=discoveryResult.getResponse().getSubscriber_id();
     $('#operatorName').val(operatorName);
     var endpoints=discoveryResult.getResponse().getApi('operatorid');
     
     console.log("apiClientID "+JSON.stringify(apiClientID));
     console.log("apiClientSecret "+JSON.stringify(apiClientSecret));
-    console.log("subscriberId "+JSON.stringify(subscriberId));
     console.log("endpoint data "+JSON.stringify(endpoints));
     
     authorizationEndpoint=discoveryResult.getResponse().getApiFunction('operatorid', 'authorization');
@@ -261,7 +241,7 @@ function clearDiscoveryCache() {
 <label>Preselected operator (passive discovery)</label>
 <select name="preselectedOperator" id="preselectedOperator">
     <option value="_" selected="selected">None</option>
-    <option value="002_04">Test operator</option>
+    <option value="000_01">E Tel</option>
     <option value="413_02">Dialog Sri Lanka</option>
     <option value="413_01">Mobitel Sri Lanka</option>
 </select>
