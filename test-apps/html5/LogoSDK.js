@@ -421,7 +421,7 @@ function createALogoItemObject(json) {
  * @param aspect_ratio {String} logo layouts (square|landscape)
  * @return Url image if exists {?String}
  */
-function getCacheApiLogo(api,logosize,bg_color,aspect_ratio) {
+function getCacheApiLogo(operatorName, api, logosize, bg_color, aspect_ratio) {
 	if(operatorName)
 		operatorName = operatorName.toLowerCase();
 	if(logosize)
