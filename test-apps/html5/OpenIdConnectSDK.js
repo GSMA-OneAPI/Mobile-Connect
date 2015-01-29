@@ -423,14 +423,36 @@ function getJsonFromUrl(query) {
 }
 
 /**
+ * authorizeProcessLocation
+ * @param href {String}
+ */
+var lastAuthEventId=1;
+function authorizeProcessLocation(href) {
+    var origin = window.location.protocol + "//" + window.location.host;
+    var data = href;
+    var messageEvent = document.createEvent ("MessageEvent");
+    var status=false;
+    if (messageEvent && messageEvent.initMessageEvent) {
+        messageEvent.initMessageEvent ("message", true, true, data, origin, lastAuthEventId, window, null);
+        lastAuthEventId++;
+        window.dispatchEvent (messageEvent);
+        status=true;
+    } else if (!!window.postMessage) {
+        window.postMessage(href, origin);
+        status=true;
+    }
+    return status;
+}
+
+/**
  * helperRedirectOpenIdAuthorize
  * get from redirected url and sent to SDK
  */
 function helperRedirectOpenIdAuthorize() {
-	if(!!window.opener && !window.opener.closed){
+	if (!!window.opener && !!window.opener.authorizeProcessLocation && window.opener.authorizeProcessLocation(window.location.href)) {
+                // IE workaround
+        } else if(!!window.opener && !window.opener.closed){
 		addEventListener("message",function(m){
-			console.log("_______ "+window.location.href);
-			console.log("_______ "+m.data);
     		window.opener.postMessage(window.location.href, m.data);
 		},false);
 	}

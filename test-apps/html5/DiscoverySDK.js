@@ -1,7 +1,7 @@
 if (typeof console == "undefined" || typeof console.log == "undefined") var console = { log: function() {} };
 /**
  * @constructor
- * @this {Link}
+ @this {Link}
  * @param href {?String} url
  * @param rel {?String} name
  * @throws {callApiDiscoveryException}  Will throw an error if the arguments has not the correct type.
@@ -969,11 +969,37 @@ function getMccFromCombined (mcc_mnc){
 function getMncFromCombined (mcc_mnc){
 	return (mcc_mnc.substr(1+mcc_mnc.indexOf('_'),mcc_mnc.length));
 }
+
+/**
+ * discoveryProcessLocation
+ * @param href {String}
+ */
+var lastEventId=1;
+function discoveryProcessLocation(href) {
+//    console.log('received '+href);
+    var origin = window.location.protocol + "//" + window.location.host;
+    var data = href;
+    var messageEvent = document.createEvent ("MessageEvent");
+    var status=false;
+    if (messageEvent && messageEvent.initMessageEvent) {
+        messageEvent.initMessageEvent ("message", true, true, data, origin, lastEventId, window, null);
+        lastEventId++;
+        window.dispatchEvent (messageEvent);
+	status=true;
+    } else if (!!window.postMessage) {
+        window.postMessage(href, origin);
+	status=true;
+    }
+    return status;
+}
+
 /**
  * helperRedirectMccMnc
  */
 function helperRedirectMccMnc() {
-	if(!!window.opener && !window.opener.closed){
+	if (!!window.opener && !!window.opener.discoveryProcessLocation && window.opener.discoveryProcessLocation(window.location.href)) {
+		// IE workaround
+	} else if(!!window.opener && !window.opener.closed){
 		addEventListener("message",function(m){
     		window.opener.postMessage(window.location.href, m.data);
 		},false);
