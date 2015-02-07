@@ -2,6 +2,13 @@ package com.gsma.android.xoperatorapidemo.activity;
 
 import java.util.UUID;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -14,6 +21,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +43,6 @@ import com.gsma.android.oneapi.discovery.DiscoveryItem;
 import com.gsma.android.oneapi.discovery.DiscoveryListener;
 import com.gsma.android.oneapi.discovery.DiscoveryProvider;
 import com.gsma.android.oneapi.discovery.DiscoveryResponse;
-import com.gsma.android.oneapi.discovery.DiscoveryProvider;
 import com.gsma.android.oneapi.logo.LogoCache;
 import com.gsma.android.oneapi.logo.LogoItem;
 import com.gsma.android.oneapi.logo.LogoItemArray;
@@ -85,10 +92,21 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		Log.d(TAG, "Starting the app...");
+		
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
+
+        super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		Log.d(TAG, "onCreate called");
+		
+		HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+		SchemeRegistry registry = new SchemeRegistry();
+		SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
+		socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
+		registry.register(new Scheme("https", socketFactory, 443));
+		HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 
 		vMCC = (TextView) findViewById(R.id.valueMCC);
 		vMNC = (TextView) findViewById(R.id.valueMNC);
@@ -98,6 +116,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		discoveryButton = (Button) findViewById(R.id.discoveryButton);
 		startOperatorId = (Button) findViewById(R.id.startOperatorId);
 
+		
 		/*
 		 * load defaults from preferences file
 		 */

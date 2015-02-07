@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SDKGenerator" default="generatejars">
+
+    <property file="local.properties" />
+
+    <property file="ant.properties" />
+
+    <property environment="env" />
+    <condition property="sdk.dir" value="${env.ANDROID_HOME}">
+        <isset property="env.ANDROID_HOME" />
+    </condition>
+
+    <loadproperties srcFile="project.properties" />
+
+    <!-- quick check on sdk.dir -->
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable."
+            unless="sdk.dir"
+    />
+
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+
+    <path id="androidlibraryclasspath">
+        <pathelement location="${sdk.dir}/platforms/android-11/android.jar"/>
+        <pathelement location="${sdk.dir}/tools/support/annotations.jar"/>
+    </path>
+
+    <path id="classpath.discovery">
+	<path refid="androidlibraryclasspath"/>
+    	<fileset dir="discovery/libs" includes="**/*.jar"/>
+    </path>
+
+    <path id="classpath.logo">
+        <path refid="androidlibraryclasspath"/>
+        <fileset dir="logo/libs" includes="**/*.jar"/>
+    </path>
+
+    <path id="classpath.mobileconnect">
+        <path refid="androidlibraryclasspath"/>
+        <fileset dir="mobileconnect/libs" includes="**/*.jar"/>
+    </path>
+
+    <target name="init">
+        <delete dir='build'/>
+        <mkdir dir="build"/>
+        <mkdir dir="build/discovery"/>
+        <mkdir dir="build/logo"/>
+        <mkdir dir="build/mobileconnect"/>
+    </target>
+
+    <target name="generatejars" depends="compilediscovery,compilelogo,compilemobileconnect,discoveryjar,logojar,mobileconnectjar">
+        
+    </target>
+
+    <target name="compilediscovery" depends="init">
+        <javac destdir="build/discovery" debug="true" encoding="UTF-8" target="1.6" source="1.6">
+            <classpath refid="classpath.discovery" />
+            <compilerarg value="-Xlint:all,unchecked"/>
+            <src path="discovery/src"/>
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="discoveryjar" depends="compilediscovery">
+        <jar destfile="build/gsma-discovery.jar" basedir="build/discovery">
+            <include name="com/**" />
+	</jar>
+    </target> 
+
+    <target name="compilelogo" depends="init">
+        <javac destdir="build/logo" debug="true" encoding="UTF-8" target="1.6" source="1.6">
+            <classpath refid="classpath.logo" />
+            <compilerarg value="-Xlint:all,unchecked"/>
+            <src path="logo/src"/>
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="logojar" depends="compilelogo">
+        <jar destfile="build/gsma-logo.jar" basedir="build/logo">
+            <include name="com/**" />
+        </jar>
+    </target>
+
+    <target name="compilemobileconnect" depends="init">
+        <javac destdir="build/mobileconnect" debug="true" encoding="UTF-8" target="1.6" source="1.6">
+            <classpath refid="classpath.mobileconnect" />
+            <compilerarg value="-Xlint:all,unchecked"/>
+            <src path="mobileconnect/src"/>
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="mobileconnectjar" depends="compilemobileconnect">
+        <jar destfile="build/gsma-mobileconnect.jar" basedir="build/mobileconnect">
+            <include name="com/**" />
+        </jar>
+    </target>
+
+</project>

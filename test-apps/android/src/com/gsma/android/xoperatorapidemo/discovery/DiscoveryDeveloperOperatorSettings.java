@@ -4,7 +4,10 @@ package com.gsma.android.xoperatorapidemo.discovery;
 public class DiscoveryDeveloperOperatorSettings {
 
 	private static final DeveloperOperatorSetting testDev=new DeveloperOperatorSetting("Integration Env", 
-			"https://integration-sb1.apiexchange.org/v1/discovery", "sb1-dev3-app3-prod-app-prod-key", "sb1-dev3-app3-prod-app-prod-secret", "https://integration-sb1.apiexchange.org/v1/logo");	
+			"https://stage-exchange-test.apigee.net/gsma/v2/discovery", 
+			"gZJ8mEnjoLiAgrfudHCEZvufOoafvf1S", 
+			"oESO7jLriPaF3qKA", 
+			"https://sb1.exchange.gsma.com/v1/logo");	
 
 	private static String[] operatorNames=null;
 	private static final DeveloperOperatorSetting[] operators={testDev};

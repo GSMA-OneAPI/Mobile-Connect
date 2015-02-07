@@ -10,3 +10,17 @@ test-apps/ios/SDKTestApp/Test
 test-apps/ios/SDKTestApp/OriginalSDK
 test-apps/ios/SDKTestApp/SDK-DiscoveryLogo
 test-apps/ios/SDKTestApp/SDK-MobileConnect
+Android-SDK-Source/build/discovery
+Android-SDK-Source/build/logo
+Android-SDK-Source/build/mobileconnect
+.DS_Store
+Android-SDK-Source/discovery/bin
+Android-SDK-Source/logo/bin
+Android-SDK-Source/mobileconnect/bin
+test-apps/android/emulator.sh
+test-apps/android/testemu.sh
+SourceCodeAndroid_CrossOperationLaunch.zip
+SourceCodeiOS_CrossOperationLaunch.zip
+GSMAProjects/discovery/.project
+GSMAProjects/logo/.project
+GSMAProjects/mobileconnect/.project
