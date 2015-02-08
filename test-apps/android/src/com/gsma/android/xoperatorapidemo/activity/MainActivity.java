@@ -65,6 +65,8 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		
 	private static DiscoveryItem discoveryData=null;	
 	
+	private boolean useWebviewForDiscovery=true;
+	
 	public static final int DISCOVERY_COMPLETE=1;
 	public static final int SETTINGS_COMPLETE=2;
 	public static final int LOGOS_UPDATED=100;
@@ -346,7 +348,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 								null, /* MSISDN */
 								this, /* listener */
 								this, /* context */
-								this, /* activity */
+								useWebviewForDiscovery?mainActivityInstance:null, /* activity */
 								DiscoveryCredentials.PLAIN, 
 								"http://gsma.com/oneapi");
 					} else {
@@ -359,7 +361,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 								null, /* MSISDN */
 								this, /* listener */
 								this, /* context */
-								this, /* activity */
+								useWebviewForDiscovery?mainActivityInstance:null, /* activity */
 								DiscoveryCredentials.PLAIN, 
 								"http://gsma.com/oneapi");						
 					}
@@ -497,7 +499,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 						null, /* MSISDN */
 						this, /* listener */
 						this, /* context */
-						this, /* activity */
+						useWebviewForDiscovery?mainActivityInstance:null, /* activity */
 						DiscoveryCredentials.PLAIN, 
 						"http://gsma.com/oneapi");
 			} else {
@@ -510,7 +512,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 						null, /* MSISDN */
 						this, /* listener */
 						this, /* context */
-						this, /* activity */
+						useWebviewForDiscovery?mainActivityInstance:null, /* activity */
 						DiscoveryCredentials.PLAIN, 
 						"http://gsma.com/oneapi");						
 			}
