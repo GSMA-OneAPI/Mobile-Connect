@@ -97,4 +97,21 @@
         </jar>
     </target>
 
+    <target name="test" depends="compilediscovery,compilelogo,compilemobileconnect,discoveryjar,logojar,mobileconnectjar">
+        <copy todir="../test-apps/android/libs">
+	    <fileset dir="build">
+		<include name="*.jar"/>
+            </fileset>
+	</copy>
+    </target>
+
+    <target name="release" depends="test">
+        <copy todir="../sdk/android">
+            <fileset dir="build">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+
 </project>

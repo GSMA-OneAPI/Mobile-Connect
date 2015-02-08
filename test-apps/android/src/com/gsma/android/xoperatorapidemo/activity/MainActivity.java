@@ -261,6 +261,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 			startOperatorId.setVisibility(View.INVISIBLE);
 			
 			DiscoveryProvider discoveryProvider=new DiscoveryProvider();
+			discoveryProvider.setVerboseTracing(true);
 			Log.d(TAG, "Checking for cached discovery response");
 			discoveryData=discoveryProvider.getCacheDiscoveryItem(this);
 			if (discoveryData!=null) {
@@ -338,17 +339,18 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 					discoveryProvider.clearCacheDiscoveryItem(this);
 					
 					if (SettingsActivity.getServingOperator().isAutomatic()) {
-						discoveryProvider.getDiscoveryActiveAutomaticMCCMNC(SettingsActivity.getDeveloperOperator().getEndpoint(), 
+						discoveryProvider.getDiscoveryActiveAutomaticMCCMNCUsingWebview(SettingsActivity.getDeveloperOperator().getEndpoint(), 
 								SettingsActivity.getDeveloperOperator().getAppKey(), 
 								SettingsActivity.getDeveloperOperator().getAppSecret(), 
 								SettingsActivity.getServingOperator().getIpaddress(), 
 								null, /* MSISDN */
 								this, /* listener */
 								this, /* context */
+								this, /* activity */
 								DiscoveryCredentials.PLAIN, 
 								"http://gsma.com/oneapi");
 					} else {
-						discoveryProvider.getDiscoveryActive(SettingsActivity.getDeveloperOperator().getEndpoint(), 
+						discoveryProvider.getDiscoveryActiveUsingWebview(SettingsActivity.getDeveloperOperator().getEndpoint(), 
 								SettingsActivity.getDeveloperOperator().getAppKey(), 
 								SettingsActivity.getDeveloperOperator().getAppSecret(), 
 								SettingsActivity.getServingOperator().getIpaddress(), 
@@ -357,6 +359,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 								null, /* MSISDN */
 								this, /* listener */
 								this, /* context */
+								this, /* activity */
 								DiscoveryCredentials.PLAIN, 
 								"http://gsma.com/oneapi");						
 					}
@@ -487,17 +490,18 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 			DiscoveryProvider discoveryProvider=new DiscoveryProvider();
 			
 			if (SettingsActivity.getServingOperator().isAutomatic()) {
-				discoveryProvider.getDiscoveryActiveAutomaticMCCMNC(SettingsActivity.getDeveloperOperator().getEndpoint(), 
+				discoveryProvider.getDiscoveryActiveAutomaticMCCMNCUsingWebview(SettingsActivity.getDeveloperOperator().getEndpoint(), 
 						SettingsActivity.getDeveloperOperator().getAppKey(), 
 						SettingsActivity.getDeveloperOperator().getAppSecret(), 
 						SettingsActivity.getServingOperator().getIpaddress(), 
 						null, /* MSISDN */
 						this, /* listener */
 						this, /* context */
+						this, /* activity */
 						DiscoveryCredentials.PLAIN, 
 						"http://gsma.com/oneapi");
 			} else {
-				discoveryProvider.getDiscoveryActive(SettingsActivity.getDeveloperOperator().getEndpoint(), 
+				discoveryProvider.getDiscoveryActiveUsingWebview(SettingsActivity.getDeveloperOperator().getEndpoint(), 
 						SettingsActivity.getDeveloperOperator().getAppKey(), 
 						SettingsActivity.getDeveloperOperator().getAppSecret(), 
 						SettingsActivity.getServingOperator().getIpaddress(), 
@@ -506,6 +510,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 						null, /* MSISDN */
 						this, /* listener */
 						this, /* context */
+						this, /* activity */
 						DiscoveryCredentials.PLAIN, 
 						"http://gsma.com/oneapi");						
 			}

@@ -10,16 +10,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.gsma.android.oneapi.utilsDiscovery.PhoneState;
-import com.gsma.android.oneapi.utilsDiscovery.PhoneUtils;
-import com.gsma.android.oneapi.valuesDiscovery.DiscoveryCredentials;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
-import android.telephony.TelephonyManager;
 import android.net.Uri;
+import android.telephony.TelephonyManager;
+
+import com.gsma.android.oneapi.utilsDiscovery.PhoneState;
+import com.gsma.android.oneapi.utilsDiscovery.PhoneUtils;
+import com.gsma.android.oneapi.valuesDiscovery.DiscoveryCredentials;
 
 /**
  * Main class with library methods. Implements DiscoveryCallbackReciever
@@ -78,6 +79,7 @@ public class DiscoveryProvider implements DiscoveryCallbackReceiver {
 						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
 						mnc, null /* selected mcc */, null /* selected mnc */, 
 						this, credentials.value(), redirectUri, context, 
+						null /* activity */,
 						false /* follow redirect */, true /* json */, 
 						allowAllSSL, verboseTracing);
 			initialDiscoveryTask.execute();
@@ -125,6 +127,7 @@ public class DiscoveryProvider implements DiscoveryCallbackReceiver {
 						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
 						mnc, null /* Selected MCC */, null /* Selected MNC */, 
 						this, credentials.value(), redirectUri, context, 
+						null /* activity */,
 						false /* follow redirect */, true /* json */, 
 						allowAllSSL, verboseTracing);
 			initialDiscoveryTask.execute();
@@ -173,6 +176,7 @@ public class DiscoveryProvider implements DiscoveryCallbackReceiver {
 						null /* Identified MCC */, null /* Identified MNC */,
 						mcc, mnc,  
 						this, credentials.value(), redirectUri, context, 
+						null /* activity */,
 						false /* follow redirect */, true /* json */, 
 						allowAllSSL, verboseTracing);
 			initialDiscoveryTask.execute();
@@ -222,6 +226,56 @@ public class DiscoveryProvider implements DiscoveryCallbackReceiver {
 						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
 						mnc, null /* Selected MCC */, null /* Selected MNC */,
 						this, credentials.value(),redirectUri, context, 
+						null /* activity */,
+						true /* follow redirect */, true /* json */, 
+						allowAllSSL, verboseTracing);
+			initialDiscoveryTask.execute();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Gets the discovery information in active mode. 
+	 * 
+	 * @param serviceUri
+	 * @param consumerKey
+	 * @param consumerSecret
+	 * @param sourceIP
+	 * @param msisdn
+	 * @param listener. It is necessary to implement discoveryInfo(DiscoveryItem di) 
+	 * and errorDiscoveryInfo(JSONObject jo) to manage the response
+	 * @param context
+	 * @param credentials (NONE, PLAIN, SHA256)
+	 * @param redirectUri will point to a developer specified location which continues the discovery process
+	 * @throws Exception
+	 * @throws NullPointerException
+	 */
+	public void getDiscoveryActiveAutomaticMCCMNCUsingWebview(String serviceUri, String consumerKey,
+			String consumerSecret, String sourceIP, String msisdn, DiscoveryListener listener,
+			Context context, Activity activity, DiscoveryCredentials credentials, String redirectUri) {
+		try {
+			this.listener = listener;
+			mPrefs = context.getSharedPreferences(PREFS_DISCOVERY, 0);
+	
+			TelephonyManager tm = (TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			ConnectivityManager cm = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			PhoneState phoneS = PhoneUtils.getPhoneState(tm, cm);
+	
+			boolean usingMobileData = phoneS.isUsingMobileData();
+	
+			String mcc = phoneS.getMcc();
+			String mnc = phoneS.getMnc();
+	
+			initialDiscoveryTask = new DiscoveryTask(serviceUri, consumerKey,
+						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
+						mnc, null /* Selected MCC */, null /* Selected MNC */,
+						this, credentials.value(),redirectUri, context, 
+						activity /* activity */,
 						true /* follow redirect */, true /* json */, 
 						allowAllSSL, verboseTracing);
 			initialDiscoveryTask.execute();
@@ -269,6 +323,56 @@ public class DiscoveryProvider implements DiscoveryCallbackReceiver {
 						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
 						mnc, null /* Selected MCC */, null /* Selected MNC */,
 						this, credentials.value(),redirectUri, context, 
+						null /* activity */,
+						true /* follow redirect */, true /* json */, 
+						allowAllSSL, verboseTracing);
+			initialDiscoveryTask.execute();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Gets the discovery information in active mode. 
+	 * 
+	 * @param serviceUri
+	 * @param consumerKey
+	 * @param consumerSecret
+	 * @param sourceIP
+	 * @param mcc
+	 * @param mnc
+	 * @param msisdn
+	 * @param listener. It is necessary to implement discoveryInfo(DiscoveryItem di) 
+	 * and errorDiscoveryInfo(JSONObject jo) to manage the response
+	 * @param context
+	 * @param credentials (NONE, PLAIN, SHA256)
+	 * @param redirectUri will point to a developer specified location which continues the discovery process
+	 * @throws Exception
+	 * @throws NullPointerException
+	 */
+	public void getDiscoveryActiveUsingWebview(String serviceUri, String consumerKey,
+			String consumerSecret, String sourceIP, String mcc, String mnc, String msisdn, DiscoveryListener listener,
+			Context context, Activity activity,
+			DiscoveryCredentials credentials, String redirectUri) {
+		try {
+			this.listener = listener;
+			mPrefs = context.getSharedPreferences(PREFS_DISCOVERY, 0);
+	
+			TelephonyManager tm = (TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			ConnectivityManager cm = (ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			PhoneState phoneS = PhoneUtils.getPhoneState(tm, cm);
+	
+			boolean usingMobileData = phoneS.isUsingMobileData();
+	
+			initialDiscoveryTask = new DiscoveryTask(serviceUri, consumerKey,
+						consumerSecret, sourceIP, usingMobileData, msisdn, mcc,
+						mnc, null /* Selected MCC */, null /* Selected MNC */,
+						this, credentials.value(),redirectUri, context, 
+						activity,
 						true /* follow redirect */, true /* json */, 
 						allowAllSSL, verboseTracing);
 			initialDiscoveryTask.execute();
