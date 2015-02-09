@@ -153,6 +153,10 @@
  */
 - (void)getDiscoveryPassive: (NSString*)url clientId:(NSString*)clientId clientSecret:(NSString*)clientSecret encryption:(encryptionTypeEnum)encryption ipAddress:(NSString*)ipAddress  redirectUri:(NSString*)redirectUri msisdn:(NSString*)msisdn  mcc:(NSString*)mcc mnc:(NSString*)mnc;
 
+/** Internal function for discovery phase 2 
+ */
+- (void)internalPhase2DiscoveryHandler: (NSString*)url clientId:(NSString*)clientId clientSecret:(NSString*)clientSecret encryption:(encryptionTypeEnum)encryption   redirectUri:(NSString*)redirectUri
+                                   mcc:(NSString*)mcc mnc:(NSString*)mnc subscriber_id:(NSString *)subscriber_id;
 
 
 /** This function return the last stored item representation
@@ -174,8 +178,6 @@
  */
 - (NSMutableDictionary*)extractRedirectParameter: (NSString*) url;
 
-
-
 /**
  This function extract a field String from the Discovery NSMutableDiscovery result
  @param discoveryData data to extract a field
@@ -193,5 +195,11 @@
  */
 - (NSString *)endpoint: (NSMutableDictionary *)discoveryData api:(NSString *)api function:(NSString *)function;
 
+/**
+ This function extracts the subscriber_id field from the Discovery NSMutableDiscovery result
+ @param discoveryData data to extract subscriber_id from
+ @return NSString value of the searched field in the discovery data
+ */
+- (NSString *) encryptedSubscriberID: (NSMutableDictionary *) discoveryData;
 
 @end

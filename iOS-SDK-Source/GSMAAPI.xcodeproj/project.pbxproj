@@ -1,0 +1,951 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		611948AB196C202400A3D3B6 /* Documentation OpenId */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 611948AC196C202400A3D3B6 /* Build configuration list for PBXAggregateTarget "Documentation OpenId" */;
+			buildPhases = (
+				611948AF196C202E00A3D3B6 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Documentation OpenId";
+			productName = "Documentation OpenId";
+		};
+		611948B0196C209E00A3D3B6 /* Documentation Discovery Logo */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 611948B1196C209E00A3D3B6 /* Build configuration list for PBXAggregateTarget "Documentation Discovery Logo" */;
+			buildPhases = (
+				611948B4196C20A600A3D3B6 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Documentation Discovery Logo";
+			productName = "Documentation Discovery Logo";
+		};
+		616082B119C30A6000FD7ABF /* Documentation Logo */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 616082B219C30A6000FD7ABF /* Build configuration list for PBXAggregateTarget "Documentation Logo" */;
+			buildPhases = (
+				616082B519C30A6400FD7ABF /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Documentation Logo";
+			productName = "Documentation Logo";
+		};
+		616082B619C30AF000FD7ABF /* Documentation Discovery */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 616082B719C30AF000FD7ABF /* Build configuration list for PBXAggregateTarget "Documentation Discovery" */;
+			buildPhases = (
+				616082BA19C30B2400FD7ABF /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Documentation Discovery";
+			productName = "Documentation Discovery";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		61194870196C1F7100A3D3B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6119486F196C1F7100A3D3B6 /* Foundation.framework */; };
+		61194872196C1F7100A3D3B6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61194871196C1F7100A3D3B6 /* CoreGraphics.framework */; };
+		61194874196C1F7100A3D3B6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61194873196C1F7100A3D3B6 /* UIKit.framework */; };
+		6119487A196C1F7100A3D3B6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61194878196C1F7100A3D3B6 /* InfoPlist.strings */; };
+		6119487C196C1F7100A3D3B6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6119487B196C1F7100A3D3B6 /* main.m */; };
+		61194880196C1F7100A3D3B6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6119487F196C1F7100A3D3B6 /* AppDelegate.m */; };
+		61194883196C1F7100A3D3B6 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61194881196C1F7100A3D3B6 /* Main_iPhone.storyboard */; };
+		61194886196C1F7100A3D3B6 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61194884196C1F7100A3D3B6 /* Main_iPad.storyboard */; };
+		61194889196C1F7100A3D3B6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61194888196C1F7100A3D3B6 /* ViewController.m */; };
+		6119488B196C1F7100A3D3B6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6119488A196C1F7100A3D3B6 /* Images.xcassets */; };
+		611948B7196C234000A3D3B6 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948B6196C234000A3D3B6 /* Utils.m */; };
+		611948BF196C251700A3D3B6 /* AuthorizationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948BA196C251700A3D3B6 /* AuthorizationOptions.m */; };
+		611948C0196C251700A3D3B6 /* Scope_profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948BC196C251700A3D3B6 /* Scope_profile.m */; };
+		611948C1196C251700A3D3B6 /* Scope.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948BE196C251700A3D3B6 /* Scope.m */; };
+		611948C4196C251F00A3D3B6 /* MobileConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C3196C251F00A3D3B6 /* MobileConnect.m */; };
+		611948C7196C253000A3D3B6 /* LogoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C6196C253000A3D3B6 /* LogoAPI.m */; };
+		611948CA196C253A00A3D3B6 /* DiscoveryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C9196C253A00A3D3B6 /* DiscoveryAPI.m */; };
+		613D534E1A00F00D00523FEE /* AuthorizationOptions.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 611948B9196C251700A3D3B6 /* AuthorizationOptions.h */; };
+		61623B0E1A12144300740539 /* AuthorizationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948BA196C251700A3D3B6 /* AuthorizationOptions.m */; };
+		61623B0F1A12144300740539 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948B6196C234000A3D3B6 /* Utils.m */; };
+		61623B101A12144300740539 /* MobileConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C3196C251F00A3D3B6 /* MobileConnect.m */; };
+		61623B111A12144300740539 /* LogoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C6196C253000A3D3B6 /* LogoAPI.m */; };
+		61623B121A12144300740539 /* DiscoveryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C9196C253A00A3D3B6 /* DiscoveryAPI.m */; };
+		61623B131A12146200740539 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6119486F196C1F7100A3D3B6 /* Foundation.framework */; };
+		61623B141A12152400740539 /* AuthorizationOptions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 611948B9196C251700A3D3B6 /* AuthorizationOptions.h */; };
+		61623B151A12152400740539 /* Utils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 611948B5196C234000A3D3B6 /* Utils.h */; };
+		61623B161A12152400740539 /* MobileConnect.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 611948C2196C251F00A3D3B6 /* MobileConnect.h */; };
+		61623B171A12152400740539 /* LogoAPI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 611948C5196C253000A3D3B6 /* LogoAPI.h */; };
+		61623B181A12152400740539 /* DiscoveryAPI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 611948C8196C253A00A3D3B6 /* DiscoveryAPI.h */; };
+		61BC70F1196C32FD0056BA5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6119486F196C1F7100A3D3B6 /* Foundation.framework */; };
+		61BC7117196C33090056BA5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6119486F196C1F7100A3D3B6 /* Foundation.framework */; };
+		61BC7138196C33800056BA5E /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948B6196C234000A3D3B6 /* Utils.m */; };
+		61BC7139196C33800056BA5E /* LogoAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C6196C253000A3D3B6 /* LogoAPI.m */; };
+		61BC713A196C33800056BA5E /* DiscoveryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C9196C253A00A3D3B6 /* DiscoveryAPI.m */; };
+		61BC713B196C33880056BA5E /* LogoAPI.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 611948C5196C253000A3D3B6 /* LogoAPI.h */; };
+		61BC713C196C33880056BA5E /* DiscoveryAPI.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 611948C8196C253A00A3D3B6 /* DiscoveryAPI.h */; };
+		61BC7187196DA4DB0056BA5E /* AuthorizationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948BA196C251700A3D3B6 /* AuthorizationOptions.m */; };
+		61BC7188196DA4DF0056BA5E /* MobileConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 611948C3196C251F00A3D3B6 /* MobileConnect.m */; };
+		61BC7189196DA5250056BA5E /* MobileConnect.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 611948C2196C251F00A3D3B6 /* MobileConnect.h */; };
+		61BC719C196ECDB20056BA5E /* Utils.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 611948B5196C234000A3D3B6 /* Utils.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		61623AF51A12133500740539 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				61623B141A12152400740539 /* AuthorizationOptions.h in CopyFiles */,
+				61623B151A12152400740539 /* Utils.h in CopyFiles */,
+				61623B161A12152400740539 /* MobileConnect.h in CopyFiles */,
+				61623B171A12152400740539 /* LogoAPI.h in CopyFiles */,
+				61623B181A12152400740539 /* DiscoveryAPI.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC70EE196C32FD0056BA5E /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				613D534E1A00F00D00523FEE /* AuthorizationOptions.h in Copy Files */,
+				61BC7189196DA5250056BA5E /* MobileConnect.h in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC7114196C33090056BA5E /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				61BC719C196ECDB20056BA5E /* Utils.h in Copy Files */,
+				61BC713B196C33880056BA5E /* LogoAPI.h in Copy Files */,
+				61BC713C196C33880056BA5E /* DiscoveryAPI.h in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6119486C196C1F7100A3D3B6 /* GSMAAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GSMAAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6119486F196C1F7100A3D3B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		61194871196C1F7100A3D3B6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		61194873196C1F7100A3D3B6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		61194877196C1F7100A3D3B6 /* GSMAAPI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSMAAPI-Info.plist"; sourceTree = "<group>"; };
+		61194879196C1F7100A3D3B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6119487B196C1F7100A3D3B6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6119487D196C1F7100A3D3B6 /* GSMAAPI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSMAAPI-Prefix.pch"; sourceTree = "<group>"; };
+		6119487E196C1F7100A3D3B6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6119487F196C1F7100A3D3B6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		61194882196C1F7100A3D3B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		61194885196C1F7100A3D3B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		61194887196C1F7100A3D3B6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		61194888196C1F7100A3D3B6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		6119488A196C1F7100A3D3B6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		61194891196C1F7200A3D3B6 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		611948B5196C234000A3D3B6 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		611948B6196C234000A3D3B6 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		611948B9196C251700A3D3B6 /* AuthorizationOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizationOptions.h; sourceTree = "<group>"; };
+		611948BA196C251700A3D3B6 /* AuthorizationOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizationOptions.m; sourceTree = "<group>"; };
+		611948BB196C251700A3D3B6 /* Scope_profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scope_profile.h; sourceTree = "<group>"; };
+		611948BC196C251700A3D3B6 /* Scope_profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scope_profile.m; sourceTree = "<group>"; };
+		611948BD196C251700A3D3B6 /* Scope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scope.h; sourceTree = "<group>"; };
+		611948BE196C251700A3D3B6 /* Scope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scope.m; sourceTree = "<group>"; };
+		611948C2196C251F00A3D3B6 /* MobileConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileConnect.h; sourceTree = "<group>"; };
+		611948C3196C251F00A3D3B6 /* MobileConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileConnect.m; sourceTree = "<group>"; };
+		611948C5196C253000A3D3B6 /* LogoAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoAPI.h; sourceTree = "<group>"; };
+		611948C6196C253000A3D3B6 /* LogoAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoAPI.m; sourceTree = "<group>"; };
+		611948C8196C253A00A3D3B6 /* DiscoveryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryAPI.h; sourceTree = "<group>"; };
+		611948C9196C253A00A3D3B6 /* DiscoveryAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryAPI.m; sourceTree = "<group>"; };
+		61623AF71A12133500740539 /* libGSMA IOS SDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libGSMA IOS SDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		61623B071A12133600740539 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		61BC70F0196C32FD0056BA5E /* libIOS SDK-MobileConnect.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libIOS SDK-MobileConnect.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		61BC7116196C33090056BA5E /* libIOS SDK-DiscoveryLogo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libIOS SDK-DiscoveryLogo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		61194869196C1F7100A3D3B6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61194874196C1F7100A3D3B6 /* UIKit.framework in Frameworks */,
+				61194872196C1F7100A3D3B6 /* CoreGraphics.framework in Frameworks */,
+				61194870196C1F7100A3D3B6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61623AF41A12133500740539 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61623B131A12146200740539 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC70ED196C32FD0056BA5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61BC70F1196C32FD0056BA5E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC7113196C33090056BA5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61BC7117196C33090056BA5E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		61194863196C1F7100A3D3B6 = {
+			isa = PBXGroup;
+			children = (
+				611948B8196C24F600A3D3B6 /* commons Openid */,
+				611948AA196C1FF300A3D3B6 /* commons Discovery Logo */,
+				611948A9196C1FC800A3D3B6 /* MobileConnect */,
+				611948A8196C1FBF00A3D3B6 /* Logo */,
+				611948A7196C1FB600A3D3B6 /* Discovery */,
+				61194875196C1F7100A3D3B6 /* GSMAAPI */,
+				61623B051A12133600740539 /* GSMASDKTests */,
+				6119486E196C1F7100A3D3B6 /* Frameworks */,
+				6119486D196C1F7100A3D3B6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6119486D196C1F7100A3D3B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6119486C196C1F7100A3D3B6 /* GSMAAPI.app */,
+				61BC70F0196C32FD0056BA5E /* libIOS SDK-MobileConnect.a */,
+				61BC7116196C33090056BA5E /* libIOS SDK-DiscoveryLogo.a */,
+				61623AF71A12133500740539 /* libGSMA IOS SDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6119486E196C1F7100A3D3B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6119486F196C1F7100A3D3B6 /* Foundation.framework */,
+				61194871196C1F7100A3D3B6 /* CoreGraphics.framework */,
+				61194873196C1F7100A3D3B6 /* UIKit.framework */,
+				61194891196C1F7200A3D3B6 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		61194875196C1F7100A3D3B6 /* GSMAAPI */ = {
+			isa = PBXGroup;
+			children = (
+				6119487E196C1F7100A3D3B6 /* AppDelegate.h */,
+				6119487F196C1F7100A3D3B6 /* AppDelegate.m */,
+				61194881196C1F7100A3D3B6 /* Main_iPhone.storyboard */,
+				61194884196C1F7100A3D3B6 /* Main_iPad.storyboard */,
+				61194887196C1F7100A3D3B6 /* ViewController.h */,
+				61194888196C1F7100A3D3B6 /* ViewController.m */,
+				6119488A196C1F7100A3D3B6 /* Images.xcassets */,
+				61194876196C1F7100A3D3B6 /* Supporting Files */,
+			);
+			name = GSMAAPI;
+			path = "GSMA API";
+			sourceTree = "<group>";
+		};
+		61194876196C1F7100A3D3B6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				61194877196C1F7100A3D3B6 /* GSMAAPI-Info.plist */,
+				61194878196C1F7100A3D3B6 /* InfoPlist.strings */,
+				6119487B196C1F7100A3D3B6 /* main.m */,
+				6119487D196C1F7100A3D3B6 /* GSMAAPI-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		611948A7196C1FB600A3D3B6 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				611948C8196C253A00A3D3B6 /* DiscoveryAPI.h */,
+				611948C9196C253A00A3D3B6 /* DiscoveryAPI.m */,
+			);
+			name = Discovery;
+			sourceTree = "<group>";
+		};
+		611948A8196C1FBF00A3D3B6 /* Logo */ = {
+			isa = PBXGroup;
+			children = (
+				611948C5196C253000A3D3B6 /* LogoAPI.h */,
+				611948C6196C253000A3D3B6 /* LogoAPI.m */,
+			);
+			name = Logo;
+			sourceTree = "<group>";
+		};
+		611948A9196C1FC800A3D3B6 /* MobileConnect */ = {
+			isa = PBXGroup;
+			children = (
+				611948C2196C251F00A3D3B6 /* MobileConnect.h */,
+				611948C3196C251F00A3D3B6 /* MobileConnect.m */,
+			);
+			name = MobileConnect;
+			sourceTree = "<group>";
+		};
+		611948AA196C1FF300A3D3B6 /* commons Discovery Logo */ = {
+			isa = PBXGroup;
+			children = (
+				611948B5196C234000A3D3B6 /* Utils.h */,
+				611948B6196C234000A3D3B6 /* Utils.m */,
+			);
+			name = "commons Discovery Logo";
+			sourceTree = "<group>";
+		};
+		611948B8196C24F600A3D3B6 /* commons Openid */ = {
+			isa = PBXGroup;
+			children = (
+				611948B9196C251700A3D3B6 /* AuthorizationOptions.h */,
+				611948BA196C251700A3D3B6 /* AuthorizationOptions.m */,
+				611948BB196C251700A3D3B6 /* Scope_profile.h */,
+				611948BC196C251700A3D3B6 /* Scope_profile.m */,
+				611948BD196C251700A3D3B6 /* Scope.h */,
+				611948BE196C251700A3D3B6 /* Scope.m */,
+			);
+			name = "commons Openid";
+			sourceTree = "<group>";
+		};
+		61623B051A12133600740539 /* GSMASDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				61623B061A12133600740539 /* Supporting Files */,
+			);
+			name = GSMASDKTests;
+			path = "GSMA SDKTests";
+			sourceTree = "<group>";
+		};
+		61623B061A12133600740539 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				61623B071A12133600740539 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6119486B196C1F7100A3D3B6 /* GSMAAPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 611948A1196C1F7200A3D3B6 /* Build configuration list for PBXNativeTarget "GSMAAPI" */;
+			buildPhases = (
+				61194868196C1F7100A3D3B6 /* Sources */,
+				61194869196C1F7100A3D3B6 /* Frameworks */,
+				6119486A196C1F7100A3D3B6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GSMAAPI;
+			productName = "GSMA API";
+			productReference = 6119486C196C1F7100A3D3B6 /* GSMAAPI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		61623AF61A12133500740539 /* GSMA IOS SDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61623B081A12133600740539 /* Build configuration list for PBXNativeTarget "GSMA IOS SDK" */;
+			buildPhases = (
+				61623AF31A12133500740539 /* Sources */,
+				61623AF41A12133500740539 /* Frameworks */,
+				61623AF51A12133500740539 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GSMA IOS SDK";
+			productName = "GSMA SDK";
+			productReference = 61623AF71A12133500740539 /* libGSMA IOS SDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		61BC70EF196C32FD0056BA5E /* IOS SDK-MobileConnect */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61BC710C196C32FD0056BA5E /* Build configuration list for PBXNativeTarget "IOS SDK-MobileConnect" */;
+			buildPhases = (
+				61BC70EC196C32FD0056BA5E /* Sources */,
+				61BC70ED196C32FD0056BA5E /* Frameworks */,
+				61BC70EE196C32FD0056BA5E /* Copy Files */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "IOS SDK-MobileConnect";
+			productName = "IOS SDK-OpenId";
+			productReference = 61BC70F0196C32FD0056BA5E /* libIOS SDK-MobileConnect.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		61BC7115196C33090056BA5E /* IOS SDK-DiscoveryLogo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61BC7132196C33090056BA5E /* Build configuration list for PBXNativeTarget "IOS SDK-DiscoveryLogo" */;
+			buildPhases = (
+				61BC7112196C33090056BA5E /* Sources */,
+				61BC7113196C33090056BA5E /* Frameworks */,
+				61BC7114196C33090056BA5E /* Copy Files */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "IOS SDK-DiscoveryLogo";
+			productName = "IOS SDK-DiscoveryLogo";
+			productReference = 61BC7116196C33090056BA5E /* libIOS SDK-DiscoveryLogo.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		61194864196C1F7100A3D3B6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Solaiemes S.L";
+				TargetAttributes = {
+					61623AF61A12133500740539 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 61194867196C1F7100A3D3B6 /* Build configuration list for PBXProject "GSMAAPI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 61194863196C1F7100A3D3B6;
+			productRefGroup = 6119486D196C1F7100A3D3B6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6119486B196C1F7100A3D3B6 /* GSMAAPI */,
+				611948AB196C202400A3D3B6 /* Documentation OpenId */,
+				611948B0196C209E00A3D3B6 /* Documentation Discovery Logo */,
+				61BC70EF196C32FD0056BA5E /* IOS SDK-MobileConnect */,
+				61BC7115196C33090056BA5E /* IOS SDK-DiscoveryLogo */,
+				616082B119C30A6000FD7ABF /* Documentation Logo */,
+				616082B619C30AF000FD7ABF /* Documentation Discovery */,
+				61623AF61A12133500740539 /* GSMA IOS SDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6119486A196C1F7100A3D3B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61194886196C1F7100A3D3B6 /* Main_iPad.storyboard in Resources */,
+				6119488B196C1F7100A3D3B6 /* Images.xcassets in Resources */,
+				61194883196C1F7100A3D3B6 /* Main_iPhone.storyboard in Resources */,
+				6119487A196C1F7100A3D3B6 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		611948AF196C202E00A3D3B6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Users/sipbox/appleDocZip/appledoc/appledoc \\\n--project-name \"GSMA IOS SDK - MobileConnect\" \\\n--project-company \"Solaiemes\" \\\n--company-id \"com.solaiemes\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}/MobileConnect\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"AppDelegate.h\" \\\n--ignore \"AppDelegate.m\" \\\n--ignore \"GSMA_APITests.m\" \\\n--ignore \"ViewController.m\" \\\n--ignore \"ViewController.h\" \\\n--ignore \"Utils.m\" \\\n--ignore \"Utils.h\" \\\n--ignore \"Scope.m\" \\\n--ignore \"Scope.h\" \\\n--ignore \"Scope_profile.m\" \\\n--ignore \"Scope_profile.h\" \\\n--ignore \"DiscoveryAPI.h\" \\\n--ignore \"DiscoveryAPI.m\" \\\n--ignore \"AuthorizationOptions.h\" \\\n--ignore \"AuthorizationOptions.m\" \\\n--ignore \"LogoAPI.h\" \\\n--ignore \"LogoAPI.m\" \\\n--ignore \"GSMA_SDK.h\" \\\n--ignore \"GSMA_SDK.m\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}\"";
+		};
+		611948B4196C20A600A3D3B6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Users/sipbox/appleDocZip/appledoc/appledoc \\\n--project-name \"GSMA IOS SDK - API\" \\\n--project-company \"Solaiemes\" \\\n--company-id \"com.solaiemes\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}/Discovery_Logo\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"AppDelegate.h\" \\\n--ignore \"AppDelegate.m\" \\\n--ignore \"GSMA_APITests.m\" \\\n--ignore \"ViewController.m\" \\\n--ignore \"ViewController.h\" \\\n--ignore \"Utils.m\" \\\n--ignore \"Utils.h\" \\\n--ignore \"Scope.m\" \\\n--ignore \"Scope.h\" \\\n--ignore \"Scope_profile.m\" \\\n--ignore \"Scope_profile.h\" \\\n--ignore \"OpenID.h\" \\\n--ignore \"OpenID.m\" \\\n--ignore \"AuthorizationOptions.h\" \\\n--ignore \"AuthorizationOptions.m\" \\\n--ignore \"DiscoveryAPI.m\" \\\n--ignore \"LogoAPI.m\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}\"";
+		};
+		616082B519C30A6400FD7ABF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Users/sipbox/appleDocZip/appledoc/appledoc \\\n--project-name \"GSMA IOS SDK - API\" \\\n--project-company \"Solaiemes\" \\\n--company-id \"com.solaiemes\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}/LogoAPI\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"AppDelegate.h\" \\\n--ignore \"AppDelegate.m\" \\\n--ignore \"GSMA_APITests.m\" \\\n--ignore \"ViewController.m\" \\\n--ignore \"ViewController.h\" \\\n--ignore \"Utils.m\" \\\n--ignore \"Utils.h\" \\\n--ignore \"Scope.m\" \\\n--ignore \"Scope.h\" \\\n--ignore \"Scope_profile.m\" \\\n--ignore \"Scope_profile.h\" \\\n--ignore \"MobileConnect.h\" \\\n--ignore \"MobileConnect.m\" \\\n--ignore \"DiscoveryAPI.h\" \\\n--ignore \"DiscoveryAPI.m\" \\\n--ignore \"AuthorizationOptions.h\" \\\n--ignore \"AuthorizationOptions.m\" \\\n--ignore \"DiscoveryAPI.m\" \\\n--ignore \"LogoAPI.m\" \\\n--ignore \"GSMA_SDK.h\" \\\n--ignore \"GSMA_SDK.m\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}\"";
+		};
+		616082BA19C30B2400FD7ABF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Users/sipbox/appleDocZip/appledoc/appledoc \\\n--project-name \"GSMA IOS SDK - API\" \\\n--project-company \"Solaiemes\" \\\n--company-id \"com.solaiemes\" \\\n--output \"~/Projects/Help/${PROJECT_NAME}/DiscoveryAPI\" \\\n--install-docset \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--merge-categories \\\n--exit-threshold 2 \\\n--docset-platform-family iphoneos \\\n--ignore \"AppDelegate.h\" \\\n--ignore \"AppDelegate.m\" \\\n--ignore \"GSMA_APITests.m\" \\\n--ignore \"ViewController.m\" \\\n--ignore \"ViewController.h\" \\\n--ignore \"Utils.m\" \\\n--ignore \"Utils.h\" \\\n--ignore \"Scope.m\" \\\n--ignore \"Scope.h\" \\\n--ignore \"Scope_profile.m\" \\\n--ignore \"Scope_profile.h\" \\\n--ignore \"MobileConnect.h\" \\\n--ignore \"MobileConnect.m\" \\\n--ignore \"LogoAPI.h\" \\\n--ignore \"LogoAPI.m\" \\\n--ignore \"AuthorizationOptions.h\" \\\n--ignore \"AuthorizationOptions.m\" \\\n--ignore \"DiscoveryAPI.m\" \\\n--ignore \"LogoAPI.m\" \\\n--ignore \"GSMA_SDK.h\" \\\n--ignore \"GSMA_SDK.m\" \\\n--index-desc \"${PROJECT_DIR}/readme.markdown\" \\\n\"${PROJECT_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		61194868196C1F7100A3D3B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61194889196C1F7100A3D3B6 /* ViewController.m in Sources */,
+				611948CA196C253A00A3D3B6 /* DiscoveryAPI.m in Sources */,
+				61194880196C1F7100A3D3B6 /* AppDelegate.m in Sources */,
+				611948C7196C253000A3D3B6 /* LogoAPI.m in Sources */,
+				611948C4196C251F00A3D3B6 /* MobileConnect.m in Sources */,
+				611948C0196C251700A3D3B6 /* Scope_profile.m in Sources */,
+				611948C1196C251700A3D3B6 /* Scope.m in Sources */,
+				6119487C196C1F7100A3D3B6 /* main.m in Sources */,
+				611948B7196C234000A3D3B6 /* Utils.m in Sources */,
+				611948BF196C251700A3D3B6 /* AuthorizationOptions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61623AF31A12133500740539 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61623B0E1A12144300740539 /* AuthorizationOptions.m in Sources */,
+				61623B0F1A12144300740539 /* Utils.m in Sources */,
+				61623B101A12144300740539 /* MobileConnect.m in Sources */,
+				61623B111A12144300740539 /* LogoAPI.m in Sources */,
+				61623B121A12144300740539 /* DiscoveryAPI.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC70EC196C32FD0056BA5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61BC7187196DA4DB0056BA5E /* AuthorizationOptions.m in Sources */,
+				61BC7188196DA4DF0056BA5E /* MobileConnect.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61BC7112196C33090056BA5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61BC7138196C33800056BA5E /* Utils.m in Sources */,
+				61BC7139196C33800056BA5E /* LogoAPI.m in Sources */,
+				61BC713A196C33800056BA5E /* DiscoveryAPI.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		61194878196C1F7100A3D3B6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61194879196C1F7100A3D3B6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		61194881196C1F7100A3D3B6 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61194882196C1F7100A3D3B6 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		61194884196C1F7100A3D3B6 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61194885196C1F7100A3D3B6 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6119489F196C1F7200A3D3B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		611948A0196C1F7200A3D3B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		611948A2196C1F7200A3D3B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7,
+					arm64,
+					armv7s,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GSMA API/GSMAAPI-Prefix.pch";
+				INFOPLIST_FILE = "GSMA API/GSMAAPI-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				PRODUCT_NAME = GSMAAPI;
+				VALID_ARCHS = "armv7 armv7s x86_64 arm64";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		611948A3196C1F7200A3D3B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7,
+					arm64,
+					armv7s,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GSMA API/GSMAAPI-Prefix.pch";
+				INFOPLIST_FILE = "GSMA API/GSMAAPI-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				PRODUCT_NAME = GSMAAPI;
+				VALID_ARCHS = "armv7 armv7s x86_64 arm64";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		611948AD196C202400A3D3B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		611948AE196C202400A3D3B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		611948B2196C209E00A3D3B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		611948B3196C209E00A3D3B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		616082B319C30A6000FD7ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		616082B419C30A6000FD7ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		616082B819C30AF000FD7ABF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		616082B919C30AF000FD7ABF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		61623B091A12133600740539 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		61623B0A1A12133600740539 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		61BC710D196C32FD0056BA5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/IOS_SDK_OpenId.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IOS SDK-OpenId/IOS SDK-OpenId-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		61BC710E196C32FD0056BA5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/IOS_SDK_OpenId.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IOS SDK-OpenId/IOS SDK-OpenId-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		61BC7133196C33090056BA5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/IOS_SDK_DiscoveryLogo.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IOS SDK-DiscoveryLogo/IOS SDK-DiscoveryLogo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		61BC7134196C33090056BA5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/IOS_SDK_DiscoveryLogo.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IOS SDK-DiscoveryLogo/IOS SDK-DiscoveryLogo-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		61194867196C1F7100A3D3B6 /* Build configuration list for PBXProject "GSMAAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6119489F196C1F7200A3D3B6 /* Debug */,
+				611948A0196C1F7200A3D3B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		611948A1196C1F7200A3D3B6 /* Build configuration list for PBXNativeTarget "GSMAAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				611948A2196C1F7200A3D3B6 /* Debug */,
+				611948A3196C1F7200A3D3B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		611948AC196C202400A3D3B6 /* Build configuration list for PBXAggregateTarget "Documentation OpenId" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				611948AD196C202400A3D3B6 /* Debug */,
+				611948AE196C202400A3D3B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		611948B1196C209E00A3D3B6 /* Build configuration list for PBXAggregateTarget "Documentation Discovery Logo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				611948B2196C209E00A3D3B6 /* Debug */,
+				611948B3196C209E00A3D3B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		616082B219C30A6000FD7ABF /* Build configuration list for PBXAggregateTarget "Documentation Logo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				616082B319C30A6000FD7ABF /* Debug */,
+				616082B419C30A6000FD7ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		616082B719C30AF000FD7ABF /* Build configuration list for PBXAggregateTarget "Documentation Discovery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				616082B819C30AF000FD7ABF /* Debug */,
+				616082B919C30AF000FD7ABF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		61623B081A12133600740539 /* Build configuration list for PBXNativeTarget "GSMA IOS SDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61623B091A12133600740539 /* Debug */,
+				61623B0A1A12133600740539 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		61BC710C196C32FD0056BA5E /* Build configuration list for PBXNativeTarget "IOS SDK-MobileConnect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61BC710D196C32FD0056BA5E /* Debug */,
+				61BC710E196C32FD0056BA5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		61BC7132196C33090056BA5E /* Build configuration list for PBXNativeTarget "IOS SDK-DiscoveryLogo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61BC7133196C33090056BA5E /* Debug */,
+				61BC7134196C33090056BA5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 61194864196C1F7100A3D3B6 /* Project object */;
+}

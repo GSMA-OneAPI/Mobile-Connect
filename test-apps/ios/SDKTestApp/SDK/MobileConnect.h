@@ -240,6 +240,9 @@
     Utils* utils;
 }
 
+/** Property definition for MobileConnect debbug mode
+ @property traceMode BOOL delegate definition for managing the trace condition of the SDK logs
+ */
 @property BOOL traceMode;
 
 /** Property definition for MobileConnect
@@ -302,6 +305,7 @@ typedef enum{
  The acr_values are indication of what authentication method to used by the IDP. The authentication methods to be used are linked to the LOA value passed in the acr_values. The IDP configures the authentication method selection logic based on the acr_values.
  @param authorizationOptions Object representation of the display, ui_locales, claims_locales, id_token_hint, login_hint and dtbs.
  @param clientSecret which is secret for the application
+ @param webview UIWebView object to manage the authorize credentials login
  */
 -(void)authorize:(NSString *)url clientID:(NSString *)clientID clientSecret:(NSString *)clientSecret scope:(NSString *)scope redirectUri:(NSString *)redirectUri responseType:(NSString *)responseType state:(NSString *)state nonce:(NSString *)nonce prompt:(promptEnumType)prompt maxAge:(int)maxAge acrValues:(NSString *)acrValues authorizationOptions:(AuthorizationOptions *)authorizationOptions webview:(UIWebView *) webview;
 

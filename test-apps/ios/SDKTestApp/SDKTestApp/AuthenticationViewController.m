@@ -32,7 +32,7 @@
     self.mobileConnectProvider.tokenFromAuthorizationCodeDelegate=self;
     self.mobileConnectProvider.userInfoDelegate=self;
     
-    self.returnUri=@"http://oauth2callback.gsma.com/oauth2callback";
+    self.returnUri=@"http://mc.mobilesites.net/authorised.html";
     
     NSLog(@"handle login request");
     
@@ -46,22 +46,30 @@
     NSString *nonce = [[NSUUID UUID] UUIDString];
     NSString *acrValues=nil;
     
+    NSString *login_hint=nil;
+    NSString *encryptedMSISDN=[self.discoveryProvider encryptedSubscriberID:discoveryData];
+    if (encryptedMSISDN!=nil) {
+        login_hint=[NSString stringWithFormat:@"ENCR_MSISDN:%@", encryptedMSISDN];
+        NSLog(@"Setting login_hint to %@", login_hint);
+    }
+    
     AuthorizationOptions *authorizationOptions=[[AuthorizationOptions alloc] init];
     authorizationOptions->ui_locales=@"en";
     authorizationOptions->display=PAGE;
     authorizationOptions->claims_locales=@"en";
     authorizationOptions->id_token_hint=nil;
-    authorizationOptions->login_hint=nil;
+    authorizationOptions->login_hint=login_hint;
     authorizationOptions->dtbs=nil;
     
     self.loginWindow.hidden=YES;
+    
     
     [self.loginWindow setFrame:self.view.frame];
 
     [self.mobileConnectProvider authorize:authorizationurl
                                  clientID:client_id
                              clientSecret:nil
-                                    scope:@"openid profile email userinfo"
+                                    scope:@"openid profile email"
                               redirectUri:self.returnUri
                              responseType:@"code"
                                     state:self.state

@@ -46,10 +46,10 @@
     
     self.redirectUri=@"http://gsma.com/oneapi";
     
-    self.discoveryurl=@"https://integration-sb1.apiexchange.org/v1/discovery";
-    self.logourl=@"https://integration-sb1.apiexchange.org/v1/logo";
-    self.clientId=@"sb1-dev3-app3-prod-app-prod-key";
-    self.clientSecret=@"sb1-dev3-app3-prod-app-prod-secret";
+    self.discoveryurl=@"https://stage-exchange-test.apigee.net/gsma/v2/discovery";
+    self.logourl=@"https://sb1.exchange.gsma.com/v1/logo";
+    self.clientId=@"gZJ8mEnjoLiAgrfudHCEZvufOoafvf1S";
+    self.clientSecret=@"oESO7jLriPaF3qKA";
 
     NSLog(@"Carrier name = %@",[carrier carrierName]);
     NSLog(@"MCC = %@",mcc);
@@ -61,10 +61,6 @@
     self.discoveryWebview.hidden=true;
     self.discoveryWebview.delegate=self.discoveryProvider;
     
-//    NetworkStatus networkStatus = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
-//    if(networkStatus == ReachableViaWWAN) {
-//        // We're using the mobile network
-//    }
 }
 
 - (void)didReceiveMemoryWarning {
