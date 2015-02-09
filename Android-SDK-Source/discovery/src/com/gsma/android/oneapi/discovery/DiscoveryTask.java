@@ -430,8 +430,11 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 								String mcc_mnc=HttpUtils.getQueryParameterFromUrl(url, "mcc_mnc");
 								String subscriber_id=HttpUtils.getQueryParameterFromUrl(url, "subscriber_id");
 								
+								Log.d(TAG, "mcc_mnc = "+mcc_mnc);
+								Log.d(TAG, "subscriber_id = "+subscriber_id);
+								
 								if ((mcc_mnc!=null && mcc_mnc.trim().length()>0)) {
-									JSONObject result = ProcessDiscoveryToken.start(mcc_mnc, consumerKey, serviceUri, verboseTracing, subscriber_id);
+									JSONObject result = ProcessDiscoveryToken.start(mcc_mnc, consumerKey, serviceUri, verboseTracing, subscriber_id, _redirectUri);
 									getJSONListener.receiveDiscoveryData(result);
 								} else {
 									JSONObject result = JsonUtils.simpleError("Discovery error","mcc_mnc not provided");

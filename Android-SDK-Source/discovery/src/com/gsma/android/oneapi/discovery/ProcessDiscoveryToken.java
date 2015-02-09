@@ -32,7 +32,7 @@ public class ProcessDiscoveryToken {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static JSONObject start(String mccmnc, String consumerKey, String serviceUri, boolean verboseTracing, String subscriber_id) {
+	public static JSONObject start(String mccmnc, String consumerKey, String serviceUri, boolean verboseTracing, String subscriber_id, String redirectUrl) {
 
 		JSONObject errorResponse = null;
 
@@ -41,7 +41,7 @@ public class ProcessDiscoveryToken {
 			if (mccmnc!=null && mccmnc.indexOf("_") > -1) {
 				String[] parts=mccmnc.split("_", 2);
 				if (parts!=null && parts.length==2 && parts[0].trim().length()>0 && parts[1].trim().length()>0) {
-					String phase2Uri = serviceUri + "?Selected-MCC=" + parts[0].trim()+"&Selected-MNC="+parts[1].trim();
+					String phase2Uri = serviceUri + "?Selected-MCC=" + parts[0].trim()+"&Selected-MNC="+parts[1].trim()+"&Redirect_URL="+HttpUtils.encodeUriParameter(redirectUrl);
 					if (verboseTracing) Log.d(TAG, "mccmnc = " + mccmnc);
 					if (verboseTracing) Log.d(TAG, "phase2Uri = " + phase2Uri);
 		
