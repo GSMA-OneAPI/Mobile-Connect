@@ -531,6 +531,9 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		String authUri=operatoridEndpoint.getHref("authorization");
 		String clientId=discoveryData.getResponse().getClient_id();
 		String clientSecret=discoveryData.getResponse().getClient_secret();
+		Log.d(TAG, "clientId="+discoveryData.getResponse().getClient_id());
+		Log.d(TAG, "clientSecret="+discoveryData.getResponse().getClient_secret());
+
 		String state=UUID.randomUUID().toString();	
 		String nonce=UUID.randomUUID().toString();	
 		int maxAge=3600;
@@ -566,6 +569,8 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 	public void discoveryInfo(DiscoveryItem di) {
 		Log.d(TAG, "received discoveryInfo");
 		if (di.getResponse()!=null) {
+			Log.d(TAG, "clientId="+di.getResponse().getClient_id());
+			Log.d(TAG, "clientSecret="+di.getResponse().getClient_secret());
 			Log.d(TAG, "updating discovery data");
 			discoveryData=di;
 			justDiscovered=true;

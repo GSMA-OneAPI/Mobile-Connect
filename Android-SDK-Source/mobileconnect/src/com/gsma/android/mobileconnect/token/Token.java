@@ -48,7 +48,7 @@ public class Token implements OpenIDConnectCallbackTokenReceiver {
 		this.listener = listener;
 		try {
 			initialRetrieveTokenTask = new RetrieveTokenTask(tokenUri, code,
-					clientId, clientSecret, returnUri, null, "token",this);
+					clientId, clientSecret, returnUri, null, "token", this);
 			initialRetrieveTokenTask.execute();
 		} catch (Exception e) {
 			e.printStackTrace();

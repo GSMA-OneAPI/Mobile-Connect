@@ -59,8 +59,6 @@ public class RetrieveTokenTask extends AsyncTask<Void, Void, JSONObject> {
 	protected JSONObject doInBackground(Void... params) {
 		JSONObject json = null;
 
-		Log.d(TAG, "Pausing a short while");
-
 		Log.d(TAG, "requestUri=" + tokenUri);
 
 		HttpPost httpRequest = new HttpPost(tokenUri);
@@ -90,32 +88,31 @@ public class RetrieveTokenTask extends AsyncTask<Void, Void, JSONObject> {
 		if(type.equals("refresh"))
 			scopeParams = new BasicNameValuePair("scope", scope);
 		postparams.add(infoParams);
-//		postparams.add(clientIdParams);
 		postparams.add(grantTypeParams);
 		if(redirectUriParams!=null)
 			postparams.add(redirectUriParams);
 		if(scopeParams!=null)
 			postparams.add(scopeParams);
-//		if (clientSecret != null && clientSecret.trim().length() > 0) {
-//			BasicNameValuePair clientSecretParams = new BasicNameValuePair(
-//					"client_secret", clientSecret);
-//			postparams.add(clientSecretParams);
-//		}
 
+//		for (NameValuePair nvp:postparams) {
+//			Log.d(TAG, "Request param "+nvp.getName()+" = "+nvp.getValue());
+//		}
+		
 		/* add the post parameters as the request body */
 		try {
 			httpRequest.setEntity(new UrlEncodedFormEntity(postparams));
+//			Log.d(TAG, "submitted entity "+httpRequest.getEntity().toString());
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 		httpRequest.addHeader("Accept", "application/json");
 		httpRequest.addHeader("Content-Type",
 				"application/x-www-form-urlencoded");
-
+		
 		HttpClient httpClient = HttpUtils.getHttpAuthorizationClient(tokenUri, clientId, clientSecret, "plain", httpRequest);
 		HttpParams httpParams = httpRequest.getParams();
-		httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.FALSE);
+		httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS, Boolean.TRUE);
 		httpRequest.setParams(httpParams);
 
 		try {
@@ -147,7 +144,6 @@ public class RetrieveTokenTask extends AsyncTask<Void, Void, JSONObject> {
 			InputStream is = httpEntity.getContent();
 
 			json = JsonUtils.readJSON(is);
-
 		} catch (java.io.IOException ioe) {
 			Log.e(TAG, "IOException " + ioe.getMessage());
 			json = new JSONObject();

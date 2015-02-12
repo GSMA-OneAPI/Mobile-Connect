@@ -18,6 +18,8 @@ import com.gsma.android.mobileconnect.userinfo.Userinfo;
 import com.gsma.android.mobileconnect.userinfo.UserinfoData;
 import com.gsma.android.mobileconnect.userinfo.UserinfoListener;
 import com.gsma.android.mobileconnectsdktest.R;
+import com.gsma.android.oneapi.discovery.DiscoveryItem;
+import com.gsma.android.oneapi.discovery.DiscoveryProvider;
 
 /*
  * initiate the process of sign-in using the OperatorID API. 
@@ -95,14 +97,19 @@ public class AuthorizationCompleteActivity extends Activity implements TokenList
 			authUri = extras.getString("authUri");
 			tokenUri = extras.getString("tokenUri");
 			userinfoUri = extras.getString("userinfoUri");
-			clientId = extras.getString("clientId");
-			clientSecret = extras.getString("clientSecret");
+//			clientId = extras.getString("clientId");
+//			clientSecret = extras.getString("clientSecret");
 			scopes = extras.getString("scopes");
 			returnUri = extras.getString("returnUri");
 			state = extras.getString("state");
 			code = extras.getString("code");
 			error = extras.getString("error");
 			
+			DiscoveryProvider discoveryProvider=new DiscoveryProvider();
+			DiscoveryItem discoveryData=discoveryProvider.getCacheDiscoveryItem(this);
+			String clientId=discoveryData.getResponse().getClient_id();
+			String clientSecret=discoveryData.getResponse().getClient_secret();
+
 			Log.d(TAG, "handling code="+code+" error="+error);
 			
 			String statusDescription="unknown";
@@ -123,6 +130,9 @@ public class AuthorizationCompleteActivity extends Activity implements TokenList
 				authorizationCompleteGenderValue.setText(RETRIEVING);
 				authorizationCompleteLocaleValue.setText(RETRIEVING);
 
+				Log.d(TAG, "submitting request for token");
+				Log.d(TAG, "clientId="+clientId);
+				Log.d(TAG, "clientSecret="+clientSecret);
 				Token tokenProcessor=new Token();
 				tokenProcessor.tokenFromAuthorizationCode(tokenUri, code,
 						clientId, clientSecret, returnUri, this);
@@ -144,12 +154,14 @@ public class AuthorizationCompleteActivity extends Activity implements TokenList
 
 	@Override
 	public void tokenResponse(TokenData response) {
-		Log.d(TAG, "received token");
+		Log.d(TAG, "received token response");
 		String access_token=response.getAccess_Token();
 		boolean haveAccessToken=false;
 		if (access_token!=null && access_token.trim().length()>0) {
 			statusField.setText("retrieved access token");
 			haveAccessToken=true;
+		} else {
+			statusField.setText("access token not received");
 		}
 		String id_token = response.getId_Token();
 		if (id_token!=null && id_token.trim().length()>0) {

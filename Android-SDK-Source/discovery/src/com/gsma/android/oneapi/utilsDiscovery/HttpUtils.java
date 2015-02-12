@@ -121,13 +121,25 @@ public class HttpUtils {
 	 * @param serviceUri
 	 * @param consumerKey
 	 * @param consumerSecret
+	 * @return HttpClient
+	 */
+	public static HttpClient getHttpClient(String serviceUri, String consumerKey, String consumerSecret) {
+		return getHttpAuthorizationClient(serviceUri, consumerKey, consumerSecret, "plain", null);
+	}
+
+	/**
+	 * Create an instance of an HttpClient with default settings.
+	 * 
+	 * @param serviceUri
+	 * @param consumerKey
+	 * @param consumerSecret
 	 * @param credentials (none, plain, sha256)
 	 * @param httpRequest
 	 * @return HttpClient
 	 * @throws NoSuchAlgorithmException
 	 * @throws UnsupportedEncodingException
 	 */
-	public static DefaultHttpClient getHttpAuthorizationClient(String serviceUri,String consumerKey, String consumerSecret, String credentials,HttpRequestBase httpRequest) {
+	public static DefaultHttpClient getHttpAuthorizationClient(String serviceUri,String consumerKey, String consumerSecret, String credentials, HttpRequestBase httpRequest) {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 
 		HttpParams httpParams = httpClient.getParams();

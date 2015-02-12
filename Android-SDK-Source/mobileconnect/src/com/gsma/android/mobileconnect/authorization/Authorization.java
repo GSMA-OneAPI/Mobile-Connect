@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +69,7 @@ public class Authorization {
 	 * @param activity
 	 * @throws NullPointerException
 	 */
+	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
 	public void authorize(String authUri, ResponseType responseType, String clientId, String clientSecret, String scopes,
 			String redirectUri, String state, String nonce, Prompt prompt,
@@ -240,6 +242,10 @@ public class Authorization {
 			WebSettings settings = view.getSettings();
 			settings.setJavaScriptEnabled(true);
 			settings.setSupportMultipleWindows(false);
+			settings.setDomStorageEnabled(true);
+			settings.setDatabaseEnabled(true);
+			String databasePath = activity.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath(); 
+		    settings.setDatabasePath(databasePath);
 
 			/*
 			 * load the specified URI along with the authorization header

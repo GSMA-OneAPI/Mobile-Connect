@@ -3,16 +3,24 @@ package com.gsma.android.oneapi.discovery;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.params.HttpClientParams;
@@ -21,6 +29,7 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,39 +151,46 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 		 */
 		if (redirectUrl!=null && redirectUrl.trim().length() > 0){
 			if (phase1Uri.indexOf("?")== -1) {
-				phase1Uri = phase1Uri + "?Redirect_URL="+redirectUrl;
+				phase1Uri = phase1Uri + "?Redirect_URL="+HttpUtils.encodeUriParameter(redirectUrl);
 			} else {
-				phase1Uri = phase1Uri + "&Redirect_URL="+redirectUrl;
+				phase1Uri = phase1Uri + "&Redirect_URL="+HttpUtils.encodeUriParameter(redirectUrl);
 			}
 		}
 
 		if (identifiedmcc!=null && identifiedmcc.trim().length()>0 && identifiedmnc!=null && identifiedmnc.trim().length()>0) {
 			if (phase1Uri.indexOf("?")== -1) {
-				phase1Uri = phase1Uri + "?Identified-MCC=" + identifiedmcc + "&Identified-MNC=" + identifiedmnc;
+				phase1Uri = phase1Uri + "?Identified-MCC=" + HttpUtils.encodeUriParameter(identifiedmcc) + "&Identified-MNC=" + HttpUtils.encodeUriParameter(identifiedmnc);
 			} else {
-				phase1Uri = phase1Uri + "&Identified-MCC=" + identifiedmcc + "&Identified-MNC=" + identifiedmnc;
+				phase1Uri = phase1Uri + "&Identified-MCC=" + HttpUtils.encodeUriParameter(identifiedmcc) + "&Identified-MNC=" + HttpUtils.encodeUriParameter(identifiedmnc);
 			}
 		}
 
 		if (selectedmcc!=null && selectedmcc.trim().length()>0 && selectedmnc!=null && selectedmnc.trim().length()>0) {
 			if (phase1Uri.indexOf("?")== -1) {
-				phase1Uri = phase1Uri + "?Selected-MCC=" + selectedmcc + "&Selected-MNC=" + selectedmnc;
+				phase1Uri = phase1Uri + "?Selected-MCC=" + HttpUtils.encodeUriParameter(selectedmcc) + "&Selected-MNC=" + HttpUtils.encodeUriParameter(selectedmnc);
 			} else {
-				phase1Uri = phase1Uri + "&Selected-MCC=" + selectedmcc + "&Selected-MNC=" + selectedmnc;
-			}
-		}
-		
-		if(msisdn!=null && msisdn.trim().length() > 0) {
-			if (phase1Uri.indexOf("?")== -1) {
-				phase1Uri = phase1Uri + "?MSISDN=" + msisdn;
-			} else {
-				phase1Uri = phase1Uri + "&MSISDN=" + msisdn;
+				phase1Uri = phase1Uri + "&Selected-MCC=" + HttpUtils.encodeUriParameter(selectedmcc) + "&Selected-MNC=" + HttpUtils.encodeUriParameter(selectedmnc);
 			}
 		}
 		
 		if (verboseTracing) Log.d(TAG, "Started discovery process via " + phase1Uri);
 		
-		HttpGet httpRequest = new HttpGet(phase1Uri);
+		HttpRequest httpRequest = null;
+		if(msisdn!=null && msisdn.trim().length() > 0) {
+			if (verboseTracing) Log.d(TAG, "Making POST request to " + phase1Uri);
+			List<NameValuePair> postparams = new ArrayList<NameValuePair>();
+			BasicNameValuePair msisdnParams = new BasicNameValuePair("MSISDN", msisdn);
+			postparams.add(msisdnParams);
+			httpRequest = new HttpPost(phase1Uri);
+			try {
+				((HttpPost) httpRequest).setEntity(new UrlEncodedFormEntity(postparams));
+			} catch (UnsupportedEncodingException e) {
+			}
+			httpRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		} else {
+			if (verboseTracing) Log.d(TAG, "Making GET request to " + phase1Uri);
+			httpRequest = new HttpGet(phase1Uri);
+		}
 
 		if (json) {
 			httpRequest.addHeader("Accept", "application/json");
@@ -200,7 +216,7 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 				HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
 			}
 
-			DefaultHttpClient httpClient = HttpUtils.getHttpAuthorizationClient(phase1Uri, consumerKey, consumerSecret, credentials, httpRequest);
+			DefaultHttpClient httpClient = HttpUtils.getHttpAuthorizationClient(phase1Uri, consumerKey, consumerSecret, credentials, (HttpRequestBase) httpRequest);
 			HttpParams httpParams = httpRequest.getParams();
 			httpParams.setParameter(ClientPNames.HANDLE_REDIRECTS,Boolean.FALSE);
 			httpRequest.setParams(httpParams);
@@ -209,9 +225,7 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 			if (verboseTracing) Log.d(TAG, "Add consumerKey and consumerSecret; " + consumerKey
 					+ " - " + consumerSecret);
 
-			if (verboseTracing) Log.d(TAG, "Making " + httpRequest.getMethod() + " request to " + httpRequest.getURI());
-			
-			HttpResponse httpResponse = httpClient.execute(httpRequest);
+			HttpResponse httpResponse = httpClient.execute((HttpUriRequest) httpRequest);
 			
 			if (verboseTracing) Log.d(TAG, "Request executed and completed with status=" + httpResponse.getStatusLine().getStatusCode());
 
@@ -359,6 +373,7 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 		return response;
 	}
 	
+	@SuppressWarnings("unused")
 	private void handleDiscoveryUIWebview(String requestUri, String redirectUri) {
 		final String _requestUri=requestUri;
 		final String _redirectUri=redirectUri;
@@ -434,7 +449,8 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 								Log.d(TAG, "subscriber_id = "+subscriber_id);
 								
 								if ((mcc_mnc!=null && mcc_mnc.trim().length()>0)) {
-									JSONObject result = ProcessDiscoveryToken.start(mcc_mnc, consumerKey, serviceUri, verboseTracing, subscriber_id, _redirectUri);
+									JSONObject result = ProcessDiscoveryToken.start(mcc_mnc, consumerKey, consumerSecret, 
+																					serviceUri, verboseTracing, subscriber_id, _redirectUri);
 									getJSONListener.receiveDiscoveryData(result);
 								} else {
 									JSONObject result = JsonUtils.simpleError("Discovery error","mcc_mnc not provided");
@@ -456,6 +472,10 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 					WebSettings settings = view.getSettings();
 					settings.setJavaScriptEnabled(true);
 					settings.setSupportMultipleWindows(false);
+					settings.setDomStorageEnabled(true);
+					settings.setDatabaseEnabled(true);
+					String databasePath = context.getDir("database", Context.MODE_PRIVATE).getPath(); 
+				    settings.setDatabasePath(databasePath);
 
 					/*
 					 * load the specified URI along with the authorization header
@@ -478,13 +498,13 @@ public class DiscoveryTask extends AsyncTask<Void, Void, JSONObject> {
 	 */
 	@Override
 	protected void onPostExecute(JSONObject response) {
-		try {
-			if (response==null || !response.getBoolean("USINGWEBVIEW")) {
+//		try {
+			if (response==null || !response.has("USINGWEBVIEW")) {
 				if (verboseTracing) Log.d(TAG, "onPostExecute for " + response);
 				getJSONListener.receiveDiscoveryData(response);
 			}
-		} catch (JSONException e) {
-		}
+//		} catch (JSONException e) {
+//		}
 	}
 
 }

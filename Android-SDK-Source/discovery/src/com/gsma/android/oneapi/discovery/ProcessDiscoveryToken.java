@@ -32,7 +32,7 @@ public class ProcessDiscoveryToken {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static JSONObject start(String mccmnc, String consumerKey, String serviceUri, boolean verboseTracing, String subscriber_id, String redirectUrl) {
+	public static JSONObject start(String mccmnc, String consumerKey, String consumerSecret, String serviceUri, boolean verboseTracing, String subscriber_id, String redirectUrl) {
 
 		JSONObject errorResponse = null;
 
@@ -45,7 +45,7 @@ public class ProcessDiscoveryToken {
 					if (verboseTracing) Log.d(TAG, "mccmnc = " + mccmnc);
 					if (verboseTracing) Log.d(TAG, "phase2Uri = " + phase2Uri);
 		
-					HttpClient httpClient = HttpUtils.getHttpClient(phase2Uri, consumerKey);
+					HttpClient httpClient = HttpUtils.getHttpClient(phase2Uri, consumerKey, consumerSecret);
 		
 					HttpGet httpRequest = new HttpGet(phase2Uri);
 					httpRequest.addHeader("Accept", "application/json");
