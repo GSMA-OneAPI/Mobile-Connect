@@ -148,7 +148,7 @@ function startLogin() {
 function runAuthorization() {
     prompt='login';
     max_age=3600;
-    acr_values='2';
+    acr_values='3';
     login_hint=null;
     if (!!subscriberId) {
 	login_hint="ENCR_MSISDN:"+subscriberId;

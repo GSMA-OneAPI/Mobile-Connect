@@ -1,0 +1,183 @@
+<html>
+<head>
+
+<script language="JavaScript" src="DiscoverySDK.js" type="text/javascript"></script>
+<script language="JavaScript" src="LogoSDK.js" type="text/javascript"></script>
+<script language="JavaScript" src="Base64Utils.js" type="text/javascript"></script>
+<script language="JavaScript" src="OpenIdConnectSDK.js" type="text/javascript"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script language="JavaScript">
+
+var discoveryServiceUri="https://stage-exchange-test.apigee.net/gsma/v2/discovery";
+var discoveryClientID="gZJ8mEnjoLiAgrfudHCEZvufOoafvf1S";
+var discoveryClientSecret="oESO7jLriPaF3qKA";
+var logoServiceUri="https://sb1.exchange.gsma.com/v1/logo";
+
+function getLogos() {
+    var sourceIP=null;
+    var logosize="medium";
+    var colormode="normal";
+    var aspect="landscape";
+    var mcc=null;
+    var mnc=null;
+    
+    if (console.log) console.log("Starting request for logos");
+    getLogo(logoServiceUri, mcc, mnc, sourceIP, 'operatorid', logosize, colormode, aspect, logoComplete);
+}
+
+function logoComplete(logoResult) {
+    if (console.log) console.log("Callback for "+JSON.stringify(logoResult));
+    if (logoResult && logoResult.logos && logoResult.logos.length>=1) {
+	var url=getCacheApiLogo('exchange', 'operatorid', 'medium', 'normal', 'landscape');
+        if (!!url) { 
+            var first=logoResult.logos[0];
+            url=first.url;
+        }
+        if (!!url) {
+            $('#loginButton').html('<img src=\''+url+'\' alt=\'Login with Mobile Connect\'/>');
+        }
+    }
+}
+
+function startActiveDiscovery() {
+    var encrypt="basic";
+    var sourceIP=null;
+    var msisdn=null;
+    var redirectUri="http://mc.mobilesites.net/discovered.html";
+    var mcc=null;
+    var mnc=null;
+
+    if (console.log) console.log("Starting active discovery");
+    $('#status').val('Started discovery');
+
+    getDiscoveryActive(discoveryServiceUri, discoveryClientID, discoveryClientSecret, encrypt,
+                   mcc, mnc, msisdn, sourceIP, redirectUri, activeDiscoveryComplete);
+}
+
+function activeDiscoveryComplete(discoveryResult, status) {
+    if (console.log) console.log("HTTP Status Code is "+status);
+    if (status==200) {
+	$('#status').val('Discovery complete');
+    	if (discoveryResult && !!discoveryResult.getTtl()) { console.log("TTL "+discoveryResult.getTtl()); }
+    	if (discoveryResult && !!discoveryResult.getResponse()) {
+            if (console.log) console.log("DiscoveryResponse "+JSON.stringify(discoveryResult.getResponse()));
+	    if (discoveryResult.getResponse().getApiFunction('operatorid', 'authorization')) {
+		runAuthorization(discoveryResult);
+	    }
+    	}
+    }
+}
+
+function runAuthorization(discoveryResult) {
+    var apiClientID=discoveryResult.getResponse().getClient_id();
+    var apiClientSecret=discoveryResult.getResponse().getClient_secret();
+    var subscriberId=discoveryResult.getResponse().getSubscriber_id();
+    var authorizationEndpoint=discoveryResult.getResponse().getApiFunction('operatorid', 'authorization');
+
+    var prompt='login';
+    var max_age=3600;
+    var acr_values='2';
+
+    login_hint=null;
+    if (!!subscriberId) {
+        login_hint="ENCR_MSISDN:"+subscriberId;
+if (console.log) console.log("login_hint="+login_hint);
+    }
+
+    var authorizationOptions=new AuthorizationOptions('page', 'en', 'en', 'Enter MSISDN', login_hint, null); 
+    var state='State'+Math.random().toString(36);
+    var nonce='Nonce'+Math.random().toString(36);
+    var redirect_uri='http://mc.mobilesites.net/authorised.html';
+
+    if (console.log) console.log("Login hint set to "+authorizationOptions['login_hint']);
+    authorize(authorizationEndpoint, apiClientID, 'openid profile email userinfo', redirect_uri, 'code', state, nonce,
+              prompt, max_age, acr_values, authorizationOptions, authorizationCallbackFunction);
+}
+
+function authorizationCallbackFunction(data) {
+    if (console.log) console.log('authorization complete');
+    if (console.log) console.log("response="+JSON.stringify(data));
+
+    var code=data['code'];
+    var state=data['state'];
+    var error=data['error'];
+
+    var discoveryDetails=getCacheDiscoveryItem();
+    var tokenEndpoint=discoveryDetails.getResponse().getApiFunction('operatorid', 'token');
+    var apiClientID=discoveryDetails.getResponse().getClient_id();
+    var apiClientSecret=discoveryDetails.getResponse().getClient_secret();
+
+    if (code && code!=null && (code.trim().length)>0) {
+        $('#status').val('Authorized');
+        $('#code').val(code);
+
+        tokenFromAuthorizationCode(tokenEndpoint, code, apiClientID, apiClientSecret,
+                                       'http://mc.mobilesites.net/authorised.html', tokenReceived);
+    } else {
+        $('#status').val('Error');
+    }
+}
+
+function tokenReceived(token) {
+    if (console.log) console.log("token response="+JSON.stringify(token));
+    if (!!token.refresh_token) $('#refresh_token').val(token.refresh_token);
+    if (!!token.expires_in) $('#expires_in').val(token.expires_in);
+    if (!!token.token_type) $('#token_type').val(token.token_type);
+    if (!!token.access_token) {
+        $('#access_token').val(token.access_token);
+        var discoveryDetails=getCacheDiscoveryItem();
+        var userinfoEndpoint=discoveryDetails.getResponse().getApiFunction('operatorid', 'userinfo');
+        $('#status').val('Authorized + access token retrieved');
+        if (userinfoEndpoint && userinfoEndpoint.trim().length>0) {
+            userinfo(userinfoEndpoint, token.access_token, userinfoCallbackFunction);
+        }
+    }
+}
+
+function userinfoCallbackFunction(userinfo) {
+    if (console.log) console.log("userinfo response="+JSON.stringify(userinfo));
+    if (!!userinfo.email) $('#email').val(userinfo.email);
+    if (userinfo && userinfo.email_verified!==null) $('#email_verified').val(userinfo.email_verified?'true':'false');
+}
+
+function atStartup() {
+    clearCacheDiscoveryItem();
+    clearCacheLogo();
+    getLogos();
+}
+
+</script>
+
+</head>
+<body onLoad='javascript:atStartup();'>
+<p><strong>Mobile Connect HTML Walkthrough</strong></p>
+
+<p>To see Mobile Connect in action click below..</p>
+
+<p name="loginBlock" id="loginBlock" ><a name="loginButton" id="loginButton" onClick="startActiveDiscovery(); return false;" disabled="disabled" href='#'><em>Login with Mobile Connect</em></a></p>
+
+<hr/>
+
+<div><label>Status</label><input id='status' name='status' value='unknown' readonly='readonly'
+            style='width:300px'/></div>
+<div><label>Auth code</label><input id='code' name='code' value='unknown' readonly='readonly'
+            style='width:300px'/></div>
+<div><label>Access token</label><input id='access_token' name='access_token'
+            value='unknown' readonly='readonly' style='width:300px'/></div>
+<div><label>Refresh token</label><input id='refresh_token' name='refresh_token'
+    value='unknown' readonly='readonly'  style='width:300px'/></div>
+<div><label>Token type</label><input id='token_type' name='token_type'
+    value='unknown' readonly='readonly'/></div>
+<div><label>Expires in</label><input id='expires_in' name='expires_in'
+    value='unknown' readonly='readonly'/></div>
+
+<div><strong>Userinfo ...</strong></div>
+<div><label>Email</label><input id='email' name='email'
+    value='unknown' readonly='readonly'  style='width:300px'/></div>
+<div><label>Email verified</label><input id='email_verified' name='email_verified'
+    value='unknown' readonly='readonly'/></div>
+
+<br/>
+
+</body>
