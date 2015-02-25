@@ -136,12 +136,12 @@ function authorize(url, client_id, scope, redirect_uri, response_type, state, no
 
 function loginOpenId(url,callbackFunction){
 	var ancho = 400;
-	var alto = 400;
+	var alto = 500;
 	var posicion_x; 
 	var posicion_y; 
 	posicion_x=(screen.width/2)-(ancho/2); 
 	posicion_y=(screen.height/2)-(alto/2); 
-	var aux = window.open(url, "loginOpenId", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=no,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	var aux = window.open(url, "loginOpenId", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=yes,resizable=yes,left="+posicion_x+",top="+posicion_y+"");
 	var eventListener = function(m){
 		console.log("RECEIVED: "+m.data);
 		window.clearInterval(interval);
