@@ -245,7 +245,7 @@
 		AACE153419F653BD008274BE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = GSMA;
 				TargetAttributes = {
 					AACE153B19F653BD008274BE = {
@@ -415,6 +415,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -485,6 +486,7 @@
 					"$(PROJECT_DIR)/SDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gsma.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SDKTestApp;
 			};
 			name = Debug;
@@ -501,6 +503,7 @@
 					"$(PROJECT_DIR)/SDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gsma.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SDKTestApp;
 			};
 			name = Release;
@@ -519,6 +522,7 @@
 				);
 				INFOPLIST_FILE = SDKTestAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gsma.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SDKTestAppTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDKTestApp.app/SDKTestApp";
 			};
@@ -534,6 +538,7 @@
 				);
 				INFOPLIST_FILE = SDKTestAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gsma.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SDKTestAppTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDKTestApp.app/SDKTestApp";
 			};

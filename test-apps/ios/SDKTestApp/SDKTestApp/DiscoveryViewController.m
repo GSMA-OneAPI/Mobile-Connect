@@ -46,7 +46,7 @@
     
     self.redirectUri=@"http://gsma.com/oneapi";
     
-    self.discoveryurl=@"https://stage-exchange-test.apigee.net/gsma/v2/discovery";
+    self.discoveryurl=@"https://discover.mobileconnect.io/gsma/v2/discovery";
     self.logourl=@"https://sb1.exchange.gsma.com/v1/logo";
     self.clientId=@"gZJ8mEnjoLiAgrfudHCEZvufOoafvf1S";
     self.clientSecret=@"oESO7jLriPaF3qKA";

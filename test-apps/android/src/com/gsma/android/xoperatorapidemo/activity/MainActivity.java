@@ -43,11 +43,11 @@ import com.gsma.android.oneapi.discovery.DiscoveryItem;
 import com.gsma.android.oneapi.discovery.DiscoveryListener;
 import com.gsma.android.oneapi.discovery.DiscoveryProvider;
 import com.gsma.android.oneapi.discovery.DiscoveryResponse;
-import com.gsma.android.oneapi.logo.LogoCache;
-import com.gsma.android.oneapi.logo.LogoItem;
-import com.gsma.android.oneapi.logo.LogoItemArray;
-import com.gsma.android.oneapi.logo.LogoListener;
-import com.gsma.android.oneapi.logo.LogoProvider;
+//import com.gsma.android.oneapi.logo.LogoCache;
+//import com.gsma.android.oneapi.logo.LogoItem;
+//import com.gsma.android.oneapi.logo.LogoItemArray;
+//import com.gsma.android.oneapi.logo.LogoListener;
+//import com.gsma.android.oneapi.logo.LogoProvider;
 import com.gsma.android.oneapi.valuesDiscovery.DiscoveryCredentials;
 import com.gsma.android.oneapi.valuesLogo.AspectRatio;
 import com.gsma.android.oneapi.valuesLogo.BgColor;
@@ -57,7 +57,7 @@ import com.gsma.android.xoperatorapidemo.utils.PhoneState;
 import com.gsma.android.xoperatorapidemo.utils.PhoneUtils;
 import com.gsma.android.xoperatorapidemo.utils.PreferencesUtils;
 
-public class MainActivity extends Activity implements DiscoveryListener, LogoListener, AuthorizationListener {
+public class MainActivity extends Activity implements DiscoveryListener /*, LogoListener*/, AuthorizationListener {
 
 	private static final String TAG = "MainActivity";
 
@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 	
 	public static final int DISCOVERY_COMPLETE=1;
 	public static final int SETTINGS_COMPLETE=2;
-	public static final int LOGOS_UPDATED=100;
+//	public static final int LOGOS_UPDATED=100;
 
 	/*
 	 * has discovery been started - used to avoid making a duplicate request
@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 	Button startOperatorId = null;
 	
 	static Handler discoveryHandler = null;
-	static Handler logoUpdateHandler = null;
+//	static Handler logoUpdateHandler = null;
 	
 	/*
 	 * method called when the application first starts.
@@ -132,8 +132,8 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		/*
 		 * load logo cache
 		 */
-		LogoCache.loadCache(this);
-		setLogos("exchange");
+//		LogoCache.loadCache(this);
+//		setLogos("exchange");
 		
 		mainActivityInstance = this;
 
@@ -158,12 +158,12 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 			}
 		};
 		
-		logoUpdateHandler = new Handler() {
-			public void handleMessage(Message msg) {
-				handleLogoUpdate();
-			}
-		};
-	    
+//		logoUpdateHandler = new Handler() {
+//			public void handleMessage(Message msg) {
+//				handleLogoUpdate();
+//			}
+//		};
+//	    
 		new Thread(new Runnable() { 
             public void run(){
             	boolean running=true;
@@ -197,52 +197,54 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
             }
 		}).start();
 				
-		Log.d(TAG, "Starting fetch for default logos");
-		LogoProvider logoProvider=new LogoProvider();
-		logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
-				SettingsActivity.getDeveloperOperator().getAppKey(), 
-				SettingsActivity.getDeveloperOperator().getAppSecret(), 
-				null, /* IP address */ 
-				null, /* MCC */
-				null, /* MNC */
-				Size.SMALL, /* size */ 
-				BgColor.NORMAL, /* colour scheme */
-				AspectRatio.LANDSCAPE, /* aspect ratio */
-				this, /* listener */ 
-				this /* context */);
+//		Log.d(TAG, "Starting fetch for default logos");
+//		LogoProvider logoProvider=new LogoProvider();
+//		logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
+//				SettingsActivity.getDeveloperOperator().getAppKey(), 
+//				SettingsActivity.getDeveloperOperator().getAppSecret(), 
+//				null, /* IP address */ 
+//				null, /* MCC */
+//				null, /* MNC */
+//				Size.SMALL, /* size */ 
+//				BgColor.NORMAL, /* colour scheme */
+//				AspectRatio.LANDSCAPE, /* aspect ratio */
+//				this, /* listener */ 
+//				this /* context */);
 				
 	}
 	
-	public void handleLogoUpdate() {
-		Log.d(TAG, "called handleLogoUpdate");
-		boolean set=false;
-		if (discoveryData!=null && discoveryData.getResponse()!=null) {
-			String operator=discoveryData.getResponse().getSubscriber_operator();
-			set=setLogos(operator);
-		}
-		if (!set) {
-			set=setLogos("exchange");
-		}
-		if (!set) {
-			startOperatorId.setBackgroundDrawable(null);
-			startOperatorId.setText(R.string.startOperatorId);
-			set=true;
-		}
-	}
-	
-	private boolean setLogos(String operator) {
-		boolean set=false;
-		Log.d(TAG, "Trying logos for operator = "+operator);
-		Bitmap operatorIdImage=LogoCache.getBitmap(operator, "operatorid", "small", "normal", "landscape");
-		
-		if (operatorIdImage!=null) {
-			Drawable d = new BitmapDrawable(operatorIdImage);
-			startOperatorId.setBackgroundDrawable(d);
-			startOperatorId.setText("");
-			set=true;
-		}
-		return set;
-	}
+//	public void handleLogoUpdate() {
+//		Log.d(TAG, "called handleLogoUpdate");
+//		boolean set=false;
+//		if (discoveryData!=null && discoveryData.getResponse()!=null) {
+//			String operator=discoveryData.getResponse().getSubscriber_operator();
+//			set=setLogos(operator);
+//		}
+//		if (!set) {
+//			set=setLogos("exchange");
+//		}
+//		if (!set) {
+//			startOperatorId.setBackgroundDrawable(null);
+//			startOperatorId.setText(R.string.startOperatorId);
+//			set=true;
+//		}
+//	}
+//	
+//	private boolean setLogos(String operator) {
+//		boolean set=false;
+//		Log.d(TAG, "Trying logos for operator = "+operator);
+//		Bitmap operatorIdImage=LogoCache.getBitmap(operator, "operatorid", "small", "normal", "landscape");
+//		
+//		if (operatorIdImage!=null) {
+//			Drawable d = new BitmapDrawable(operatorIdImage);
+//			startOperatorId.setBackgroundDrawable(d);
+//			startOperatorId.setWidth(operatorIdImage.getWidth());
+//			startOperatorId.setHeight(operatorIdImage.getHeight());
+//			startOperatorId.setText("");
+//			set=true;
+//		}
+//		return set;
+//	}
 	
 	/*
 	 * on start or return to the main screen reset the screen so that discovery
@@ -282,19 +284,19 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 			vMCC.setText(mcc!=null?mcc:getText(R.string.valueUnknown));
 			vMNC.setText(mnc!=null?mnc:getText(R.string.valueUnknown));
 			
-			Log.d(TAG, "starting logo API request for current operator logos");
-			LogoProvider logoProvider=new LogoProvider();
-			logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
-					SettingsActivity.getDeveloperOperator().getAppKey(), 
-					SettingsActivity.getDeveloperOperator().getAppSecret(), 
-					null, /* IP address */ 
-					mcc,
-					mnc,
-					Size.SMALL, /* size */ 
-					BgColor.NORMAL, /* colour scheme */
-					AspectRatio.LANDSCAPE, /* aspect ratio */
-					this, /* listener */ 
-					this /* context */);
+//			Log.d(TAG, "starting logo API request for current operator logos");
+//			LogoProvider logoProvider=new LogoProvider();
+//			logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
+//					SettingsActivity.getDeveloperOperator().getAppKey(), 
+//					SettingsActivity.getDeveloperOperator().getAppSecret(), 
+//					null, /* IP address */ 
+//					mcc,
+//					mnc,
+//					Size.SMALL, /* size */ 
+//					BgColor.NORMAL, /* colour scheme */
+//					AspectRatio.LANDSCAPE, /* aspect ratio */
+//					this, /* listener */ 
+//					this /* context */);
 			
 			DiscoveryStartupSettings startupOption=SettingsActivity.getDiscoveryStartupSettings();
 			if (startupOption==DiscoveryStartupSettings.STARTUP_OPTION_PASSIVE) {
@@ -374,19 +376,19 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 			String mcc=SettingsActivity.getMcc();
 			String mnc=SettingsActivity.getMnc();
 
-			Log.d(TAG, "starting logo API request for current operator logos");
-			LogoProvider logoProvider=new LogoProvider();
-			logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
-					SettingsActivity.getDeveloperOperator().getAppKey(), 
-					SettingsActivity.getDeveloperOperator().getAppSecret(), 
-					null, /* IP address */
-					mcc,
-					mnc,
-					Size.SMALL, /* size */ 
-					BgColor.NORMAL, /* colour scheme */
-					AspectRatio.LANDSCAPE, /* aspect ratio */
-					this, /* listener */ 
-					this /* context */);
+//			Log.d(TAG, "starting logo API request for current operator logos");
+//			LogoProvider logoProvider=new LogoProvider();
+//			logoProvider.getLogo(SettingsActivity.getDeveloperOperator().getLogoEndpoint(), 
+//					SettingsActivity.getDeveloperOperator().getAppKey(), 
+//					SettingsActivity.getDeveloperOperator().getAppSecret(), 
+//					null, /* IP address */
+//					mcc,
+//					mnc,
+//					Size.SMALL, /* size */ 
+//					BgColor.NORMAL, /* colour scheme */
+//					AspectRatio.LANDSCAPE, /* aspect ratio */
+//					this, /* listener */ 
+//					this /* context */);
 			
 		}
 	}
@@ -558,9 +560,9 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		
 	}
 
-	public static void processLogoUpdates() {
-		logoUpdateHandler.sendEmptyMessage(LOGOS_UPDATED);
-	}
+//	public static void processLogoUpdates() {
+//		logoUpdateHandler.sendEmptyMessage(LOGOS_UPDATED);
+//	}
 	
 	private void cancelOutstandingDiscoveryTasks() {
 	}
@@ -592,24 +594,24 @@ public class MainActivity extends Activity implements DiscoveryListener, LogoLis
 		Log.d(TAG, "received discovery error"+error);
 	}
 
-	@Override
-	public void errorLogoInfo(JSONObject error) {
-		// TODO Auto-generated method stub
-		Log.d(TAG, "received logo error "+error);
-	}
-
-	@Override
-	public void logoInfo(LogoItemArray logoItems) {
-		// TODO Auto-generated method stub
-		Log.d(TAG, "received logo data "+logoItems);
-		if (logoItems!=null) {
-			for (LogoItem logoItem:logoItems.getLogos()) {
-				Log.d(TAG, "Logo "+logoItem.getUrl());
-			}
-		}
-		processLogoUpdates();
-	}
-
+//	@Override
+//	public void errorLogoInfo(JSONObject error) {
+//		// TODO Auto-generated method stub
+//		Log.d(TAG, "received logo error "+error);
+//	}
+//
+//	@Override
+//	public void logoInfo(LogoItemArray logoItems) {
+//		// TODO Auto-generated method stub
+//		Log.d(TAG, "received logo data "+logoItems);
+//		if (logoItems!=null) {
+//			for (LogoItem logoItem:logoItems.getLogos()) {
+//				Log.d(TAG, "Logo "+logoItem.getUrl());
+//			}
+//		}
+//		processLogoUpdates();
+//	}
+//
 	@Override
 	public void authorizationCodeResponse(String state, String authorizationCode, String error, String clientId, String clientSecret, String scopes, String returnUri) {
 		Log.d(TAG, "Have auth code "+authorizationCode);
