@@ -1,5 +1,6 @@
 package com.gsma.android.mobileconnect.authorization;
 
+import android.os.Build;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
@@ -140,7 +141,7 @@ public class Authorization {
 			final String _clientId=clientId;
 			final String _clientSecret=clientSecret;
 			final String _scopes=scopes;
-			
+
 			final WebView view = new WebView(activity);
 
 			LayoutParams fillParent=new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
@@ -246,6 +247,13 @@ public class Authorization {
 			settings.setDatabaseEnabled(true);
 			String databasePath = activity.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath(); 
 		    settings.setDatabasePath(databasePath);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				// If the app targets LOLLIPOP or above the default web view behavior is
+				// to completely deny mixed content. As mobile connect requires the use of
+				// http during header enrichment we need a more relaxed security setting.
+				settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+			}
 
 			/*
 			 * load the specified URI along with the authorization header
